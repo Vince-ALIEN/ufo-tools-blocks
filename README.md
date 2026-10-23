@@ -12,7 +12,7 @@ No page builder. No bloat. Just clean, semantic markup with full CSS Grid contro
 
 Gutenberg's native columns block is limited. Page builders are overkill. `ufo-tools-blocks` gives you a proper CSS Grid system — with `col-span`, `col-start`, `row-span`, background images, background videos, responsive reordering, and more — all configurable from the block sidebar without writing a single line of CSS.
 
-It pairs with your Tailwind CSS v4 theme: the plugin ships no CSS of its own, staying lean and letting your theme's design tokens drive the visual output.
+It pairs with your Tailwind CSS v4 theme, whose design tokens then drive the visual output. With any other theme, the plugin loads a small precompiled stylesheet of the utilities its blocks use (see [Tailwind integration](#tailwind-css-v4-integration)).
 
 ---
 
@@ -35,10 +35,10 @@ The `ufo-blocks/ufo-bento`, `ufo-blocks/ufo-time` and `ufo-blocks/logo-slider` b
 
 ### Requirements
 
-- WordPress 6.1+
+- WordPress 6.6+
 - PHP 7.4+
 - Node.js 18+ and npm
-- **A theme using Tailwind CSS v4** (see [Tailwind integration](#tailwind-css-v4-integration) below)
+- Optional: a theme using Tailwind CSS v4 (see [Tailwind integration](#tailwind-css-v4-integration) below)
 
 ### Steps
 
@@ -79,9 +79,14 @@ git tag v1.6.0 && git push origin v1.6.0
 
 ## Tailwind CSS v4 Integration
 
-`ufo-tools-blocks` ships no CSS. It is designed to work with a theme that already runs Tailwind CSS v4.
+The blocks output Tailwind CSS v4 utility classes. Two ways to provide them, chosen in **Settings > Ufo Tools Blocks**:
 
-Add the following directives to your theme's CSS entry point so Tailwind scans the plugin's source files and includes all required utility classes in the build:
+- **Plugin stylesheet**: `build/tailwind/blocks.css`, built by `npm run build` from `src/tailwind/blocks.css` (utilities used by the blocks and the theme variables they need, no preflight; `text-primary` and `max-w-content` map to the `theme.json` primary color and content width). Served locally, never from a CDN.
+- **Your theme's Tailwind build**: recommended when the theme already runs Tailwind CSS v4, so that the classes use its design tokens.
+
+The setting has three modes: *Automatique* (default) loads the plugin stylesheet unless the theme provides Tailwind, *Toujours*, *Jamais*. A theme is considered to provide Tailwind when it declares `add_theme_support( 'ufo-tools-blocks-tailwind' )` or when its `style.css` (or its parent's) starts with the `tailwindcss v4…` banner of a Tailwind build. The `ufo_tools_blocks_load_tailwind` filter (`bool $load, string $mode`) overrides the decision.
+
+To build the classes in your theme, add the following directives to your theme's CSS entry point so Tailwind scans the plugin's source files and includes all required utility classes in the build:
 
 ```css
 /**
@@ -230,7 +235,7 @@ ufo-tools-blocks/
 
 ## Compatibility
 
-- WordPress 6.1+
+- WordPress 6.6+
 - PHP 7.4+
 - Modern browsers (Chrome, Firefox, Safari, Edge)
 

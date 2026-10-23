@@ -9,6 +9,11 @@
  *   $block       (WP_Block)
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 $level          = (int) ( $attributes['level']          ?? 3 );
 $title_align    = $attributes['titleAlignment']          ?? 'left';
 $text_color     = $attributes['textColor']               ?? '';
