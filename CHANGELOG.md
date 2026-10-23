@@ -7,6 +7,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+- **Precompiled Tailwind CSS stylesheet** `build/tailwind/blocks.css` (≈ 13 KB, 3 KB gzipped): the utilities used by the blocks, without preflight, so the blocks also work with themes that don't run Tailwind. Built by `npm run build` (`build:css`, Tailwind CLI 4.2.2). Never loaded from a CDN.
+  - New page **Settings > Ufo Tools Blocks**: *Automatique* (default; loaded unless the theme provides Tailwind: `add_theme_support( 'ufo-tools-blocks-tailwind' )` or a `style.css` compiled by Tailwind), *Toujours*, *Jamais*. Filter `ufo_tools_blocks_load_tailwind`. Themes based on ufo-boilerplate are detected: nothing changes on existing sites.
+- `readme.txt` for WordPress.org, `uninstall.php` (deletes the setting), translation template `languages/ufo-tools-blocks.pot`.
+- `npm run plugin-zip:wporg`: zip for WordPress.org, without the GitHub updater and the `Update URI` header (not allowed there).
+
 ### Changed
 - **`ufo-grid` / `ufo-row` editor rebuilt on the model of core Columns / Column** (Gutenberg 24.2). Editor only: `save()` is unchanged, existing content stays valid.
   - An empty grid shows a layout picker (100, 50/50, 33/66, 66/33, 33/33/33, 25/50/25, 4 × 25, and a "Mosaïque" layout with one large cell over two rows).
@@ -21,6 +27,11 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `ufo-grid` editor: the column guides never showed (wrong selector, `--ufo-cols` never set); they now follow the real column and gap widths.
 - `ufo-grid` editor stylesheet changed the label style of every block's inspector and the icon color of every block card.
 - Editor-only padding, borders and minimum height no longer distort the grid and cells: the editor shows the front-end layout.
+- Plugin Check: direct access protection (`ABSPATH`) in `render.php` files and in the generated icon helper; hidden files, `.github/` and Markdown docs excluded from the zip.
+- Plugin header: license URI (pointed to the agency website), description typo; `Requires at least` raised to 6.6 (the grid uses block.json `allowedBlocks`).
+
+### Removed
+- `src/ufo-button/icon-svgs.php` (never loaded) and the outdated `languages/tailwind-columns-block.pot`.
 
 ## [1.0.0] - 2026-10-23
 

@@ -2,13 +2,15 @@
 
 /**
  * Plugin Name:       Ufo Tools Blocks
- * Description:       A set of Gutemberg blocks using Tailwind CSS in WordPress class.
- * Requires at least: 6.1
+ * Plugin URI:        https://github.com/Vince-ALIEN/ufo-tools-blocks
+ * Description:       Grid, FAQ, button, title and icon blocks styled with Tailwind CSS classes.
+ * Requires at least: 6.6
  * Requires PHP:      7.4
  * Version:           1.0.0
- * Author:            Vincent LASSERRE
+ * Author:            Ufo Agency
+ * Author URI:        https://www.ufo-agency.com/
  * License:           GPL-2.0-or-later
- * License URI:       https://www.ufo-agency.com/
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       ufo-tools-blocks
  * Update URI:        https://github.com/Vince-ALIEN/ufo-tools-blocks
  *
@@ -42,14 +44,22 @@ if (in_array(UFO_TOOLS_BLOCKS_PREDECESSOR, (array) get_option('active_plugins', 
 }
 
 require_once plugin_dir_path(__FILE__) . 'includes/ufo-faq-schema.php';
-require_once plugin_dir_path(__FILE__) . 'includes/class-ufo-tools-blocks-updater.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-ufo-tools-blocks-tailwind.php';
+
+(new Ufo_Tools_Blocks_Tailwind(__FILE__))->register_hooks();
 
 // Mises à jour depuis les releases GitHub (hors is_admin() : la
-// vérification des mises à jour tourne aussi en cron).
-add_action('plugins_loaded', function () {
-    $updater = new Ufo_Tools_Blocks_Updater(plugin_basename(__FILE__), plugin_dir_path(__FILE__));
-    $updater->register_hooks();
-});
+// vérification des mises à jour tourne aussi en cron). L'updater est retiré
+// du zip WordPress.org (scripts/build-wporg-zip.sh), où les mises à jour
+// passent par WordPress.org.
+if (file_exists(plugin_dir_path(__FILE__) . 'includes/class-ufo-tools-blocks-updater.php')) {
+    require_once plugin_dir_path(__FILE__) . 'includes/class-ufo-tools-blocks-updater.php';
+
+    add_action('plugins_loaded', function () {
+        $updater = new Ufo_Tools_Blocks_Updater(plugin_basename(__FILE__), plugin_dir_path(__FILE__));
+        $updater->register_hooks();
+    });
+}
 
 // Helper SVG pour le rendu dynamique du bloc button
 if ( file_exists( __DIR__ . '/includes/ufo-tools-blocks-icons.php' ) ) {

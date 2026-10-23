@@ -1,7 +1,8 @@
 # Publie une release GitHub avec le zip du plugin à chaque tag vX.Y.Z.
 # L'updater du plugin (includes/class-ufo-tools-blocks-updater.php) installe cet
 # asset ufo-tools-blocks.zip : build/ n'étant pas versionné, l'archive source de
-# GitHub ne serait pas installable.
+# GitHub ne serait pas installable. ufo-tools-blocks-wporg.zip (sans updater) est
+# la version à soumettre sur WordPress.org.
 name: Release
 
 on:
@@ -36,6 +37,7 @@ jobs:
           npm ci
           npm run build
           npm run plugin-zip
+          npm run plugin-zip:wporg
 
       - name: Contrôle du zip
         run: |
@@ -43,10 +45,17 @@ jobs:
           grep -q ' ufo-tools-blocks/ufo-tools-blocks.php$' files.txt
           grep -q ' ufo-tools-blocks/includes/class-ufo-tools-blocks-updater.php$' files.txt
           grep -q ' ufo-tools-blocks/build/ufo-grid/block.json$' files.txt
+          grep -q ' ufo-tools-blocks/build/tailwind/blocks.css$' files.txt
+          unzip -l ufo-tools-blocks-wporg.zip > wporg-files.txt
+          grep -q ' ufo-tools-blocks/readme.txt$' wporg-files.txt
+          if grep -q 'class-ufo-tools-blocks-updater.php' wporg-files.txt; then
+            echo "::error::L'updater est présent dans ufo-tools-blocks-wporg.zip"
+            exit 1
+          fi
 
       - name: Publication
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           awk '/^## \[/{n++} n==1' CHANGELOG.md | tail -n +2 > notes.md
-          gh release create "$GITHUB_REF_NAME" ufo-tools-blocks.zip --title "$GITHUB_REF_NAME" --notes-file notes.md
+          gh release create "$GITHUB_REF_NAME" ufo-tools-blocks.zip ufo-tools-blocks-wporg.zip --title "$GITHUB_REF_NAME" --notes-file notes.md

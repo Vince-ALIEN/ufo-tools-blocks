@@ -15,3 +15,8 @@ src/
 vendor/
 webpack.config.js
 *.md
+.github/
+.eslintrc.json
+.DS_Store
+dist/
+*.zip

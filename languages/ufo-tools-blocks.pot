@@ -1,0 +1,700 @@
+# Copyright (C) 2026 Ufo Agency
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Ufo Tools Blocks 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ufo-tools-blocks\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-23T11:54:03+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: ufo-tools-blocks\n"
+
+#. Plugin Name of the plugin
+#: ufo-tools-blocks.php
+#: includes/class-ufo-tools-blocks-tailwind.php:150
+#: includes/class-ufo-tools-blocks-tailwind.php:151
+msgid "Ufo Tools Blocks"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: ufo-tools-blocks.php
+msgid "https://github.com/Vince-ALIEN/ufo-tools-blocks"
+msgstr ""
+
+#. Description of the plugin
+#: ufo-tools-blocks.php
+msgid "Grid, FAQ, button, title and icon blocks styled with Tailwind CSS classes."
+msgstr ""
+
+#. Author of the plugin
+#: ufo-tools-blocks.php
+msgid "Ufo Agency"
+msgstr ""
+
+#. Author URI of the plugin
+#: ufo-tools-blocks.php
+msgid "https://www.ufo-agency.com/"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:130
+msgid "Styles des blocs"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:137
+msgid "Styles Tailwind CSS"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:164
+msgid "Réglages"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:189
+msgid "Les blocs utilisent des classes Tailwind CSS. Si votre thème compile déjà Tailwind en incluant les classes de ce plugin, inutile de charger une seconde feuille de style."
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:195
+msgid "Automatique : charger les styles du plugin sauf si le thème fournit déjà Tailwind CSS"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:196
+msgid "Toujours charger les styles du plugin"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:197
+msgid "Ne jamais charger les styles du plugin (le thème compile les classes)"
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:215
+msgid "Thème actif : Tailwind CSS détecté."
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:216
+msgid "Thème actif : Tailwind CSS non détecté."
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:223
+msgid "Les styles du plugin sont chargés."
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-tailwind.php:224
+msgid "Les styles du plugin ne sont pas chargés."
+msgstr ""
+
+#: includes/class-ufo-tools-blocks-updater.php:100
+msgid "Voir la release sur GitHub"
+msgstr ""
+
+#: src/ufo-button/render.php:47
+msgid "(nouvel onglet)"
+msgstr ""
+
+#: ufo-tools-blocks.php:39
+msgid "Ufo Tools Blocks remplace Ufo Blocks : désactivez et supprimez Ufo Blocks pour que les blocs soient fournis par Ufo Tools Blocks."
+msgstr ""
+
+#: ufo-tools-blocks.php:90
+msgid "UFO Blocks"
+msgstr ""
+
+#: src/shared/controls.js:128
+#: src/ufo-row/inspector.js:39
+msgid "Auto (par défaut)"
+msgstr ""
+
+#: src/shared/controls.js:156
+msgid "Aucun"
+msgstr ""
+
+#: src/shared/controls.js:157
+msgid "SM (4px)"
+msgstr ""
+
+#: src/shared/controls.js:158
+msgid "MD (6px)"
+msgstr ""
+
+#: src/shared/controls.js:159
+msgid "LG (8px)"
+msgstr ""
+
+#: src/shared/controls.js:160
+msgid "XL (12px)"
+msgstr ""
+
+#: src/shared/controls.js:161
+msgid "2XL (16px)"
+msgstr ""
+
+#: src/shared/controls.js:162
+msgid "3XL (24px)"
+msgstr ""
+
+#: src/shared/controls.js:169
+#: src/ufo-grid/inspector.js:243
+#: src/ufo-row/inspector.js:244
+msgid "Arrondi des coins"
+msgstr ""
+
+#: src/shared/controls.js:173
+msgid "Classes Tailwind rounded-*"
+msgstr ""
+
+#: src/shared/controls.js:199
+msgid "Remplacer l'image"
+msgstr ""
+
+#: src/shared/controls.js:217
+msgid "Remplacer"
+msgstr ""
+
+#: src/shared/controls.js:218
+msgid "Choisir un média"
+msgstr ""
+
+#: src/shared/controls.js:229
+msgid "Supprimer"
+msgstr ""
+
+#: src/shared/controls.js:255
+msgid "Image et vidéo de fond"
+msgstr ""
+
+#: src/shared/controls.js:262
+#: src/shared/controls.js:267
+msgid "Image"
+msgstr ""
+
+#: src/shared/controls.js:282
+msgid "Taille"
+msgstr ""
+
+#: src/shared/controls.js:287
+msgid "Couvrir"
+msgstr ""
+
+#: src/shared/controls.js:288
+msgid "Contenir"
+msgstr ""
+
+#: src/shared/controls.js:289
+msgid "Auto"
+msgstr ""
+
+#: src/shared/controls.js:293
+msgid "Position"
+msgstr ""
+
+#: src/ufo-button/edit.js:57
+msgid "Modifier le lien"
+msgstr ""
+
+#: src/ufo-button/edit.js:58
+msgid "Ajouter un lien"
+msgstr ""
+
+#: src/ufo-button/edit.js:84
+msgid "Ouvrir dans un nouvel onglet"
+msgstr ""
+
+#: src/ufo-button/edit.js:98
+msgid "Supprimer le lien"
+msgstr ""
+
+#: src/ufo-button/edit.js:106
+#: src/ufo-icon/edit.js:35
+#: src/ufo-title/edit.js:78
+msgid "Icône"
+msgstr ""
+
+#: src/ufo-button/edit.js:107
+#: src/ufo-icon/edit.js:36
+#: src/ufo-title/edit.js:79
+msgid "Choisir une icône"
+msgstr ""
+
+#: src/ufo-button/edit.js:112
+#: src/ufo-button/edit.js:113
+#: src/ufo-icon/edit.js:41
+#: src/ufo-icon/edit.js:42
+#: src/ufo-title/edit.js:86
+#: src/ufo-title/edit.js:87
+msgid "Aucune icône"
+msgstr ""
+
+#: src/ufo-button/edit.js:137
+msgid "Position de l'icône"
+msgstr ""
+
+#: src/ufo-button/edit.js:144
+msgid "Gauche"
+msgstr ""
+
+#: src/ufo-button/edit.js:145
+msgid "Droite"
+msgstr ""
+
+#: src/ufo-button/edit.js:150
+#: src/ufo-row/inspector.js:127
+msgid "Disposition"
+msgstr ""
+
+#: src/ufo-button/edit.js:152
+msgid "Pleine largeur"
+msgstr ""
+
+#: src/ufo-button/edit.js:153
+msgid "Le bouton occupe toute la largeur disponible (w-full)"
+msgstr ""
+
+#: src/ufo-button/edit.js:159
+msgid "Lien et accessibilité"
+msgstr ""
+
+#: src/ufo-button/edit.js:161
+msgid "Ajouter nofollow"
+msgstr ""
+
+#: src/ufo-button/edit.js:166
+msgid "Texte pour lecteurs d'écran"
+msgstr ""
+
+#: src/ufo-button/edit.js:167
+msgid "Lu après le texte du bouton, invisible à l'écran. Précise un libellé vague (ex. « En savoir plus » → « sur nos horaires »). « (nouvel onglet) » est ajouté automatiquement si le lien s'ouvre dans un nouvel onglet."
+msgstr ""
+
+#: src/ufo-button/edit.js:186
+msgid "Texte du bouton..."
+msgstr ""
+
+#: src/ufo-buttons-group/edit.js:27
+msgid "Aligner à gauche"
+msgstr ""
+
+#: src/ufo-buttons-group/edit.js:33
+msgid "Centrer"
+msgstr ""
+
+#: src/ufo-buttons-group/edit.js:39
+msgid "Aligner à droite"
+msgstr ""
+
+#: src/ufo-faq-item/edit.js:31
+msgid "Entrez la question ici..."
+msgstr ""
+
+#: src/ufo-faq/edit.js:28
+msgid "Paramètres du Schema"
+msgstr ""
+
+#: src/ufo-faq/edit.js:30
+msgid "Activer les données structurées"
+msgstr ""
+
+#: src/ufo-faq/edit.js:33
+msgid "Activez pour générer le balisage schema.org."
+msgstr ""
+
+#: src/ufo-faq/edit.js:38
+msgid "Nom du Schema"
+msgstr ""
+
+#: src/ufo-faq/edit.js:41
+msgid "Ex: FAQ Référencement SEO"
+msgstr ""
+
+#: src/ufo-faq/edit.js:44
+msgid "Description du Schema"
+msgstr ""
+
+#: src/ufo-faq/edit.js:47
+msgid "Ex: Questions spécialisées sur le référencement naturel"
+msgstr ""
+
+#: src/ufo-faq/edit.js:50
+msgid "Sujet du Schema"
+msgstr ""
+
+#: src/ufo-faq/edit.js:53
+msgid "Ex: SEO"
+msgstr ""
+
+#: src/ufo-grid/edit.js:110
+msgid "Ajouter une cellule"
+msgstr ""
+
+#: src/ufo-grid/edit.js:123
+msgid "Sélectionner la grille"
+msgstr ""
+
+#: src/ufo-grid/edit.js:125
+#: src/ufo-grid/inspector.js:66
+msgid "Grille"
+msgstr ""
+
+#: src/ufo-grid/edit.js:164
+msgid "Choisissez une disposition de départ :"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:28
+#: src/ufo-row/inspector.js:27
+msgid "100 %"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:29
+#: src/ufo-row/inspector.js:28
+#: src/ufo-row/inspector.js:33
+msgid "Écran (100vh)"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:73
+#: src/ufo-grid/inspector.js:80
+msgid "Colonnes"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:85
+msgid "À partir de la largeur md. En dessous, les cellules s'empilent."
+msgstr ""
+
+#: src/ufo-grid/inspector.js:94
+msgid "Espacement"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:99
+msgid "Espacement entre les cellules"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:109
+#: src/ufo-grid/inspector.js:115
+msgid "Lignes"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:122
+msgid "Nombre de lignes fixe."
+msgstr ""
+
+#: src/ufo-grid/inspector.js:123
+msgid "0 : autant de lignes que nécessaire."
+msgstr ""
+
+#: src/ufo-grid/inspector.js:130
+#: src/ufo-grid/inspector.js:136
+msgid "Lignes de hauteur égale"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:144
+msgid "Inverser sur mobile"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:150
+msgid "Inverser l'ordre sur mobile"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:158
+#: src/ufo-row/inspector.js:177
+msgid "Dimensions (Tailwind)"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:165
+#: src/ufo-grid/inspector.js:170
+msgid "Hauteur"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:179
+msgid "Conteneur centré"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:185
+msgid "Conteneur centré (max-w-content)"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:193
+#: src/ufo-row/inspector.js:211
+msgid "Marges internes"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:198
+#: src/ufo-row/inspector.js:216
+msgid "Marge interne horizontale"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:203
+#: src/ufo-row/inspector.js:221
+msgid "Marge interne verticale"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:220
+#: src/ufo-grid/inspector.js:224
+msgid "Vidéo"
+msgstr ""
+
+#: src/ufo-grid/inspector.js:236
+#: src/ufo-row/inspector.js:237
+msgid "Arrondi (Tailwind)"
+msgstr ""
+
+#: src/ufo-grid/variations.js:41
+msgid "100"
+msgstr ""
+
+#: src/ufo-grid/variations.js:42
+msgid "Une colonne"
+msgstr ""
+
+#: src/ufo-grid/variations.js:50
+msgid "50 / 50"
+msgstr ""
+
+#: src/ufo-grid/variations.js:51
+msgid "Deux colonnes égales"
+msgstr ""
+
+#: src/ufo-grid/variations.js:60
+msgid "33 / 66"
+msgstr ""
+
+#: src/ufo-grid/variations.js:61
+msgid "Deux colonnes : un tiers, deux tiers"
+msgstr ""
+
+#: src/ufo-grid/variations.js:69
+msgid "66 / 33"
+msgstr ""
+
+#: src/ufo-grid/variations.js:70
+msgid "Deux colonnes : deux tiers, un tiers"
+msgstr ""
+
+#: src/ufo-grid/variations.js:78
+msgid "33 / 33 / 33"
+msgstr ""
+
+#: src/ufo-grid/variations.js:79
+msgid "Trois colonnes égales"
+msgstr ""
+
+#: src/ufo-grid/variations.js:87
+msgid "25 / 50 / 25"
+msgstr ""
+
+#: src/ufo-grid/variations.js:88
+msgid "Trois colonnes, centrale plus large"
+msgstr ""
+
+#: src/ufo-grid/variations.js:96
+msgid "25 / 25 / 25 / 25"
+msgstr ""
+
+#: src/ufo-grid/variations.js:97
+msgid "Quatre colonnes égales"
+msgstr ""
+
+#: src/ufo-grid/variations.js:105
+msgid "Mosaïque"
+msgstr ""
+
+#: src/ufo-grid/variations.js:106
+msgid "Une grande cellule sur deux lignes et deux petites"
+msgstr ""
+
+#: src/ufo-icon/edit.js:68
+msgid "Taille (px)"
+msgstr ""
+
+#: src/ufo-icon/edit.js:92
+msgid "← Choisir une icône"
+msgstr ""
+
+#. translators: 1: libellé du bloc, 2: position de la cellule, 3: nombre de cellules
+#: src/ufo-row/edit.js:52
+#, js-format
+msgid "%1$s (%2$d sur %3$d)"
+msgstr ""
+
+#: src/ufo-row/inspector.js:50
+msgid "Colonne de départ"
+msgstr ""
+
+#: src/ufo-row/inspector.js:55
+msgid "Colonne de fin"
+msgstr ""
+
+#: src/ufo-row/inspector.js:60
+msgid "Ligne de départ"
+msgstr ""
+
+#: src/ufo-row/inspector.js:65
+msgid "Ligne de fin"
+msgstr ""
+
+#: src/ufo-row/inspector.js:123
+msgid "Modifier la grille"
+msgstr ""
+
+#: src/ufo-row/inspector.js:134
+msgid "Largeur"
+msgstr ""
+
+#: src/ufo-row/inspector.js:139
+msgid "Largeur (colonnes)"
+msgstr ""
+
+#: src/ufo-row/inspector.js:142
+msgid "Nombre de colonnes de la grille occupées par la cellule."
+msgstr ""
+
+#: src/ufo-row/inspector.js:149
+#: src/ufo-row/inspector.js:154
+msgid "Hauteur (lignes)"
+msgstr ""
+
+#: src/ufo-row/inspector.js:157
+msgid "Nombre de lignes de la grille occupées par la cellule."
+msgstr ""
+
+#: src/ufo-row/inspector.js:184
+#: src/ufo-row/inspector.js:189
+msgid "Hauteur minimale"
+msgstr ""
+
+#: src/ufo-row/inspector.js:198
+#: src/ufo-row/inspector.js:202
+msgid "Hauteur fixe"
+msgstr ""
+
+#: src/ufo-title/edit.js:114
+msgid "Couleurs"
+msgstr ""
+
+#: src/ufo-title/edit.js:119
+msgid "Couleur du texte"
+msgstr ""
+
+#: src/ufo-title/edit.js:124
+msgid "Couleur de l'icône"
+msgstr ""
+
+#: src/ufo-title/edit.js:143
+msgid "Votre titre..."
+msgstr ""
+
+#: src/ufo-button/block.json
+msgctxt "block title"
+msgid "UFO Button"
+msgstr ""
+
+#: src/ufo-button/block.json
+msgctxt "block description"
+msgid "Un bouton personnalisable avec styles Tailwind css et icônes Lucide"
+msgstr ""
+
+#: src/ufo-buttons-group/block.json
+msgctxt "block title"
+msgid "ufo Buttons"
+msgstr ""
+
+#: src/ufo-buttons-group/block.json
+msgctxt "block description"
+msgid "Un conteneur pour regrouper plusieurs boutons avec alignement"
+msgstr ""
+
+#: src/ufo-faq-item/block.json
+msgctxt "block title"
+msgid "ufo FAQ Item"
+msgstr ""
+
+#: src/ufo-faq-item/block.json
+msgctxt "block description"
+msgid "Élément FAQ avec question et réponse en InnerBlocks."
+msgstr ""
+
+#: src/ufo-faq/block.json
+msgctxt "block title"
+msgid "ufo FAQ"
+msgstr ""
+
+#: src/ufo-faq/block.json
+msgctxt "block description"
+msgid "Un bloc FAQ avec accordéon et données structurées personnalisables pour le SEO."
+msgstr ""
+
+#: src/ufo-grid/block.json
+msgctxt "block title"
+msgid "ufo Grid"
+msgstr ""
+
+#: src/ufo-grid/block.json
+msgctxt "block description"
+msgid "Système de grille responsive utilisant Tailwind CSS"
+msgstr ""
+
+#: src/ufo-grid/block.json
+msgctxt "block keyword"
+msgid "grid"
+msgstr ""
+
+#: src/ufo-grid/block.json
+#: src/ufo-row/block.json
+msgctxt "block keyword"
+msgid "layout"
+msgstr ""
+
+#: src/ufo-grid/block.json
+msgctxt "block keyword"
+msgid "columns"
+msgstr ""
+
+#: src/ufo-grid/block.json
+msgctxt "block keyword"
+msgid "tailwind"
+msgstr ""
+
+#: src/ufo-grid/block.json
+#: src/ufo-row/block.json
+msgctxt "block keyword"
+msgid "ufo"
+msgstr ""
+
+#: src/ufo-icon/block.json
+msgctxt "block title"
+msgid "UFO Icon"
+msgstr ""
+
+#: src/ufo-icon/block.json
+msgctxt "block description"
+msgid "Affiche une icône Lucide avec alignement et couleur du thème."
+msgstr ""
+
+#: src/ufo-row/block.json
+msgctxt "block title"
+msgid "ufo Row"
+msgstr ""
+
+#: src/ufo-row/block.json
+msgctxt "block description"
+msgid "Élément de grille pour le système ufo Grid"
+msgstr ""
+
+#: src/ufo-row/block.json
+msgctxt "block keyword"
+msgid "row"
+msgstr ""
+
+#: src/ufo-row/block.json
+msgctxt "block keyword"
+msgid "column"
+msgstr ""
+
+#: src/ufo-title/block.json
+msgctxt "block title"
+msgid "Ufo title"
+msgstr ""
+
+#: src/ufo-title/block.json
+msgctxt "block description"
+msgid "Un titre avec icône et fond arrondi."
+msgstr ""
