@@ -21,6 +21,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `ufo-grid` editor: the column guides never showed (wrong selector, `--ufo-cols` never set); they now follow the real column and gap widths.
 - `ufo-grid` editor stylesheet changed the label style of every block's inspector and the icon color of every block card.
 - Editor-only padding, borders and minimum height no longer distort the grid and cells: the editor shows the front-end layout.
+- `ufo-grid` editor: the grid could hardly be seen or selected, its cells covering it entirely. In the editor only, the grid now has a light purple background, a purple outline (solid when selected), an always visible « Grille X col · gap Y » label and its own space (32 px top, 12 px bottom, left and right); clicking that space or the label selects the grid. Cells show as white cards with a grey outline. Column guides sit under the cells. The front end is unchanged.
 
 ## [1.0.0] - 2026-10-23
 
