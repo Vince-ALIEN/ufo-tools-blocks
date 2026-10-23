@@ -1,119 +1,126 @@
 /* =========================================================================
    ufo-grid — Styles d'édition Gutenberg
+   Rien ici ne modifie la mise en page : l'éditeur montre la grille telle
+   qu'elle s'affiche sur le site. Repères (contours, guides de colonnes,
+   badges) visibles seulement quand la grille ou une cellule est sélectionnée.
    ========================================================================= */
 
-/* -------------------------------------------------------------------------
-   1. Variables locales (faciles à surcharger par thème enfant)
-   ------------------------------------------------------------------------- */
 .editor-styles-wrapper {
-    --ufo-color-accent: #c084fc;
-    --ufo-color-accent-strong: #7c3aed;
-    --ufo-color-grid-bg: rgba(124, 58, 237, 0.04);
-    --ufo-color-grid-border: rgba(124, 58, 237, 0.25);
-    --ufo-color-row-bg: rgba(0, 0, 0, 0.015);
-    --ufo-color-row-border: rgba(0, 0, 0, 0.18);
-    --ufo-color-row-border-hover: rgba(124, 58, 237, 0.55);
-    --ufo-color-text-muted: rgba(0, 0, 0, 0.55);
-    --ufo-radius: 8px;
-    --ufo-row-min-height: 110px;
-    --ufo-badge-bg: #1f2937;
-    --ufo-badge-color: #fff;
-    --ufo-select-color-bg: rgba(124, 58, 237, 0.08);
-    --ufo-transition: 120ms ease-in-out;
+	--ufo-color-accent: #7c3aed;
+	--ufo-color-guide: rgba(124, 58, 237, 0.07);
+	--ufo-color-outline: rgba(124, 58, 237, 0.35);
+	--ufo-badge-bg: #1f2937;
+	--ufo-badge-color: #fff;
+	--ufo-transition: 120ms ease-in-out;
 }
 
-/* -------------------------------------------------------------------------
-   2. Bloc ufo-grid : conteneur
-   ------------------------------------------------------------------------- */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid {
-    position: relative;
-    padding: 14px;
-    border: 1px dashed var(--ufo-color-grid-border);
-    border-radius: var(--ufo-radius);
-    background-color: var(--ufo-color-grid-bg);
-    transition: border-color var(--ufo-transition), background-color var(--ufo-transition);
+	position: relative;
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected {
-    border-color: var(--ufo-color-accent-strong);
-    background-color: var(--ufo-select-color-bg, rgba(124, 58, 237, 0.06));
+/* Badge « Grille X col · gap Y » : bouton (éditeur seulement) qui
+   resélectionne la grille depuis une de ses cellules. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge {
+	position: absolute;
+	bottom: -10px;
+	left: 12px;
+	z-index: 3;
+	margin: 0;
+	padding: 2px 8px;
+	border: 0;
+	border-radius: 4px;
+	background: var(--ufo-badge-bg);
+	color: var(--ufo-badge-color);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.6;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-2px);
+	transition: opacity var(--ufo-transition), transform var(--ufo-transition), visibility var(--ufo-transition);
 }
 
-/* Badge "Grille X col · gap Y" en haut à gauche à la sélection */
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid::before {
-    content: "Grille " attr(data-cols) " col · gap " attr(data-gap);
-    position: absolute;
-    top: -12px;
-    left: 12px;
-    padding: 2px 8px;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.6;
-    color: var(--ufo-badge-color);
-    background: var(--ufo-badge-bg);
-    border-radius: 4px;
-    letter-spacing: 0.02em;
-    opacity: 0;
-    transform: translateY(2px);
-    transition: opacity var(--ufo-transition), transform var(--ufo-transition);
-    pointer-events: none;
-    z-index: 2;
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge:hover,
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge:focus-visible {
+	background: var(--ufo-color-accent);
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid:hover::before {
-    opacity: 1;
-    transform: translateY(0);
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .ufo-grid__badge,
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .ufo-grid__badge {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
 }
 
-/* -------------------------------------------------------------------------
-   3. Lignes de grille visibles (matérialisation des colonnes)
-   ------------------------------------------------------------------------- */
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-inner-blocks > .block-editor-block-list__layout {
-    position: relative;
+/* Guides de colonnes : bandes de la largeur réelle des colonnes, gap compris
+   (gap-N de Tailwind = N × --spacing). La grille n'a plusieurs colonnes
+   qu'à partir de md. */
+@media (min-width: 768px) {
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout {
+		position: relative;
+	}
+
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout::before {
+		--ufo-gap-size: calc(var(--spacing, 0.25rem) * var(--ufo-gap, 4));
+		--ufo-col-size: calc((100% - (var(--ufo-cols, 2) - 1) * var(--ufo-gap-size)) / var(--ufo-cols, 2));
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background-image: repeating-linear-gradient(
+			to right,
+			var(--ufo-color-guide) 0,
+			var(--ufo-color-guide) var(--ufo-col-size),
+			transparent var(--ufo-col-size),
+			transparent calc(var(--ufo-col-size) + var(--ufo-gap-size))
+		);
+		opacity: 0;
+		transition: opacity var(--ufo-transition);
+		pointer-events: none;
+	}
+
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .block-editor-block-list__layout::before,
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .block-editor-block-list__layout::before {
+		opacity: 1;
+	}
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-cols="2"] > .block-editor-inner-blocks > .block-editor-block-list__layout::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-cols="3"] > .block-editor-inner-blocks > .block-editor-block-list__layout::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-cols="4"] > .block-editor-inner-blocks > .block-editor-block-list__layout::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-cols="6"] > .block-editor-inner-blocks > .block-editor-block-list__layout::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: linear-gradient(
-        to right,
-        transparent calc((100% / var(--ufo-cols, 2)) - 1px),
-        var(--ufo-color-grid-border) calc((100% / var(--ufo-cols, 2)) - 1px),
-        var(--ufo-color-grid-border) calc(100% / var(--ufo-cols, 2)),
-        transparent calc(100% / var(--ufo-cols, 2))
-    );
-    background-size: calc(100% / var(--ufo-cols, 2)) 100%;
-    opacity: 0;
-    transition: opacity var(--ufo-transition);
+/* Contour des cellules quand la grille est sélectionnée (outline : ne
+   change pas les dimensions). */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected),
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected):not(.has-child-selected) {
+	outline: 1px dashed var(--ufo-color-outline);
+	outline-offset: -1px;
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .block-editor-inner-blocks > .block-editor-block-list__layout::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .block-editor-inner-blocks > .block-editor-block-list__layout::before {
-    opacity: 0.5;
+/* Inspecteur : aperçu des médias d'arrière-plan (ufo-grid et ufo-row). */
+.ufo-media-control__preview {
+	display: block;
+	width: 100%;
+	margin: 0 0 8px;
+	padding: 0;
+	border: 0;
+	border-radius: 2px;
+	background: none;
+	cursor: pointer;
 }
 
-/* -------------------------------------------------------------------------
-   5. Sidebar (InspectorControls) : raffinements visuels
-   ------------------------------------------------------------------------- */
-.block-editor-block-inspector .components-base-control__label {
-    text-transform: none;
-    font-weight: 600;
-    font-size: 12px;
-    color: #1f2937;
+.ufo-media-control__preview img {
+	display: block;
+	width: 100%;
+	max-height: 140px;
+	object-fit: cover;
+	border-radius: 2px;
 }
 
-.block-editor-block-inspector .components-panel__body[data-ufo-panel] .components-base-control {
-    margin-bottom: 16px;
+.ufo-media-control__filename {
+	margin: 0 0 8px;
+	word-break: break-all;
 }
 
-.block-editor-block-card .block-editor-block-icon svg {
-    fill: var(--ufo-color-accent-strong, #7c3aed);
+.ufo-media-control__size {
+	margin-top: 16px;
 }

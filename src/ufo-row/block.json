@@ -8,6 +8,7 @@
   "icon": "PanelLeftDashed",
   "description": "Élément de grille pour le système ufo Grid",
   "parent": ["ufo-blocks/ufo-grid"],
+  "usesContext": ["ufo-blocks/columnsCount"],
   "keywords": ["row", "column", "layout", "ufo"],
   "textdomain": "ufo-tools-blocks",
   "attributes": {
@@ -79,6 +80,8 @@
     }
   },
   "supports": {
+    "__experimentalOnEnter": true,
+    "reusable": false,
     "html": false,
     "color": {
       "gradients": true,
