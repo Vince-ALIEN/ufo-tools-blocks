@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<ruleset name="UFO Tools Blocks">
+    <description>WordPress Coding Standards pour UFO Tools Blocks</description>
+
+    <!-- Fichiers à vérifier -->
+    <file>.</file>
+
+    <!-- Exclure certains dossiers -->
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
+
+    <!-- Arguments -->
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="sp"/> <!-- Show sniff and progress -->
+
+    <!-- Règles WordPress -->
+    <rule ref="WordPress-Core">
+        <!-- Permettre les noms de fichiers avec tirets -->
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+    </rule>
+
+    <rule ref="WordPress-Docs"/>
+
+    <!-- Espaces et indentation -->
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+    <rule ref="WordPress.WhiteSpace.PrecisionAlignment"/>
+
+    <!-- Vérifier la compatibilité PHP -->
+    <config name="testVersion" value="7.4-"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <!-- Préfixe pour les fonctions et classes -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="UfoToolsBlocks"/>
+                <element value="ufo_"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Sécurité -->
+    <rule ref="WordPress.Security"/>
+
+    <!-- Autres règles WordPress -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="ufo-tools-blocks"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

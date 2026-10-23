@@ -1,0 +1,146 @@
+# Changelog
+
+Tous les changements notables de ce projet seront documentés dans ce fichier.
+
+Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
+et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2026-10-23
+
+First release of **Ufo Tools Blocks**, successor of Ufo Blocks 1.8.0 (new repository, versioning restarts at 1.0.0). The entries below 1.0.0 are the history of Ufo Blocks.
+
+### Changed
+- **Plugin renamed `ufo-tools-blocks`** (folder, main file `ufo-tools-blocks.php`, text domain, GitHub repository `Vince-ALIEN/ufo-tools-blocks`, release asset `ufo-tools-blocks.zip`, PHP prefixes `ufo_tools_blocks_` / `Ufo_Tools_Blocks_Updater`, updater filter `ufo_tools_blocks_updater_enabled`). Block names (`ufo-blocks/*`), the `ufo-blocks` editor category and the CSS classes are unchanged, so existing content stays valid.
+  - Migration: install and activate Ufo Tools Blocks, which deactivates Ufo Blocks; then delete Ufo Blocks. Sites on Ufo Blocks 1.8.0 are not offered this version as an update (different slug and asset). While Ufo Blocks is still active, Ufo Tools Blocks loads nothing and shows an admin notice.
+  - Themes: update the Tailwind `@source` paths to `plugins/ufo-tools-blocks/src`.
+
+### Removed
+- Blocks `ufo-bento`, `ufo-time` and `ufo-logo-slider`, moved to their own plugins **ufo-tools-bento**, **ufo-tools-time** and **ufo-tools-logo-slider**. Block names (`ufo-blocks/ufo-bento`, `ufo-blocks/ufo-time`, `ufo-blocks/logo-slider`), attributes and markup are unchanged: activate the matching plugin before switching to Ufo Tools Blocks and existing content keeps working. These plugins register the « UFO Blocks » editor category when Ufo Tools Blocks is not active.
+
+## [1.8.0] - 2026-10-16
+
+### Added
+- Block `ufo-logo-slider` (`ufo-blocks/logo-slider`): infinite CSS-only logo marquee with light, dark and card variants, adjustable speed, direction, logo height and spacing. Server-rendered (`save()` returns `null`). The block name keeps its historical `logo-slider` form (no `ufo-` prefix) so that pages already using it keep working.
+  - Fixed compared to the version previously deployed outside this repository:
+    - The front-end stylesheet was never built (`block.json` pointed to a missing `style-style.css`): the logos did not scroll. It is now imported from `index.js` and served as `style-index.css`.
+    - Logos are rendered with `wp_get_attachment_image()` from their attachment ID: current URL whatever the domain, `srcset`/`sizes`, dimensions. The stored URL is only a fallback for deleted media.
+    - Seamless loop: the copy now starts exactly at half the track width (missing gap after the last logo made the loop jump).
+    - Animation, keyframes and classes prefixed `ufo-ls-` to avoid clashing with a theme `marquee` utility.
+    - Accessibility: the animation also pauses when a link receives keyboard focus; with `prefers-reduced-motion` the logos are shown as a static, wrapped row without the duplicate set.
+    - `cursor-pointer` only on linked logos.
+    - Editor: styles targeted a non-existent class (`wp-block-ufo-blocks-ufo-logo-slider`); logos can be reordered; actions use WordPress `Button` components.
+- Block `ufo-bento`: latest pages, posts or projects (`realisation` post type) in a bento grid, optionally filtered by category (`page_category`, `category`, `type_realisation`). Server-rendered; designed for 2 items (one row) or 5 (two rows), now also laid out correctly for 1, 3 and 4. Card background and bottom gradient color chosen in the block settings from the `theme.json` palette (new `backgroundColor` attribute, a palette slug, default `tertiary`); only colors with at least 4.5:1 contrast against the white text are offered, and an unknown or too light slug falls back to `tertiary`. Category badges and the focus outline use `primary`, the arrow `secondary`. Block name and attributes unchanged from the version previously deployed outside this repository.
+  - Fixed compared to the version previously deployed outside this repository:
+    - Security: `postType` limited to `page`, `post` and `realisation` (existing and publicly viewable), `postsToShow` clamped to 1–5, password-protected content excluded from the query.
+    - Excerpts ended with a literal `&hellip;` (double escaping); block markup and shortcodes are stripped before trimming.
+    - Posts without a featured image showed a broken image (`/src/img/base.webp` from the theme); no image by default now, a theme can provide one with the `ufo_bento_default_image_url` filter.
+    - Editor: a global style set `height: 100%` on every image of the editor; the "Type de réalisation" category list never showed (`type-realisation` vs `realisation`); only existing content types are offered; `postsToShow` can be set; the preview is no longer interactive (links to the content could be followed from the editor).
+    - Accessibility and contrast: the cards relied on classes from another theme (`bg-gradient-photo-card`, `text-cream`, `font-display`, `tracking-heading`) that were never generated, so the white text sat directly on the photo with no gradient, and on nothing at all without a featured image. Each card is now an `<article>` with a background and a bottom gradient in the chosen theme color. It has a single link (the title), stretched over the whole card, so the card is clickable without duplicate links. Categories are plain text instead of links hidden under the card link. A visible focus outline shows on the card. "Voir plus" is decorative and translatable, the arrow animation respects `prefers-reduced-motion`, and featured images are decorative (`alt=""`, the title is already the link text).
+    - `md:grid-rows-2` only with more than 2 items (an empty row was added below a 2-item grid).
+  - Removed compared to the version previously deployed outside this repository:
+    - `register-block.php` (never loaded): event-date meta box and creation of default terms on `admin_init`. The `enableCustomDate` attribute is kept for compatibility but no longer displays anything (no content had an event date).
+    - Empty `view.js` and SCSS boilerplate.
+
+### Changed
+- `ufo-faq-item`: the question uses `text-primary` instead of `text-violet` (a color most themes don't define), in the editor and on the front end.
+- `ufo-time`: discreet default style — static `size-1` dot (no more `animate-ping`), `text-sm/6 text-slate-500` text. These default classes are dropped as soon as a text color or font size is chosen in the editor, so the `color` / `typography` supports still apply.
+
+### Fixed
+- **README / Tailwind v4 integration**: the `h-*` safelist now lists every height offered by `ufo-grid` and `ufo-row` (`120` and `150` were missing, `9/10` matched no option), so those heights no longer disappear from the production CSS. `row-end-*` aligned on the 1-7 values the row inspector actually offers.
+- `ufo-grid`, `ufo-row`: "SM" border-radius label now reads 4px, the value of `rounded-sm` in Tailwind v4.
+- `ufo-buttons-group`: groups saved before 1.6.0 showed "This block contains unexpected or invalid content" in the editor (1.6.0 changed the saved markup without a deprecation). The 1.5.x markup and the pre-1.5.0 markup are now declared as deprecated versions and migrated on the next save. Checked on a copy of a live site: 68 groups in 33 posts, all valid again.
+
+### Notes
+- `ufo-faq-item` and `ufo-time` get a `deprecated` entry for the ≤ 1.7.0 markup: existing FAQ items and dates stay valid and switch to the new markup the next time the post is saved.
+
+## [1.7.0] - 2026-10-14
+
+### Added
+- `ufo-button`: "Texte pour lecteurs d'écran" field (`screenReaderText`, in the "Lien et accessibilité" panel) — read right after the visible label, hidden on screen. Clarifies vague labels ("En savoir plus" → "sur nos horaires") while keeping the visible text in the accessible name (WCAG 2.5.3), which an `aria-label` would replace.
+
+### Fixed
+- `ufo-button`: buttons opening in a new tab now announce "(nouvel onglet)" to screen readers. Rendered with WordPress' standard `screen-reader-text` class, so it doesn't depend on the theme's Tailwind setup.
+
+### Notes
+- Server-rendered block (`save()` returns `null`): the new attribute doesn't invalidate existing buttons.
+
+## [1.6.1] - 2026-10-06
+
+### Fixed
+- **Release workflow**: build with Node 24 to match the lockfile (npm 10 on Node 22 rejected it: "Missing: date-fns@4.4.0 from lock file"). The `v1.6.0` tag was pushed with the old workflow and has no release; 1.6.1 is the first release carrying the GitHub updater.
+
+## [1.6.0] - 2026-10-06
+
+### Added
+- **Automatic updates from GitHub**: the `Update URI: https://github.com/Vince-ALIEN/ufo-blocks` header keeps wordpress.org out of the loop (a same-named plugin published there can no longer overwrite this one), and `includes/class-ufo-blocks-updater.php` answers WordPress' `update_plugins_github.com` filter with the latest published release and its `ufo-blocks.zip` asset. Updates show up in **Dashboard → Updates** and can be auto-updated like any plugin; "View details" shows the release notes. The lookup is cached for 6 h (1 h after an error) and bypassed by "Check again". Disabled on a git working copy so a local clone is never overwritten (filter `ufo_blocks_updater_enabled`).
+- **Release workflow** (`.github/workflows/release.yml`): on every `vX.Y.Z` tag, builds the blocks, creates `ufo-blocks.zip`, checks its content and publishes the GitHub release with the matching CHANGELOG notes.
+- `ufo-button`: "Pleine largeur" toggle (`isFullWidth`); `ufo-buttons-group` stacks buttons on mobile; `ufo-grid` accepts `core/image`.
+
+### Notes
+- Sites on 1.5.1 or earlier have no updater: update them once by hand to 1.6.0.
+
+## [1.5.1] - 2026-06-23
+
+### Documentation
+- README fully translated to English
+- Added **Starter themes** section covering [_tw](https://underscoretw.com/) and [TailPress](https://tailpress.io/)
+- Removed stale reference to deleted `lcp-hero.php` from file structure
+
+## [1.5.0] - 2026-06-23
+
+### Ajouté
+- Bloc `ufo-button` : bouton personnalisable avec styles Tailwind et icônes Lucide (rendu serveur via `render.php`)
+- Bloc `ufo-buttons-group` : conteneur pour regrouper plusieurs boutons avec alignement
+- Bloc `ufo-faq` : accordéon FAQ avec données structurées Schema.org pour le SEO
+- Bloc `ufo-faq-item` : élément FAQ question/réponse (InnerBlocks), enfant de `ufo-faq`
+- Bloc `ufo-icon` : affichage d'une icône Lucide avec alignement et couleur du thème (rendu serveur)
+- Bloc `ufo-time` : élément `<time>` stylisé avec point décoratif et séparateur
+- Bloc `ufo-title` : titre avec icône et fond arrondi (rendu serveur)
+- Attribut `equalRows` (boolean, défaut `true`) sur `ufo-grid` : force des lignes de hauteur égale via `md:auto-rows-fr`
+- `src/ufo-grid/inspector.js` et `src/ufo-row/inspector.js` : panneaux de contrôles extraits de `edit.js`
+- `includes/lcp-hero.php` : optimisation LCP pour le bloc hero (fetchpriority, preload)
+- `includes/ufo-blocks-icons.php` : helpers SVG pour le rendu dynamique du bloc button
+- `includes/ufo-faq-schema.php` : génération du JSON-LD Schema.org FAQ
+- Fichier `.distignore` pour le packaging via `plugin-zip`
+
+### Modifié
+- `ufo-blocks.php` : enregistrement de tous les nouveaux blocs ; nettoyage du code de debug FAQ
+- `ufo-row` : attribut `height` pour hauteur fixe (classes `h-{24,32,…}`) en plus de `minHeight`
+- Correction du `Requires PHP` header (`7.0` → `7.4`) et du `@package` (`CreateBlock` → `UfoBlocks`)
+- Renommage `composer.json` : `ufo-agency/tailwind-columns-block` → `ufo-agency/ufo-blocks`
+- Mise à jour des préfixes PHPCS (`TailwindColumnsBlock` → `UfoBlocks`, `tailwind_columns` → `ufo_`)
+- `webpack.config.js` : ajout des points d'entrée pour tous les nouveaux blocs
+
+### Refactoré
+- Extraction de la logique de classes CSS partagée entre `edit.js` et `save.js`
+  - `src/ufo-grid/shared.js` : `getWrapperClasses()`, `getInnerClasses()`, `getWrapperStyle()`
+  - `src/ufo-row/shared.js` : `getTailwindClasses()`, `getBlockStyle()`
+  - Les 4 fichiers `edit.js`/`save.js` concernés utilisent désormais les helpers partagés
+
+## [0.1.3] - 2026-02-23
+
+### Corrigé
+- Ajout d'un guard `file_exists()` avant l'inclusion de `build/ufo-faq-frontend.asset.php`
+  pour éviter des warnings PHP fatals quand le bloc `ufo-faq` n'est pas encore compilé
+
+## [0.1.0] - 2025
+
+### Ajouté
+- Bloc `ufo-grid` : conteneur de grille CSS responsive (1 à 6+ colonnes)
+- Bloc `ufo-row` : cellule de grille avec contrôle col-span, col-start, col-end, row-span, row-start, row-end
+- Contrôle du gap entre cellules (9 niveaux)
+- Alignement vertical des cellules
+- Option pour inverser l'ordre des cellules sur mobile
+- Image de fond et vidéo de fond par bloc
+- Hauteur minimale et hauteur fixe
+- Border-radius personnalisable
+- Mode boxed (conteneur centré)
+- Padding horizontal et vertical indépendants
+- Catégorie de blocs personnalisée `ufo-blocks`
+- Internationalisation (i18n/l10n)
+- API Block v3
+
+### Sécurité
+- Échappement de toutes les sorties
+- Validation des attributs
+- Sanitization des données
