@@ -1,19 +1,22 @@
 /* =========================================================================
    ufo-grid — Styles d'édition Gutenberg
-   Rien ici ne modifie la mise en page : l'éditeur montre la grille telle
-   qu'elle s'affiche sur le site. La grille et ses cellules se distinguent par
-   des contours (outline, sans effet sur les dimensions) : la grille en violet,
-   décalé vers l'extérieur, les cellules en gris, à l'intérieur.
+   Pour distinguer la grille de ses cellules, l'éditeur (seulement) donne à
+   la grille un fond violet léger, un contour violet, une étiquette toujours
+   visible et une marge haute et basse qui lui appartient (un clic dessus la
+   sélectionne). Les cellules y apparaissent comme des cartes blanches à
+   contour gris. Le site n'a ni ces marges ni ces couleurs.
    ========================================================================= */
 
 .editor-styles-wrapper {
 	--ufo-color-accent: #7c3aed;
-	--ufo-color-guide: rgba(124, 58, 237, 0.07);
+	--ufo-color-guide: rgba(124, 58, 237, 0.1);
 	--ufo-color-outline: rgba(124, 58, 237, 0.35);
-	--ufo-color-grid-frame: rgba(124, 58, 237, 0.45);
-	--ufo-color-cell-frame: rgba(30, 30, 30, 0.2);
-	--ufo-grid-frame-offset: 6px;
-	--ufo-badge-bg: #1f2937;
+	--ufo-color-grid-frame: rgba(124, 58, 237, 0.55);
+	--ufo-color-grid-bg: rgba(124, 58, 237, 0.06);
+	--ufo-color-cell-frame: rgba(30, 30, 30, 0.25);
+	--ufo-color-cell-bg: #fff;
+	--ufo-grid-space-top: 32px;
+	--ufo-grid-space-bottom: 12px;
 	--ufo-badge-color: #fff;
 	--ufo-transition: 120ms ease-in-out;
 }
@@ -21,43 +24,43 @@
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid {
 	position: relative;
 	outline: 1px dashed var(--ufo-color-grid-frame);
-	outline-offset: var(--ufo-grid-frame-offset);
+	outline-offset: 0;
 }
 
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid:hover {
-	outline-color: var(--ufo-color-accent);
+	outline-style: solid;
 }
 
-/* Une fois la grille sélectionnée, le contour de sélection de l'éditeur
-   prend le relais. */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected {
-	outline-color: transparent;
+	outline: 2px solid var(--ufo-color-accent);
 }
 
-/* Zone de clic qui n'appartient qu'à la grille : la bande entre le bord des
-   cellules et le contour violet. Un clic dessus sélectionne la grille.
-   ::before, car l'éditeur dessine ses contours de sélection avec ::after.
-   Sans z-index : les cellules (position: relative dans l'éditeur) viennent
-   après dans le document et restent au-dessus, la bande seule reste libre. */
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid::before {
-	content: "";
-	position: absolute;
-	inset: calc(var(--ufo-grid-frame-offset) * -1);
+/* Marge haute (étiquette) et basse, et fond de la grille : sur le conteneur
+   des cellules, pour ne pas écraser les classes py-* ni le fond choisi sur la
+   grille elle-même. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout {
+	padding-top: var(--ufo-grid-space-top);
+	padding-bottom: var(--ufo-grid-space-bottom);
+	background-color: var(--ufo-color-grid-bg);
 	cursor: pointer;
 }
 
-/* Badge « Grille X col · gap Y » : bouton (éditeur seulement) qui
-   resélectionne la grille depuis une de ses cellules. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout > * {
+	cursor: auto;
+}
+
+/* Étiquette « Grille X col · gap Y », toujours visible : bouton (éditeur
+   seulement) qui sélectionne la grille, y compris depuis une cellule. */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge {
 	position: absolute;
-	bottom: -10px;
-	left: 12px;
+	top: 6px;
+	left: 8px;
 	z-index: 3;
 	margin: 0;
-	padding: 2px 8px;
+	padding: 1px 8px;
 	border: 0;
 	border-radius: 4px;
-	background: var(--ufo-badge-bg);
+	background: var(--ufo-color-grid-frame);
 	color: var(--ufo-badge-color);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 	font-size: 11px;
@@ -65,23 +68,13 @@
 	line-height: 1.6;
 	letter-spacing: 0.02em;
 	cursor: pointer;
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(-2px);
-	transition: opacity var(--ufo-transition), transform var(--ufo-transition), visibility var(--ufo-transition);
-}
-
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge:hover,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge:focus-visible {
-	background: var(--ufo-color-accent);
+	transition: background-color var(--ufo-transition);
 }
 
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid:hover > .ufo-grid__badge,
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .ufo-grid__badge,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .ufo-grid__badge {
-	opacity: 1;
-	visibility: visible;
-	transform: translateY(0);
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .ufo-grid__badge:focus-visible {
+	background: var(--ufo-color-accent);
 }
 
 /* Guides de colonnes : bandes de la largeur réelle des colonnes, gap compris
@@ -97,8 +90,10 @@
 		--ufo-col-size: calc((100% - (var(--ufo-cols, 2) - 1) * var(--ufo-gap-size)) / var(--ufo-cols, 2));
 		content: "";
 		position: absolute;
-		inset: 0;
-		z-index: 1;
+		inset: var(--ufo-grid-space-top) 0 var(--ufo-grid-space-bottom);
+		/* Sous les cellules (position: relative, plus loin dans le
+		   document) : les guides restent visibles dans les colonnes vides. */
+		z-index: 0;
 		background-image: repeating-linear-gradient(
 			to right,
 			var(--ufo-color-guide) 0,
@@ -117,10 +112,15 @@
 	}
 }
 
-/* Contour des cellules, à l'intérieur de chacune. */
+/* Cellules : cartes blanches à contour gris (fond blanc seulement si la
+   cellule n'a pas de fond choisi). */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected) {
 	outline: 1px dashed var(--ufo-color-cell-frame);
 	outline-offset: -1px;
+}
+
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.has-background):not([style*="background"]) {
+	background-color: var(--ufo-color-cell-bg);
 }
 
 /* Inspecteur : aperçu des médias d'arrière-plan (ufo-grid et ufo-row). */
