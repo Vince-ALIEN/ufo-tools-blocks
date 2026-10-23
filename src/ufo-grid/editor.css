@@ -1,14 +1,18 @@
 /* =========================================================================
    ufo-grid — Styles d'édition Gutenberg
    Rien ici ne modifie la mise en page : l'éditeur montre la grille telle
-   qu'elle s'affiche sur le site. Repères (contours, guides de colonnes,
-   badges) visibles seulement quand la grille ou une cellule est sélectionnée.
+   qu'elle s'affiche sur le site. La grille et ses cellules se distinguent par
+   des contours (outline, sans effet sur les dimensions) : la grille en violet,
+   décalé vers l'extérieur, les cellules en gris, à l'intérieur.
    ========================================================================= */
 
 .editor-styles-wrapper {
 	--ufo-color-accent: #7c3aed;
 	--ufo-color-guide: rgba(124, 58, 237, 0.07);
 	--ufo-color-outline: rgba(124, 58, 237, 0.35);
+	--ufo-color-grid-frame: rgba(124, 58, 237, 0.45);
+	--ufo-color-cell-frame: rgba(30, 30, 30, 0.2);
+	--ufo-grid-frame-offset: 6px;
 	--ufo-badge-bg: #1f2937;
 	--ufo-badge-color: #fff;
 	--ufo-transition: 120ms ease-in-out;
@@ -16,6 +20,30 @@
 
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid {
 	position: relative;
+	outline: 1px dashed var(--ufo-color-grid-frame);
+	outline-offset: var(--ufo-grid-frame-offset);
+}
+
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid:hover {
+	outline-color: var(--ufo-color-accent);
+}
+
+/* Une fois la grille sélectionnée, le contour de sélection de l'éditeur
+   prend le relais. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected {
+	outline-color: transparent;
+}
+
+/* Zone de clic qui n'appartient qu'à la grille : la bande entre le bord des
+   cellules et le contour violet. Un clic dessus sélectionne la grille.
+   ::before, car l'éditeur dessine ses contours de sélection avec ::after.
+   Sans z-index : les cellules (position: relative dans l'éditeur) viennent
+   après dans le document et restent au-dessus, la bande seule reste libre. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid::before {
+	content: "";
+	position: absolute;
+	inset: calc(var(--ufo-grid-frame-offset) * -1);
+	cursor: pointer;
 }
 
 /* Badge « Grille X col · gap Y » : bouton (éditeur seulement) qui
@@ -48,6 +76,7 @@
 	background: var(--ufo-color-accent);
 }
 
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid:hover > .ufo-grid__badge,
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .ufo-grid__badge,
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .ufo-grid__badge {
 	opacity: 1;
@@ -88,11 +117,9 @@
 	}
 }
 
-/* Contour des cellules quand la grille est sélectionnée (outline : ne
-   change pas les dimensions). */
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected),
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected):not(.has-child-selected) {
-	outline: 1px dashed var(--ufo-color-outline);
+/* Contour des cellules, à l'intérieur de chacune. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected) {
+	outline: 1px dashed var(--ufo-color-cell-frame);
 	outline-offset: -1px;
 }
 
