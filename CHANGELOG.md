@@ -5,6 +5,23 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **`ufo-grid` / `ufo-row` editor rebuilt on the model of core Columns / Column** (Gutenberg 24.2). Editor only: `save()` is unchanged, existing content stays valid.
+  - An empty grid shows a layout picker (100, 50/50, 33/66, 66/33, 33/33/33, 25/50/25, 4 × 25, and a "Mosaïque" layout with one large cell over two rows).
+  - Raising the column count adds cells until the first row is full; lowering it deletes nothing. "Ajouter une cellule" button in the grid toolbar.
+  - Settings grouped in ToolsPanels with reset and optional items (« ⋮ » menu): Grille, Dimensions (Tailwind), Image et vidéo de fond, Arrondi (Tailwind). Sliders with pixel values for gap and padding, image preview with Replace / Remove, position matrix, size toggle.
+  - Vertical alignment set on the grid is applied to its cells; aligning one cell clears the grid alignment (same as core Columns).
+  - Grid easy to reach from a cell: clickable "Grille X col · gap Y" badge and "Modifier la grille" button in the cell settings.
+  - Cells: "+" appender when empty, drop before/after a cell, screen-reader position ("ufo Row (1 sur 4)"), width slider limited to the grid column count (block context `ufo-blocks/columnsCount`).
+  - Transforms between core Columns and ufo Grid, both ways (column widths in % ↔ `col-span`).
+
+### Fixed
+- `ufo-grid` editor: the column guides never showed (wrong selector, `--ufo-cols` never set); they now follow the real column and gap widths.
+- `ufo-grid` editor stylesheet changed the label style of every block's inspector and the icon color of every block card.
+- Editor-only padding, borders and minimum height no longer distort the grid and cells: the editor shows the front-end layout.
+
 ## [1.0.0] - 2026-10-23
 
 First release of **Ufo Tools Blocks**, successor of Ufo Blocks 1.8.0 (new repository, versioning restarts at 1.0.0). The entries below 1.0.0 are the history of Ufo Blocks.

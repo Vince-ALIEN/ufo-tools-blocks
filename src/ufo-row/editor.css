@@ -1,79 +1,48 @@
 /* =========================================================================
    ufo-row — Styles d'édition Gutenberg
+   La cellule garde ses dimensions réelles ; seule une cellule vide reçoit
+   une hauteur minimale pour accueillir le bouton d'ajout de bloc.
    ========================================================================= */
 
-/* -------------------------------------------------------------------------
-   4. Bloc ufo-row : cellule
-   ------------------------------------------------------------------------- */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-row {
-  position: relative;
-  min-height: var(--ufo-row-min-height, 110px);
-  padding: 16px;
-  border: 1px dashed var(--ufo-color-row-border, rgba(0, 0, 0, 0.18));
-  border-radius: calc(var(--ufo-radius, 8px) - 2px);
-  background-color: var(--ufo-color-row-bg, rgba(0, 0, 0, 0.015));
-  transition:
-    border-color var(--ufo-transition, 120ms ease-in-out),
-    background-color var(--ufo-transition, 120ms ease-in-out),
-    box-shadow var(--ufo-transition, 120ms ease-in-out);
+	position: relative;
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row:hover {
-  border-color: var(--ufo-color-row-border-hover, rgba(124, 58, 237, 0.55));
-  background-color: rgba(124, 58, 237, 0.04);
+/* Cellule vide : bouton « + » centré, comme une colonne core vide. */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row:has(> .block-list-appender:only-child) {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 64px;
+	outline: 1px dashed var(--ufo-color-outline, rgba(124, 58, 237, 0.35));
+	outline-offset: -1px;
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row.is-selected,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row.has-child-selected {
-  border-style: solid;
-  border-color: var(--ufo-color-accent-strong, #7c3aed);
-  background-color: var(--ufo-select-color-bg, rgba(124, 58, 237, 0.08));
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
-}
-
-/* État vide */
-.editor-styles-wrapper
-  .wp-block-ufo-blocks-ufo-row:not(
-    :has(.block-editor-block-list__block)
-  )::after,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row.is-empty::after {
-  content: "Cellule vide — cliquez pour ajouter du contenu";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: var(--ufo-color-text-muted, rgba(0, 0, 0, 0.55));
-  font-style: italic;
-  pointer-events: none;
-}
-
-/* Badge "col-span X · row-span Y" en haut à droite à la sélection */
+/* Badge « col-span X · row-span Y » à la sélection */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-row::before {
-  content: "col-span " attr(data-col-span) " · row-span " attr(data-row-span);
-  position: absolute;
-  top: -10px;
-  right: 10px;
-  padding: 2px 8px;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1.6;
-  color: #fff;
-  background: var(--ufo-color-accent-strong, #7c3aed);
-  border-radius: 4px;
-  letter-spacing: 0.02em;
-  opacity: 0;
-  transform: translateY(2px);
-  transition:
-    opacity var(--ufo-transition, 120ms ease-in-out),
-    transform var(--ufo-transition, 120ms ease-in-out);
-  pointer-events: none;
-  z-index: 2;
+	content: "col-span " attr(data-col-span) " · row-span " attr(data-row-span);
+	position: absolute;
+	top: -10px;
+	right: 10px;
+	z-index: 2;
+	padding: 2px 8px;
+	border-radius: 4px;
+	background: var(--ufo-color-accent, #7c3aed);
+	color: #fff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	font-size: 10px;
+	font-weight: 600;
+	line-height: 1.6;
+	letter-spacing: 0.02em;
+	opacity: 0;
+	transform: translateY(2px);
+	transition:
+		opacity var(--ufo-transition, 120ms ease-in-out),
+		transform var(--ufo-transition, 120ms ease-in-out);
+	pointer-events: none;
 }
 
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row.is-selected::before,
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row:hover::before {
-  opacity: 1;
-  transform: translateY(0);
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-row.is-selected::before {
+	opacity: 1;
+	transform: translateY(0);
 }
