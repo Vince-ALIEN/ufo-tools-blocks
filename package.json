@@ -6,6 +6,8 @@
   "scripts": {
     "prebuild": "node scripts/generate-icon-svgs.js",
     "build": "wp-scripts build",
+    "postbuild": "npm run build:css",
+    "build:css": "tailwindcss -i src/tailwind/blocks.css -o build/tailwind/blocks.css --minify",
     "generate:icons": "node scripts/generate-icon-svgs.js",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
@@ -18,7 +20,8 @@
     "start": "wp-scripts start",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
-    "plugin-zip": "wp-scripts plugin-zip --config .distignore"
+    "plugin-zip": "wp-scripts plugin-zip --config .distignore",
+    "plugin-zip:wporg": "bash scripts/build-wporg-zip.sh"
   },
   "keywords": [
     "wordpress",
@@ -29,9 +32,11 @@
   "author": "Ufo Agency",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
     "@wordpress/scripts": "^32.0.0",
     "baseline-browser-mapping": "^2.9.19",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "tailwindcss": "^4.2.2"
   },
   "dependencies": {
     "@wordpress/block-editor": "^15.17.0",

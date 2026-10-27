@@ -119,7 +119,7 @@ final class Ufo_Tools_Blocks_Updater {
 	 * @return array|null
 	 */
 	private function get_release() {
-		$force  = is_admin() && isset( $_GET['force-check'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$force  = isset( $_GET['force-check'] ) && current_user_can( 'update_plugins' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$cached = $force ? false : get_site_transient( self::CACHE_KEY );
 
 		if ( is_array( $cached ) && array_key_exists( 'release', $cached ) ) {

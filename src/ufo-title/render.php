@@ -9,6 +9,11 @@
  *   $block       (WP_Block)
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 $level          = (int) ( $attributes['level']          ?? 3 );
 $title_align    = $attributes['titleAlignment']          ?? 'left';
 $text_color     = $attributes['textColor']               ?? '';
@@ -34,10 +39,10 @@ $tag = 'h' . max( 1, min( 6, $level ) );
 // ── Classes ───────────────────────────────────────────────────────────────────
 $align_class = 'left' === $title_align ? 'justify-start' : ( 'center' === $title_align ? 'justify-center' : 'justify-end' );
 
-$text_color_class = $text_color ? 'has-' . esc_attr( $text_color ) . '-color' : '';
+$text_color_class = $text_color ? 'has-' . sanitize_html_class( $text_color ) . '-color' : '';
 $title_classes    = trim( 'flex items-center not-prose ' . $text_color_class );
 
-$icon_color_class = $icon_bg_color ? 'has-' . esc_attr( $icon_bg_color ) . '-color' : '';
+$icon_color_class = $icon_bg_color ? 'has-' . sanitize_html_class( $icon_bg_color ) . '-color' : '';
 
 // ── Style fond icône (hex → rgba 15 %) ───────────────────────────────────────
 $icon_bg_style = '';

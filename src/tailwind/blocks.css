@@ -1,0 +1,38 @@
+/**
+ * Utilitaires Tailwind CSS v4 utilisés par les blocs, précompilés dans
+ * build/tailwind/blocks.css (npm run build:css).
+ *
+ * Chargés pour les thèmes qui ne compilent pas Tailwind eux-mêmes (réglage
+ * Réglages > Ufo Tools Blocks). Ni preflight ni styles de base : seulement les
+ * utilitaires des blocs et les variables de thème qu'ils emploient.
+ */
+@layer theme, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@source "../";
+@source not "../tailwind";
+
+/* Classes construites dynamiquement (même liste que dans le README). */
+@source inline("md:col-span-{1,2,3,4,5,6}");
+@source inline("md:col-start-{1,2,3,4,5,6,7}");
+@source inline("md:col-end-{1,2,3,4,5,6,7,8}");
+@source inline("row-span-{1,2,3,4,5,6}");
+@source inline("row-start-{1,2,3,4,5,6,7}");
+@source inline("row-end-{1,2,3,4,5,6,7}");
+@source inline("h-{24,32,40,48,56,64,72,80,96,120,150}");
+@source inline("gap-{0,1,2,3,4,5,6,7,8}");
+@source inline("md:grid-cols-{1,2,3,4,5,6}");
+@source inline("grid-rows-{1,2,3,4,5,6}");
+@source inline("px-{0,2,4,6,8,10,12,14,16}");
+@source inline("py-{0,2,4,6,8,10,12,14,16}");
+@source inline("min-h-{32,48,64,80,96,192}");
+@source inline("rounded-{sm,md,lg,xl,2xl,3xl}");
+
+/* Jetons propres aux thèmes Ufo, reliés aux réglages de theme.json. */
+@theme {
+	--color-primary: var(--wp--preset--color--primary, currentColor);
+	--container-content: var(--wp--style--global--content-size, 48rem);
+	--container-wide: var(--wp--style--global--wide-size, 80rem);
+}

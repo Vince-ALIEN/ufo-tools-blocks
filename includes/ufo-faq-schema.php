@@ -20,7 +20,7 @@ add_filter( 'render_block', function ( $block_content, $block ) {
 	}
 
 	$attrs         = $block['attrs'] ?? [];
-	$enable_schema = $attrs['enableSchema'] ?? true;
+	$enable_schema = ! isset( $attrs['enableSchema'] ) || true === $attrs['enableSchema'];
 
 	if ( ! $enable_schema ) {
 		return $block_content;
@@ -76,18 +76,17 @@ add_filter( 'render_block', function ( $block_content, $block ) {
 		'mainEntity' => $main_entity,
 	];
 
-	if ( ! empty( trim( $attrs['schemaName'] ?? '' ) ) ) {
-		$json_ld['name'] = $attrs['schemaName'];
-	}
-	if ( ! empty( trim( $attrs['schemaDescription'] ?? '' ) ) ) {
-		$json_ld['description'] = $attrs['schemaDescription'];
-	}
-	if ( ! empty( trim( $attrs['schemaAbout'] ?? '' ) ) ) {
-		$json_ld['about'] = $attrs['schemaAbout'];
+	// Champs libres : chaînes seulement, nettoyées (un tableau ferait échouer trim()).
+	foreach ( [ 'schemaName' => 'name', 'schemaDescription' => 'description', 'schemaAbout' => 'about' ] as $attr => $key ) {
+		$value = isset( $attrs[ $attr ] ) && is_string( $attrs[ $attr ] ) ? sanitize_text_field( $attrs[ $attr ] ) : '';
+		if ( '' !== $value ) {
+			$json_ld[ $key ] = $value;
+		}
 	}
 
+	// JSON_HEX_TAG : aucune chaîne ne peut fermer la balise <script>.
 	$schema_tag = '<script type="application/ld+json">'
-		. wp_json_encode( $json_ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+		. wp_json_encode( $json_ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP )
 		. '</script>' . "\n";
 
 	// Supprimer le schema incomplet produit par save.js (s'il est présent).

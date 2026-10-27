@@ -65,6 +65,10 @@ const php = `<?php
  * @package UfoToolsBlocks
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+\texit;
+}
+
 if ( ! function_exists( 'ufo_get_icon_svg' ) ) :
 \t/**
 \t * Retourne le HTML <svg> d'une icône Lucide.
