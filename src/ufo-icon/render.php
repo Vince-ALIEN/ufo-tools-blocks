@@ -37,10 +37,11 @@ $justify_map = [
 	'center' => 'center',
 	'right'  => 'flex-end',
 ];
-$justify = $justify_map[ $text_align ] ?? 'flex-start';
+$text_align = isset( $justify_map[ $text_align ] ) ? $text_align : 'left';
+$justify    = $justify_map[ $text_align ];
 
 $wrapper_attrs = get_block_wrapper_attributes( [
-	'class' => 'ufo-icon-block has-text-align-' . esc_attr( $text_align ),
+	'class' => 'ufo-icon-block has-text-align-' . $text_align,
 	'style' => 'display:flex;align-items:center;justify-content:' . $justify . ';',
 ] );
 
