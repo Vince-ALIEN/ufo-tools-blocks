@@ -1,6 +1,6 @@
 // icons.js
 // Import uniquement les icônes utilisées pour réduire la taille du bundle
-import { ArrowDownToDot, TableOfContents, StretchHorizontal, LayoutDashboard, PanelLeftDashed, RectangleHorizontal, MessageCircleQuestionMark, Link } from 'lucide-react';
+import { ArrowDownToDot, TableOfContents, StretchHorizontal, LayoutDashboard, PanelLeftDashed, RectangleHorizontal, MessageCircleQuestionMark, Link, Heading } from 'lucide-react';
 
 // Map des icônes disponibles
 const iconMap = {
@@ -12,6 +12,7 @@ const iconMap = {
     RectangleHorizontal,
     MessageCircleQuestionMark,
     Link,
+    Heading,
 };
 
 export const getBlockIcon = (iconName, options = {}) => {
