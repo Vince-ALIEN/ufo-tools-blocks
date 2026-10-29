@@ -19,6 +19,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 - `ufo-title` block icon: Lucide `Heading` with the same treatment as the other blocks (#EB9188 on #F6F6F7) instead of the plain black Dashicon.
+- `ufo-icon` block icon: the Lucide logo (not in lucide-react, drawn from the lucide-icons/lucide `logo.svg`, ISC) with the same treatment, instead of the black star.
 - `ufo-grid` editor: the column guides never showed (wrong selector, `--ufo-cols` never set); they now follow the real column and gap widths.
 - `ufo-grid` editor stylesheet changed the label style of every block's inspector and the icon color of every block card.
 - Editor-only padding, borders and minimum height no longer distort the grid and cells: the editor shows the front-end layout.

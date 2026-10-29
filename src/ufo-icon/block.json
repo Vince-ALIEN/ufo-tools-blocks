@@ -3,7 +3,7 @@
   "name": "ufo-blocks/ufo-icon",
   "title": "UFO Icon",
   "category": "ufo-blocks",
-  "icon": "star-filled",
+  "icon": "LucideLogo",
   "description": "Affiche une icône Lucide avec alignement et couleur du thème.",
   "supports": {
     "html": false,
