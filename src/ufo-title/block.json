@@ -3,7 +3,7 @@
   "name": "ufo-blocks/ufo-title",
   "title": "Ufo title",
   "category": "ufo-blocks",
-  "icon": "heading",
+  "icon": "Heading",
   "description": "Un titre avec icône et fond arrondi.",
   "supports": {
     "anchor": true,
