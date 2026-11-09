@@ -5,7 +5,7 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.1] - 2026-11-09
 
 ### Changed
 - **`ufo-grid` / `ufo-row` editor rebuilt on the model of core Columns / Column** (Gutenberg 24.2). Editor only: `save()` is unchanged, existing content stays valid.
