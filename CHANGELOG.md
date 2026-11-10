@@ -5,6 +5,11 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-11-10
+
+### Changed
+- `ufo-button` can now be inserted on its own, anywhere a block is allowed (`parent` removed from `block.json`). Until now it was only offered inside a `ufo-buttons-group`. The group still accepts it and remains the way to align several buttons on one line; a standalone button is an `inline-flex` link that takes the width of its content, or the full width with the "Pleine largeur" toggle. Server-rendered block (`save()` returns `null`): existing buttons and groups are unchanged.
+
 ## [1.0.1] - 2026-11-09
 
 ### Changed

@@ -5,7 +5,6 @@
   "category": "ufo-blocks",
   "icon": "RectangleHorizontal",
   "description": "Un bouton personnalisable avec styles Tailwind css et icônes Lucide",
-  "parent": ["ufo-blocks/ufo-buttons-group"],
   "supports": {
     "html": false,
     "anchor": true,
