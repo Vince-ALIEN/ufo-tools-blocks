@@ -5,6 +5,11 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-11-10
+
+### Added
+- `ufo-button`: third block style **Tertiary** (`is-style-tertiary`), next to Primary and Secondary. As for the other two, the plugin only registers the style; the theme gives it its look (the Ufo Agency theme renders it like Primary with a pill shape, `rounded-full`). Server-rendered block: existing buttons are unchanged.
+
 ## [1.0.2] - 2026-11-10
 
 ### Changed
