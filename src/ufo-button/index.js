@@ -16,5 +16,4 @@ registerBlockType(metadata.name, {
 registerBlockStyle(metadata.name, [
   { name: 'primary',   label: 'Primary',   isDefault: true },
   { name: 'secondary', label: 'Secondary' },
-  { name: 'tertiary',  label: 'Tertiary' },
 ]);
