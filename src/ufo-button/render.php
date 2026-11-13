@@ -26,9 +26,21 @@ if ( $opens_new_tab ) {
 if ( $rel_nofollow ) {
 	$rel_parts[] = 'nofollow';
 }
-$rel_attr    = ! empty( $rel_parts ) ? ' rel="' . esc_attr( implode( ' ', $rel_parts ) ) . '"' : '';
-$target_attr = $opens_new_tab ? ' target="_blank"' : '';
-$href        = ! empty( $button_url ) ? esc_url( $button_url ) : '#';
+// Sans URL, pas de href : un <a> sans href n'est ni focusable ni annoncé
+// comme lien (même choix que core/button). href="#" donnerait un faux lien
+// qui remonte en haut de page à Entrée. target et rel n'ont de sens qu'avec
+// une destination.
+$has_url     = '' !== trim( (string) $button_url );
+$href_attr   = $has_url ? ' href="' . esc_url( $button_url ) . '"' : '';
+$rel_attr    = $has_url && ! empty( $rel_parts ) ? ' rel="' . esc_attr( implode( ' ', $rel_parts ) ) . '"' : '';
+$target_attr = $has_url && $opens_new_tab ? ' target="_blank"' : '';
+
+// ── Nom accessible ────────────────────────────────────────────────────────────
+// Un lien sans nom (WCAG 2.4.4 / 4.1.2) n'est pas rendu : le libellé visible
+// (balises retirées) ou le texte lecteur d'écran doit être renseigné.
+if ( '' === trim( wp_strip_all_tags( $button_text ) ) && '' === $sr_text ) {
+	return;
+}
 
 // ── Texte pour lecteurs d'écran ───────────────────────────────────────────────
 // Ajouté après le libellé visible (et non en aria-label, qui le remplacerait :
@@ -38,7 +50,7 @@ $sr_parts = [];
 if ( '' !== $sr_text ) {
 	$sr_parts[] = $sr_text;
 }
-if ( $opens_new_tab ) {
+if ( $has_url && $opens_new_tab ) {
 	$sr_parts[] = __( '(nouvel onglet)', 'ufo-tools-blocks' );
 }
 // `screen-reader-text` : classe WordPress standard, stylée par tout thème.
@@ -59,12 +71,14 @@ if ( ! empty( $button_icon ) && function_exists( 'ufo_get_icon_svg' ) ) {
 
 // ── Wrapper ───────────────────────────────────────────────────────────────────
 $wrapper_attrs = get_block_wrapper_attributes( [
-	'class' => 'btn inline-flex items-center gap-2 no-underline cursor-pointer group' . ( $is_full_width ? ' w-full justify-center' : '' ),
+	'class' => 'btn inline-flex items-center gap-2 no-underline group'
+		. ( $has_url ? ' cursor-pointer' : '' )
+		. ( $is_full_width ? ' w-full justify-center' : '' ),
 ] );
 
 ?>
 <a <?php echo $wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-	href="<?php echo $href; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
+	<?php echo $href_attr;   // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php echo $target_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php echo $rel_attr;    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 >

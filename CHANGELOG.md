@@ -5,6 +5,23 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-11-13
+
+### Fixed
+- `ufo-button` without a URL: the front end no longer emits `href="#"` (a fake link, focusable, that jumped to the top of the page on Enter). As in core/button, the `<a>` is rendered without `href`, so it is neither focusable nor announced as a link; `target`, `rel` and the automatic "(nouvel onglet)" text are only emitted with a URL, and `cursor-pointer` only when there is a destination. A warning in the block inspector points out the missing link.
+- `ufo-button` without an accessible name (empty label and empty screen-reader text, e.g. an icon only) is no longer rendered on the front end: a link without a name fails WCAG 2.4.4 / 4.1.2. A warning in the block inspector explains what to fill in.
+- `ufo-button` editor: the block is edited in a `<div>` instead of a `<button>`. Firefox handles a `contenteditable` (RichText) inside a `<button>` badly (caret placement, Space key). Editor only, the front end is unchanged.
+
+### Removed
+- `ufo-button`: the **Tertiary** block style (`is-style-tertiary`) published in 1.0.3. Sites updated to 1.0.3 get 1.0.4 like the others; a button saved with that style keeps its `is-style-tertiary` class but the style is no longer offered in the editor.
+
+## [1.0.3] - 2026-11-10
+
+Published on GitHub, then reverted in `main`: its only change is removed in 1.0.4.
+
+### Added
+- `ufo-button`: third block style **Tertiary** (`is-style-tertiary`), next to Primary and Secondary. The plugin only registers the style; the theme gives it its look.
+
 ## [1.0.2] - 2026-11-10
 
 ### Changed

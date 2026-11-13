@@ -15,6 +15,7 @@ import {
   BaseControl,
   Button,
   Popover,
+  Notice,
   __experimentalToggleGroupControl as ToggleGroupControl,
   __experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon,
 } from "@wordpress/components";
@@ -40,6 +41,13 @@ function Edit({ attributes, setAttributes }) {
   const [isLinkPopoverOpen, setIsLinkPopoverOpen] = useState(false);
   const blockProps = useBlockProps();
   const IconComponent = ICONS[buttonIcon];
+
+  // Mêmes contrôles que render.php : sans URL le front rend un <a> sans href
+  // (inerte), sans nom accessible il ne rend rien.
+  const hasUrl = !!(buttonUrl && buttonUrl.trim());
+  const hasLabel =
+    !!(buttonText && buttonText.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim()) ||
+    !!(screenReaderText && screenReaderText.trim());
 
   const buttonClasses = clsx(
     "btn inline-flex items-center gap-2 no-underline group cursor-pointer",
@@ -103,6 +111,22 @@ function Edit({ attributes, setAttributes }) {
       )}
 
       <InspectorControls>
+        {!hasLabel && (
+          <Notice status="warning" isDismissible={false}>
+            {__(
+              "Bouton sans libellé : il ne sera pas affiché sur le site. Saisissez un texte, ou un texte pour lecteurs d'écran si le bouton ne porte qu'une icône.",
+              "ufo-tools-blocks"
+            )}
+          </Notice>
+        )}
+        {!hasUrl && (
+          <Notice status="warning" isDismissible={false}>
+            {__(
+              "Bouton sans lien : il sera affiché mais inactif (ni cliquable, ni atteignable au clavier). Ajoutez un lien depuis la barre d'outils.",
+              "ufo-tools-blocks"
+            )}
+          </Notice>
+        )}
         <PanelBody title={__("Icône", "ufo-tools-blocks")} initialOpen>
           <BaseControl label={__("Choisir une icône", "ufo-tools-blocks")}>
             <div className="ufo-icon-picker">
@@ -173,7 +197,8 @@ function Edit({ attributes, setAttributes }) {
         </PanelBody>
       </InspectorControls>
 
-      <button {...blockProps} className={clsx(blockProps.className, buttonClasses)}>
+      {/* div et non button : Firefox gère mal un contenteditable (RichText) dans un <button>. */}
+      <div {...blockProps} className={clsx(blockProps.className, buttonClasses)}>
         {IconComponent && iconPosition === "left" && (
           <span className="btn__icon h-4 w-4 flex items-center justify-center" aria-hidden="true">
             <IconComponent className="size-4 stroke-current" />
@@ -191,7 +216,7 @@ function Edit({ attributes, setAttributes }) {
             <IconComponent className="size-4 stroke-current" />
           </span>
         )}
-      </button>
+      </div>
     </>
   );
 }
