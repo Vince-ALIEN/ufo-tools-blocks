@@ -5,6 +5,22 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2026-11-14
+
+### Security
+- `ufo-icon`: the icon size is clamped to 12–120 px on render, the range of the editor control.
+- Release workflow split into two jobs: `build` runs `npm ci`, the tests and the build with a read-only token; `publish` alone gets `contents: write` and runs no code from the repository.
+
+### Added
+- `uninstall.php`: deletes the cached GitHub release data on uninstall. Site content is left untouched.
+- `LICENSE.txt` (GPL v2 text); the plugin header's `License URI` points to it on gnu.org.
+
+### Changed
+- `package.json`: only `clsx` and `lucide-react`, bundled into `build/`, stay in `dependencies`; the `@wordpress/*` packages (loaded from WordPress core) and build tools move to `devDependencies`. The built files are unchanged.
+
+### Removed
+- `src/ufo-button/icon-svgs.php`: unused leftover, neither loaded nor shipped.
+
 ## [1.0.6] - 2026-11-14
 
 ### Security
