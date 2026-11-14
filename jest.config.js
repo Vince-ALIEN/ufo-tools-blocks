@@ -1,13 +1,15 @@
 const path = require("path");
-const defaultConfig = require("@wordpress/scripts/config/jest-unit.config");
 
-const babelTransform = path.join(
-  path.dirname(require.resolve("@wordpress/scripts/package.json")),
-  "config/babel-transform"
-);
+// @wordpress/scripts 36+ ne fournit plus Jest ni sa configuration : le
+// préréglage publié @wordpress/jest-preset-default et babel-jest les
+// remplacent (wp-scripts test-unit-jest, docs/vitest-migration.md).
+const babelTransform = [
+  "babel-jest",
+  { presets: ["@wordpress/babel-preset-default"] },
+];
 
 module.exports = {
-  ...defaultConfig,
+  preset: "@wordpress/jest-preset-default",
   testMatch: ["<rootDir>/tests/js/**/*.test.js"],
   // De nombreuses dépendances des paquets @wordpress (uuid, marked,
   // parsel-js, @wordpress/theme…) ne sont publiées qu'en ESM (.js ou .mjs) :
@@ -21,7 +23,7 @@ module.exports = {
   // serait enveloppé dans des <div>. WordPress fournit une seule copie en
   // production (externals), ce qui ne concerne donc que les tests.
   moduleNameMapper: {
-    ...defaultConfig.moduleNameMapper,
+    ...require("@wordpress/jest-preset-default/jest-preset").moduleNameMapper,
     "^@wordpress/element$": path.dirname(
       require.resolve("@wordpress/element/package.json", {
         paths: [path.dirname(require.resolve("@wordpress/blocks/package.json"))],
