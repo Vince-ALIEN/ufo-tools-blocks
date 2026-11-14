@@ -125,8 +125,9 @@ console.log( 'ufo-grid attributes:', attributes );
 ### Code Style
 
 - PHP : WordPress Coding Standards
-- JavaScript : WordPress Coding Standards
-- CSS : classes utilitaires Tailwind
+- JavaScript : WordPress Coding Standards (wp-prettier, `npm run format`)
+- CSS : WordPress Coding Standards (stylelint) et classes utilitaires Tailwind
+- Réglage de chaque ordinateur : voir [CONTRIBUTING.md](CONTRIBUTING.md#réglage-de-chaque-ordinateur)
 
 ### Workflow Git
 
