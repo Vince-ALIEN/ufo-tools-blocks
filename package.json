@@ -17,10 +17,11 @@
     "packages-update": "wp-scripts packages-update",
     "start": "wp-scripts start",
     "test:e2e": "wp-scripts test-e2e",
-    "test": "npm run test:unit && npm run test:php",
+    "test": "npm run check:style && npm run test:unit && npm run test:php",
     "test:unit": "wp-scripts test-unit-jest",
     "test:php": "php tests/php/test-faq-schema.php",
-    "plugin-zip": "wp-scripts plugin-zip --config .distignore"
+    "plugin-zip": "wp-scripts plugin-zip --config .distignore",
+    "check:style": "prettier --check \"**/*.{js,cjs,mjs,jsx}\" && wp-scripts lint-style \"src/**/*.css\""
   },
   "keywords": [
     "wordpress",
