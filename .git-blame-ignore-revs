@@ -1,0 +1,6 @@
+# Commits de mise en forme seule, ignorés par git blame.
+# Activation locale : git config blame.ignoreRevsFile .git-blame-ignore-revs
+# (GitHub lit ce fichier automatiquement).
+
+# Style : mise en forme selon les standards WordPress
+8e692f823314947c1e613c9b8059fc4190a1216c
