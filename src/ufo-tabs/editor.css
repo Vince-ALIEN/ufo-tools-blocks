@@ -3,17 +3,17 @@
    ========================================================================= */
 
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-tabs .ufo-tabs__add {
-    color: var(--ufo-color-accent-strong, #7c3aed);
-    opacity: 0.6;
+	color: var(--ufo-color-accent-strong, #7c3aed);
+	opacity: 0.6;
 }
 
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-tabs .ufo-tabs__add:hover,
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-tabs .ufo-tabs__add:focus-visible {
-    opacity: 1;
+	opacity: 1;
 }
 
 /* Le RichText du titre actif ne doit pas casser la ligne d'onglets. */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-tabs [role="tab"] [contenteditable] {
-    min-width: 2ch;
-    white-space: nowrap;
+	min-width: 2ch;
+	white-space: nowrap;
 }

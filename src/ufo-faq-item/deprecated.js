@@ -1,10 +1,10 @@
 import {
-  useBlockProps,
-  RichText,
-  useInnerBlocksProps,
-} from "@wordpress/block-editor";
-import { Plus, Minus } from "lucide-react";
-import metadata from "./block.json";
+	useBlockProps,
+	RichText,
+	useInnerBlocksProps,
+} from '@wordpress/block-editor';
+import { Plus, Minus } from 'lucide-react';
+import metadata from './block.json';
 
 /**
  * ≤ 1.0.4 : bordure `border-gray-200`, passée en `border-slate-200`. Les
@@ -12,40 +12,40 @@ import metadata from "./block.json";
  * sauvegarde.
  */
 const v2 = {
-  attributes: metadata.attributes,
-  supports: metadata.supports,
-  save({ attributes }) {
-    const { question } = attributes;
+	attributes: metadata.attributes,
+	supports: metadata.supports,
+	save( { attributes } ) {
+		const { question } = attributes;
 
-    const blockProps = useBlockProps.save({
-      className: "group bg-white border border-gray-200 rounded-md",
-    });
+		const blockProps = useBlockProps.save( {
+			className: 'group bg-white border border-gray-200 rounded-md',
+		} );
 
-    const innerBlocksProps = useInnerBlocksProps.save({
-      className: "faq-content px-6 pb-4",
-    });
+		const innerBlocksProps = useInnerBlocksProps.save( {
+			className: 'faq-content px-6 pb-4',
+		} );
 
-    return (
-      <details {...blockProps}>
-        <summary className="flex w-full items-center justify-between px-6 py-6 md:text-lg text-base text-primary tracking-widest font-sans font-semibold cursor-pointer">
-          <RichText.Content
-            tagName="span"
-            className="faq-question"
-            value={question}
-          />
-          <span aria-hidden="true" className="ml-4 flex-shrink-0">
-            <span className="group-open:hidden">
-              <Plus size={18} />
-            </span>
-            <span className="hidden group-open:inline-flex">
-              <Minus size={18} />
-            </span>
-          </span>
-        </summary>
-        <div {...innerBlocksProps} />
-      </details>
-    );
-  },
+		return (
+			<details { ...blockProps }>
+				<summary className="flex w-full items-center justify-between px-6 py-6 md:text-lg text-base text-primary tracking-widest font-sans font-semibold cursor-pointer">
+					<RichText.Content
+						tagName="span"
+						className="faq-question"
+						value={ question }
+					/>
+					<span aria-hidden="true" className="ml-4 flex-shrink-0">
+						<span className="group-open:hidden">
+							<Plus size={ 18 } />
+						</span>
+						<span className="hidden group-open:inline-flex">
+							<Minus size={ 18 } />
+						</span>
+					</span>
+				</summary>
+				<div { ...innerBlocksProps } />
+			</details>
+		);
+	},
 };
 
 /**
@@ -54,40 +54,40 @@ const v2 = {
  * `text-primary` à la prochaine sauvegarde.
  */
 const v1 = {
-  attributes: metadata.attributes,
-  supports: metadata.supports,
-  save({ attributes }) {
-    const { question } = attributes;
+	attributes: metadata.attributes,
+	supports: metadata.supports,
+	save( { attributes } ) {
+		const { question } = attributes;
 
-    const blockProps = useBlockProps.save({
-      className: "group bg-white border border-gray-200 rounded-md",
-    });
+		const blockProps = useBlockProps.save( {
+			className: 'group bg-white border border-gray-200 rounded-md',
+		} );
 
-    const innerBlocksProps = useInnerBlocksProps.save({
-      className: "faq-content px-6 pb-4",
-    });
+		const innerBlocksProps = useInnerBlocksProps.save( {
+			className: 'faq-content px-6 pb-4',
+		} );
 
-    return (
-      <details {...blockProps}>
-        <summary className="flex w-full items-center justify-between px-6 py-6 md:text-lg text-base text-violet tracking-widest font-sans font-semibold cursor-pointer">
-          <RichText.Content
-            tagName="span"
-            className="faq-question"
-            value={question}
-          />
-          <span aria-hidden="true" className="ml-4 flex-shrink-0">
-            <span className="group-open:hidden">
-              <Plus size={18} />
-            </span>
-            <span className="hidden group-open:inline-flex">
-              <Minus size={18} />
-            </span>
-          </span>
-        </summary>
-        <div {...innerBlocksProps} />
-      </details>
-    );
-  },
+		return (
+			<details { ...blockProps }>
+				<summary className="flex w-full items-center justify-between px-6 py-6 md:text-lg text-base text-violet tracking-widest font-sans font-semibold cursor-pointer">
+					<RichText.Content
+						tagName="span"
+						className="faq-question"
+						value={ question }
+					/>
+					<span aria-hidden="true" className="ml-4 flex-shrink-0">
+						<span className="group-open:hidden">
+							<Plus size={ 18 } />
+						</span>
+						<span className="hidden group-open:inline-flex">
+							<Minus size={ 18 } />
+						</span>
+					</span>
+				</summary>
+				<div { ...innerBlocksProps } />
+			</details>
+		);
+	},
 };
 
-export default [v2, v1];
+export default [ v2, v1 ];
