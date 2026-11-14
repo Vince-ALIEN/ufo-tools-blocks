@@ -32,7 +32,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						setAttributes( { question: value } )
 					}
 					placeholder={ __(
-						'Entrez la question ici...',
+						'Entrez la question ici…',
 						'ufo-tools-blocks'
 					) }
 				/>

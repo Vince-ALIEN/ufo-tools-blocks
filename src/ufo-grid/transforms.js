@@ -42,6 +42,9 @@ function parseWidth( width ) {
 /**
  * Plus petite grille (≤ 6 colonnes) qui reproduit les largeurs en % des
  * colonnes core, à 6 points près. Sans largeurs : une colonne par cellule.
+ *
+ * @param {Array<number|undefined>} widths Largeur en % de chaque colonne core (undefined si non définie).
+ * @return {{columnsCount: number, spans: number[]}} Nombre de colonnes de la grille et largeur de chaque cellule, en colonnes.
  */
 export function fitGrid( widths ) {
 	const count = widths.length;

@@ -14,6 +14,7 @@ import { ICONS, ICON_LIST } from '../shared/icons';
 import clsx from 'clsx';
 import './editor.css';
 
+const JUSTIFY_CLASSES = { left: 'justify-start', center: 'justify-center' };
 function Edit( {
 	attributes,
 	setAttributes,
@@ -37,11 +38,7 @@ function Edit( {
 	const blockProps = useBlockProps( { 'data-level': level } );
 
 	const containerClasses = `px-4 flex ${
-		titleAlignment === 'left'
-			? 'justify-start'
-			: titleAlignment === 'center'
-				? 'justify-center'
-				: 'justify-end'
+		JUSTIFY_CLASSES[ titleAlignment ] ?? 'justify-end'
 	}`;
 
 	const titleClasses = `flex items-center not-prose ${ textColor.class || '' }`;
@@ -77,10 +74,18 @@ function Edit( {
 					title={ __( 'Icône', 'ufo-tools-blocks' ) }
 					initialOpen
 				>
-					<BaseControl
-						label={ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
-					>
-						<div className="ufo-icon-picker">
+					<BaseControl>
+						<BaseControl.VisualLabel>
+							{ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
+						</BaseControl.VisualLabel>
+						<div
+							className="ufo-icon-picker"
+							role="group"
+							aria-label={ __(
+								'Choisir une icône',
+								'ufo-tools-blocks'
+							) }
+						>
 							<button
 								className={ clsx( 'ufo-icon-picker__item', {
 									'is-selected': ! icon,
@@ -171,7 +176,7 @@ function Edit( {
 									setAttributes( { content: newContent } )
 								}
 								placeholder={ __(
-									'Votre titre...',
+									'Votre titre…',
 									'ufo-tools-blocks'
 								) }
 								allowedFormats={ [

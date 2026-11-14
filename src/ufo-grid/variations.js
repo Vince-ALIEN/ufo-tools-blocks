@@ -6,11 +6,16 @@ const ROW = 'ufo-blocks/ufo-row';
 /**
  * Icône 48×48 d'une disposition : chaque cellule est [x, y, largeur, hauteur]
  * en unités de grille.
+ *
+ * @param {number}     columnCount Nombre de colonnes de la grille.
+ * @param {number}     rowCount    Nombre de lignes de la grille.
+ * @param {number[][]} cells       Cellules, chacune [x, y, largeur, hauteur].
+ * @return {Element} L'icône SVG.
  */
-function layoutIcon( columns, rows, cells ) {
+function layoutIcon( columnCount, rowCount, cells ) {
 	const gap = 2;
-	const unitX = ( 48 + gap ) / columns;
-	const unitY = ( 32 + gap ) / rows;
+	const unitX = ( 48 + gap ) / columnCount;
+	const unitY = ( 32 + gap ) / rowCount;
 	return (
 		<SVG
 			xmlns="http://www.w3.org/2000/svg"
@@ -32,6 +37,13 @@ function layoutIcon( columns, rows, cells ) {
 	);
 }
 
+/**
+ * Cellules ufo-row identiques pour un modèle de blocs internes.
+ *
+ * @param {number} count      Nombre de cellules.
+ * @param {Object} attributes Attributs de chaque cellule.
+ * @return {Array} Modèle [ nom du bloc, attributs ] répété count fois.
+ */
 function rows( count, attributes = {} ) {
 	return Array.from( { length: count }, () => [ ROW, attributes ] );
 }

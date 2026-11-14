@@ -16,13 +16,14 @@ import {
 	Button,
 	Popover,
 	Notice,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	__experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon,
 } from '@wordpress/components';
-import { alignLeft, alignRight } from '@wordpress/icons';
-import { link, linkOff } from '@wordpress/icons';
+import { alignLeft, alignRight, link, linkOff } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
 import { ICONS, ICON_LIST } from '../shared/icons';
+import {
+	ToggleGroupControl,
+	ToggleGroupControlOptionIcon,
+} from '../shared/wp-components';
 import clsx from 'clsx';
 import './editor.css';
 
@@ -146,10 +147,18 @@ function Edit( { attributes, setAttributes } ) {
 					title={ __( 'Icône', 'ufo-tools-blocks' ) }
 					initialOpen
 				>
-					<BaseControl
-						label={ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
-					>
-						<div className="ufo-icon-picker">
+					<BaseControl>
+						<BaseControl.VisualLabel>
+							{ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
+						</BaseControl.VisualLabel>
+						<div
+							className="ufo-icon-picker"
+							role="group"
+							aria-label={ __(
+								'Choisir une icône',
+								'ufo-tools-blocks'
+							) }
+						>
 							<button
 								className={ clsx( 'ufo-icon-picker__item', {
 									'is-selected': ! buttonIcon,
@@ -292,10 +301,7 @@ function Edit( { attributes, setAttributes } ) {
 					onChange={ ( value ) =>
 						setAttributes( { buttonText: value } )
 					}
-					placeholder={ __(
-						'Texte du bouton...',
-						'ufo-tools-blocks'
-					) }
+					placeholder={ __( 'Texte du bouton…', 'ufo-tools-blocks' ) }
 					allowedFormats={ [ 'core/bold', 'core/italic' ] }
 				/>
 				{ IconComponent && iconPosition !== 'left' && (

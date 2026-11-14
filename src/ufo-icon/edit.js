@@ -36,10 +36,18 @@ export default function Edit( { attributes, setAttributes } ) {
 					title={ __( 'Icône', 'ufo-tools-blocks' ) }
 					initialOpen
 				>
-					<BaseControl
-						label={ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
-					>
-						<div className="ufo-icon-picker">
+					<BaseControl>
+						<BaseControl.VisualLabel>
+							{ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
+						</BaseControl.VisualLabel>
+						<div
+							className="ufo-icon-picker"
+							role="group"
+							aria-label={ __(
+								'Choisir une icône',
+								'ufo-tools-blocks'
+							) }
+						>
 							<button
 								className={ clsx( 'ufo-icon-picker__item', {
 									'is-selected': ! icon,

@@ -1,8 +1,8 @@
 /**
- * ESLint 9 (wp-scripts lint-js) : configuration plate. Remplace .eslintrc.json,
+ * ESLint 9 (`wp-scripts lint-js`) : configuration plate. Remplace .eslintrc.json,
  * qu'ESLint 9 ne lit plus. Les tests restent sous Jest (wp-scripts
  * test-unit-jest) : leurs règles viennent d'eslint-plugin-jest, pas des
- * règles Vitest que @wordpress/scripts applique par défaut depuis la 36.
+ * règles Vitest que `@wordpress/scripts` applique par défaut depuis la 36.
  */
 const wpPlugin = require( '@wordpress/eslint-plugin' );
 const jestPlugin = require( 'eslint-plugin-jest' );
@@ -29,6 +29,11 @@ module.exports = [
 			'import/no-extraneous-dependencies': 'off',
 			'@wordpress/no-unsafe-wp-apis': 'warn',
 		},
+	},
+	{
+		// Scripts Node en ligne de commande : la console est leur sortie.
+		files: [ 'scripts/**/*.js' ],
+		rules: { 'no-console': 'off' },
 	},
 	{
 		...jestRecommended,

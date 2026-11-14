@@ -3,10 +3,10 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	BlockControls,
-	__experimentalBlockVariationPicker as BlockVariationPicker,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import { BlockVariationPicker } from '../shared/wp-components';
 import {
 	createBlock,
 	createBlocksFromInnerBlocksTemplate,
@@ -69,6 +69,8 @@ function GridEditContainer( { attributes, setAttributes, clientId } ) {
 	 * Comme pour core/columns : augmenter le nombre de colonnes ajoute des
 	 * cellules tant que la première ligne n'est pas remplie. Le réduire ne
 	 * supprime rien, les cellules passent à la ligne.
+	 *
+	 * @param {number} nextCount Nouveau nombre de colonnes.
 	 */
 	const setColumnsCount = ( nextCount ) => {
 		registry.batch( () => {
@@ -80,6 +82,8 @@ function GridEditContainer( { attributes, setAttributes, clientId } ) {
 	/**
 	 * L'alignement vertical de la grille s'applique aussi aux cellules ; une
 	 * cellule alignée séparément le remet à zéro sur la grille (voir ufo-row).
+	 *
+	 * @param {string|undefined} value Alignement (« top », « center »…), ou undefined pour l'effacer.
 	 */
 	const setVerticalAlignment = ( value ) => {
 		const rowIds = getBlocks( clientId )
@@ -189,6 +193,9 @@ function Placeholder( { clientId, name, setAttributes } ) {
 /**
  * Sélecteur de disposition tant que la grille est vide, grille ensuite
  * (même fonctionnement que core/columns).
+ *
+ * @param {Object} props Propriétés de l'éditeur du bloc (clientId, attributes…).
+ * @return {Element} L'éditeur du bloc.
  */
 export default function Edit( props ) {
 	const { clientId } = props;
