@@ -5,6 +5,13 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-11-14
+
+### Security
+- Updater: forcing a fresh GitHub check (`force-check`) now requires `current_user_can( 'update_plugins' )`. The previous `is_admin()` test is also true on `admin-ajax.php` for visitors who are not logged in.
+- Updater: the release link returned by the GitHub API (`html_url`) is only used if it points to this repository; otherwise the repository's releases page is linked.
+- The `render.php` files of `ufo-button`, `ufo-icon`, `ufo-tabs` and `ufo-title`, and the generated icon helper, exit when called directly (`ABSPATH` guard): a direct request no longer triggers a PHP error that could reveal server paths.
+
 ## [1.0.5] - 2026-11-14
 
 ### Security

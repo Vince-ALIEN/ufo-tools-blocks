@@ -5,7 +5,7 @@
  * Description:       A set of Gutenberg blocks built with Tailwind CSS classes.
  * Requires at least: 6.1
  * Requires PHP:      7.4
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            Vincent LASSERRE
  * License:           GPL-2.0-or-later
  * License URI:       https://www.ufo-agency.com/
