@@ -5,7 +5,7 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.5] - 2026-11-14
 
 ### Security
 - `ufo-faq`: the JSON-LD `FAQPage` is encoded with `JSON_HEX_TAG | JSON_HEX_AMP`. The schema name, description and subject come from the block comment, which kses does not filter: a contributor could close the `<script>` tag and inject a script (stored XSS). The three fields also go through `sanitize_text_field()`.
