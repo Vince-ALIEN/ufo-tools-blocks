@@ -32,27 +32,47 @@ export default function Edit( { attributes, setAttributes } ) {
 			</BlockControls>
 
 			<InspectorControls>
-				<PanelBody title={ __( 'Icône', 'ufo-tools-blocks' ) } initialOpen>
-					<BaseControl label={ __( 'Choisir une icône', 'ufo-tools-blocks' ) }>
+				<PanelBody
+					title={ __( 'Icône', 'ufo-tools-blocks' ) }
+					initialOpen
+				>
+					<BaseControl
+						label={ __( 'Choisir une icône', 'ufo-tools-blocks' ) }
+					>
 						<div className="ufo-icon-picker">
 							<button
-								className={ clsx( 'ufo-icon-picker__item', { 'is-selected': ! icon } ) }
+								className={ clsx( 'ufo-icon-picker__item', {
+									'is-selected': ! icon,
+								} ) }
 								onClick={ () => setAttributes( { icon: '' } ) }
-								title={ __( 'Aucune icône', 'ufo-tools-blocks' ) }
-								aria-label={ __( 'Aucune icône', 'ufo-tools-blocks' ) }
+								title={ __(
+									'Aucune icône',
+									'ufo-tools-blocks'
+								) }
+								aria-label={ __(
+									'Aucune icône',
+									'ufo-tools-blocks'
+								) }
 								aria-pressed={ ! icon }
 							>
-								<span style={ { fontSize: 10, lineHeight: 1 } }>—</span>
+								<span style={ { fontSize: 10, lineHeight: 1 } }>
+									—
+								</span>
 							</button>
 							{ ICON_LIST.map( ( { value, label } ) => {
 								const Icon = ICONS[ value ];
 								return (
 									<button
 										key={ value }
-										className={ clsx( 'ufo-icon-picker__item', {
-											'is-selected': icon === value,
-										} ) }
-										onClick={ () => setAttributes( { icon: value } ) }
+										className={ clsx(
+											'ufo-icon-picker__item',
+											{
+												'is-selected': icon === value,
+											}
+										) }
+										onClick={ () =>
+											setAttributes( { icon: value } )
+										}
 										title={ label }
 										aria-label={ label }
 										aria-pressed={ icon === value }
@@ -67,7 +87,9 @@ export default function Edit( { attributes, setAttributes } ) {
 					<RangeControl
 						label={ __( 'Taille (px)', 'ufo-tools-blocks' ) }
 						value={ iconSize }
-						onChange={ ( val ) => setAttributes( { iconSize: val } ) }
+						onChange={ ( val ) =>
+							setAttributes( { iconSize: val } )
+						}
 						min={ 12 }
 						max={ 120 }
 						step={ 4 }

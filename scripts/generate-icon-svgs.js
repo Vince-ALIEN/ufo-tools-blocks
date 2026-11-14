@@ -8,46 +8,56 @@
  * Utilisé par "npm run generate:icons" et en prebuild.
  */
 
-const { renderToStaticMarkup } = require('react-dom/server');
-const React   = require('react');
-const lucide  = require('lucide-react');
-const fs      = require('fs');
-const path    = require('path');
+const { renderToStaticMarkup } = require( 'react-dom/server' );
+const React = require( 'react' );
+const lucide = require( 'lucide-react' );
+const fs = require( 'fs' );
+const path = require( 'path' );
 
-const ROOT       = path.resolve(__dirname, '..');
-const iconNames  = require(path.join(ROOT, 'src/shared/icon-names.json'));
-const lucideVer  = require(path.join(ROOT, 'node_modules/lucide-react/package.json')).version;
-const outputPath = path.join(ROOT, 'includes/ufo-tools-blocks-icons.php');
+const ROOT = path.resolve( __dirname, '..' );
+const iconNames = require( path.join( ROOT, 'src/shared/icon-names.json' ) );
+const lucideVer = require(
+	path.join( ROOT, 'node_modules/lucide-react/package.json' )
+).version;
+const outputPath = path.join( ROOT, 'includes/ufo-tools-blocks-icons.php' );
 
 // Créer le dossier includes/ si nécessaire
-fs.mkdirSync(path.join(ROOT, 'includes'), { recursive: true });
+fs.mkdirSync( path.join( ROOT, 'includes' ), { recursive: true } );
 
-const paths  = {};
+const paths = {};
 const errors = [];
 
-iconNames.forEach((name) => {
-  const Icon = lucide[name];
-  if (!Icon) {
-    errors.push(name);
-    return;
-  }
-  const html  = renderToStaticMarkup(React.createElement(Icon, {}));
-  const inner = html.replace(/<svg[^>]*>/, '').replace('</svg>', '').trim();
-  paths[name] = inner;
-});
+iconNames.forEach( ( name ) => {
+	const Icon = lucide[ name ];
+	if ( ! Icon ) {
+		errors.push( name );
+		return;
+	}
+	const html = renderToStaticMarkup( React.createElement( Icon, {} ) );
+	const inner = html
+		.replace( /<svg[^>]*>/, '' )
+		.replace( '</svg>', '' )
+		.trim();
+	paths[ name ] = inner;
+} );
 
-if (errors.length > 0) {
-  console.error(`\n[generate-icons-php] ✗ Icônes introuvables dans lucide-react v${lucideVer} :`);
-  errors.forEach((n) => console.error(`  - ${n}`));
-  process.exit(1);
+if ( errors.length > 0 ) {
+	console.error(
+		`\n[generate-icons-php] ✗ Icônes introuvables dans lucide-react v${ lucideVer } :`
+	);
+	errors.forEach( ( n ) => console.error( `  - ${ n }` ) );
+	process.exit( 1 );
 }
 
-const pad    = (s, n) => s.padEnd(n);
-const maxLen = Math.max(...iconNames.map((n) => n.length));
+const pad = ( s, n ) => s.padEnd( n );
+const maxLen = Math.max( ...iconNames.map( ( n ) => n.length ) );
 
 const entries = iconNames
-  .map((name) => `\t\t\t'${pad(name + "'", maxLen + 2)}=> '${paths[name].replace(/'/g, "\\'")}',`)
-  .join('\n');
+	.map(
+		( name ) =>
+			`\t\t\t'${ pad( name + "'", maxLen + 2 ) }=> '${ paths[ name ].replace( /'/g, "\\'" ) }',`
+	)
+	.join( '\n' );
 
 const php = `<?php
 /**
@@ -56,7 +66,7 @@ const php = `<?php
  * ⚠️  Fichier généré automatiquement — ne pas modifier manuellement.
  *     Source     : src/shared/icon-names.json
  *     Générateur : scripts/generate-icon-svgs.js
- *     Lucide     : v${lucideVer}
+ *     Lucide     : v${ lucideVer }
  *
  * Pour ajouter une icône :
  *   1. Ajouter le nom dans src/shared/icon-names.json
@@ -79,7 +89,7 @@ if ( ! function_exists( 'ufo_get_icon_svg' ) ) :
 \tfunction ufo_get_icon_svg( string $icon_name, string $classes = '', int $size = 24 ): string {
 
 \t\tstatic $paths = [
-${entries}
+${ entries }
 \t\t];
 
 \t\tif ( empty( $icon_name ) || ! isset( $paths[ $icon_name ] ) ) {
@@ -100,13 +110,15 @@ ${entries}
 endif;
 `;
 
-fs.writeFileSync(outputPath, php, 'utf8');
-console.log(`[generate-icons-php] ✓ ${iconNames.length} icônes → includes/ufo-tools-blocks-icons.php (lucide v${lucideVer})`);
+fs.writeFileSync( outputPath, php, 'utf8' );
+console.log(
+	`[generate-icons-php] ✓ ${ iconNames.length } icônes → includes/ufo-tools-blocks-icons.php (lucide v${ lucideVer })`
+);
 
 // Génère src/shared/icons.js (imports nommés pour le tree-shaking webpack)
-const iconsJsPath = path.join(ROOT, 'src/shared/icons.js');
-const importList  = iconNames.map((n) => `\t${ n },`).join('\n');
-const iconEntries = iconNames.map((n) => `\t${ n },`).join('\n');
+const iconsJsPath = path.join( ROOT, 'src/shared/icons.js' );
+const importList = iconNames.map( ( n ) => `\t${ n },` ).join( '\n' );
+const iconEntries = iconNames.map( ( n ) => `\t${ n },` ).join( '\n' );
 
 const iconsJs = `// ⚠️  Fichier généré automatiquement — ne pas modifier manuellement.
 //     Source     : src/shared/icon-names.json
@@ -129,5 +141,7 @@ export const ICON_LIST = iconNames
 \t} ) );
 `;
 
-fs.writeFileSync(iconsJsPath, iconsJs, 'utf8');
-console.log(`[generate-icons-php] ✓ ${ iconNames.length } icônes → src/shared/icons.js`);
+fs.writeFileSync( iconsJsPath, iconsJs, 'utf8' );
+console.log(
+	`[generate-icons-php] ✓ ${ iconNames.length } icônes → src/shared/icons.js`
+);
