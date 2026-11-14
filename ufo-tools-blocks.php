@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:       Ufo Tools Blocks
- * Description:       A set of Gutemberg blocks using Tailwind CSS in WordPress class.
+ * Description:       A set of Gutenberg blocks built with Tailwind CSS classes.
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Version:           1.0.4
@@ -66,6 +66,8 @@ function ufo_tools_blocks_block_init()
     register_block_type(__DIR__ . "/build/ufo-buttons-group");
     register_block_type(__DIR__ . "/build/ufo-title");
     register_block_type(__DIR__ . "/build/ufo-icon");
+    register_block_type(__DIR__ . "/build/ufo-tabs");
+    register_block_type(__DIR__ . "/build/ufo-tab");
 }
 add_action("init", "ufo_tools_blocks_block_init");
 

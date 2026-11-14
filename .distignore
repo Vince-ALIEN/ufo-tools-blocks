@@ -12,6 +12,8 @@ package-lock.json
 phpcs.xml
 scripts/
 src/
+tests/
+jest.config.js
 vendor/
 webpack.config.js
 *.md

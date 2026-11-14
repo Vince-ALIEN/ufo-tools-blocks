@@ -31,9 +31,13 @@ jobs:
             exit 1
           fi
 
-      - name: Build et zip
+      - name: Tests
         run: |
           npm ci
+          npm test
+
+      - name: Build et zip
+        run: |
           npm run build
           npm run plugin-zip
 

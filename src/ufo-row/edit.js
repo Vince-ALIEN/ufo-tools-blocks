@@ -61,7 +61,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
       // Permet de déposer un bloc avant ou après la cellule, pas seulement dedans.
       dropZoneElement,
       templateLock: false,
-      renderAppender: hasChildBlocks ? undefined : InnerBlocks.ButtonBlockAppender,
+      // Cellule vide : « Saisir / pour choisir un bloc » plutôt qu’un bouton « + ».
+      renderAppender: hasChildBlocks ? undefined : InnerBlocks.DefaultBlockAppender,
     },
   );
 

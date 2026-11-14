@@ -1,0 +1,19 @@
+{
+  "apiVersion": 3,
+  "name": "ufo-blocks/ufo-tabs",
+  "title": "Ufo Tabs",
+  "category": "ufo-blocks",
+  "icon": "AppWindowMac",
+  "description": "Des onglets soulignés : un titre par onglet, un panneau de contenu par onglet.",
+  "keywords": ["onglets", "tabs"],
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": ["wide", "full"]
+  },
+  "textdomain": "ufo-tools-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

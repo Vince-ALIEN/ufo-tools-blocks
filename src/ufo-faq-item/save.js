@@ -9,7 +9,7 @@ export default function save({ attributes }) {
   const { question } = attributes;
 
   const blockProps = useBlockProps.save({
-    className: "group bg-white border border-gray-200 rounded-md",
+    className: "group bg-white border border-slate-200 rounded-md",
   });
 
   const innerBlocksProps = useInnerBlocksProps.save({

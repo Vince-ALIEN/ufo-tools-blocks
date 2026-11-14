@@ -6,40 +6,37 @@
 ufo-tools-blocks/
 │
 ├── ufo-tools-blocks.php        # Fichier principal du plugin
-│   ├── ufo_tools_blocks_block_init()          # Enregistrement des blocs
-│   ├── ufo_tools_blocks_register_category()   # Catégorie "UFO Blocks"
-│   └── ufo_tools_blocks_register_faq_scripts() # Scripts frontend optionnels
+│   ├── ufo_tools_blocks_block_init()          # Enregistrement des 10 blocs
+│   └── ufo_tools_blocks_register_category()   # Catégorie "UFO Blocks"
+│
+├── includes/
+│   ├── class-ufo-tools-blocks-updater.php     # Mises à jour depuis les releases GitHub
+│   ├── ufo-faq-schema.php                     # JSON-LD FAQPage (filtre render_block)
+│   └── ufo-tools-blocks-icons.php             # ufo_get_icon_svg() (généré au build)
 │
 ├── src/                        # Sources (avant compilation)
-│   ├── icons.js                # Icônes partagées (lucide-react)
-│   ├── ufo-grid/               # Bloc conteneur de grille
-│   │   ├── block.json
-│   │   ├── index.js
-│   │   ├── edit.js
-│   │   ├── save.js
-│   │   ├── shared.js           # Helpers de classes CSS (edit + save)
-│   │   ├── editor.css
-│   │   └── style.css
-│   └── ufo-row/                # Bloc cellule de grille
-│       ├── block.json
-│       ├── index.js
-│       ├── edit.js
-│       ├── save.js
-│       ├── shared.js           # Helpers de classes CSS (edit + save)
-│       ├── editor.css
-│       └── style.css
+│   ├── icons.js                # Icônes de blocs (lucide-react)
+│   ├── shared/                 # Contrôles d'inspecteur et icônes partagés
+│   ├── ufo-grid/               # Conteneur de grille          (statique)
+│   ├── ufo-row/                # Cellule de grille            (statique, enfant de ufo-grid)
+│   ├── ufo-faq/                # FAQ + schema                 (statique)
+│   ├── ufo-faq-item/           # Question / réponse           (statique, enfant de ufo-faq)
+│   ├── ufo-buttons-group/      # Groupe de boutons            (statique)
+│   ├── ufo-button/             # Bouton avec icône            (dynamique : render.php)
+│   ├── ufo-title/              # Titre avec icône             (dynamique : render.php)
+│   ├── ufo-tabs/               # Onglets                      (dynamique : render.php + view.js)
+│   ├── ufo-tab/                # Un onglet                    (statique, enfant de ufo-tabs)
+│   └── ufo-icon/               # Icône Lucide                 (dynamique : render.php)
+│       Chaque bloc : block.json, index.js, edit.js, save.js, *.css,
+│       et selon le cas shared.js, inspector.js, deprecated.js, render.php
 │
-├── build/                      # Fichiers compilés (généré par npm run build)
-│   ├── ufo-grid/
-│   │   ├── index.js
-│   │   ├── index.asset.php
-│   │   ├── index.css
-│   │   └── style-index.css
-│   └── ufo-row/
-│       ├── index.js
-│       ├── index.asset.php
-│       ├── index.css
-│       └── style-index.css
+├── scripts/generate-icon-svgs.js  # Génère les SVG PHP des icônes (prebuild)
+│
+├── tests/
+│   ├── js/                     # Jest : snapshots de save(), deprecated, safelist Tailwind
+│   └── php/                    # Filtre JSON-LD de ufo-faq (sans WordPress)
+│
+├── build/                      # Fichiers compilés (npm run build, non versionné)
 │
 └── Documentation
     ├── README.md
@@ -60,8 +57,12 @@ WordPress init
 ufo-tools-blocks.php
     ↓
 ufo_tools_blocks_block_init()
-    ├→ register_block_type(__DIR__ . '/build/ufo-grid')
-    └→ register_block_type(__DIR__ . '/build/ufo-row')
+    └→ register_block_type(__DIR__ . '/build/<bloc>')   × 10
+
+Les blocs dynamiques (button, title, icon, tabs) sont rendus par leur render.php ;
+ufo-tabs construit la barre d'onglets depuis les titres des ufo-tab enfants ;
+ufo-faq passe par le filtre render_block de includes/ufo-faq-schema.php,
+qui ajoute le JSON-LD FAQPage construit à partir des questions/réponses.
 ```
 
 ### Rendu dans l'éditeur
@@ -126,9 +127,16 @@ HTML statique servi directement
 ufo-grid
     └── ufo-row (1..N)   ← parent déclaré dans block.json
             └── [tout bloc WordPress]
+
+ufo-faq
+    └── ufo-faq-item (1..N)   ← parent déclaré dans block.json
+            └── [tout bloc WordPress : la réponse]
+
+ufo-buttons-group
+    └── ufo-button (0..N)     ← ufo-button peut aussi être utilisé seul
 ```
 
-Le bloc `ufo-row` déclare `"parent": ["ufo-blocks/ufo-grid"]` dans son `block.json`, ce qui empêche son insertion en dehors d'un `ufo-grid`.
+Les blocs `ufo-row` et `ufo-faq-item` déclarent leur `parent` dans leur `block.json`, ce qui empêche leur insertion hors de leur conteneur.
 
 ## Workflow de développement
 
@@ -139,6 +147,7 @@ npm run build        # Build de production
 npm run lint:js      # Lint JavaScript
 npm run lint:css     # Lint CSS
 npm run format       # Formatter le code
+npm test             # Tests Jest + test PHP du schema FAQ
 npm run plugin-zip   # Générer l'archive du plugin
 ```
 

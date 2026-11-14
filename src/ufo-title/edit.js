@@ -36,7 +36,7 @@ function Edit({
 
   const blockProps = useBlockProps({ "data-level": level });
 
-  const containerClasses = `flex ${
+  const containerClasses = `px-4 flex ${
     titleAlignment === "left"
       ? "justify-start"
       : titleAlignment === "center"
@@ -46,16 +46,12 @@ function Edit({
 
   const titleClasses = `flex items-center not-prose ${textColor.class || ""}`;
 
-  const hexToRgba = (hex, alpha) => {
-    if (!hex) return null;
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
-
+  // color-mix accepte n'importe quel format (le thème utilise oklch).
   const iconBgStyle = iconBgColor.color
-    ? { backgroundColor: hexToRgba(iconBgColor.color, 0.15) }
+    ? {
+        backgroundColor: `color-mix(in srgb, ${iconBgColor.color} 15%, transparent)`,
+        ...(iconBgColor.class ? {} : { color: iconBgColor.color }),
+      }
     : {};
 
   return (
@@ -129,7 +125,7 @@ function Edit({
 
       <div {...blockProps}>
         <div className={containerClasses}>
-          <div className="block pr-2">
+          <div className="block px-2">
             <div className={titleClasses}>
               {IconComponent && (
                 <span className="rounded-lg p-3 mr-2" style={iconBgStyle}>
@@ -138,6 +134,7 @@ function Edit({
               )}
               <RichText
                 tagName={TagName}
+                className={clsx("not-prose", textColor.class)}
                 value={content}
                 onChange={(newContent) => setAttributes({ content: newContent })}
                 placeholder={__("Votre titre...", "ufo-tools-blocks")}

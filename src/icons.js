@@ -1,6 +1,6 @@
 // icons.js
 // Import uniquement les icônes utilisées pour réduire la taille du bundle
-import { ArrowDownToDot, TableOfContents, StretchHorizontal, LayoutDashboard, PanelLeftDashed, RectangleHorizontal, MessageCircleQuestionMark, Link, Heading } from 'lucide-react';
+import { ArrowDownToDot, TableOfContents, StretchHorizontal, LayoutDashboard, PanelLeftDashed, RectangleHorizontal, MessageCircleQuestionMark, Link, Heading, AppWindowMac, RectangleEllipsis } from 'lucide-react';
 
 // Logo de Lucide (absent de lucide-react), d'après logo.svg du dépôt
 // lucide-icons/lucide (licence ISC), en une couleur. Mêmes props que les
@@ -34,6 +34,8 @@ const iconMap = {
     MessageCircleQuestionMark,
     Link,
     Heading,
+    AppWindowMac,
+    RectangleEllipsis,
     LucideLogo,
 };
 

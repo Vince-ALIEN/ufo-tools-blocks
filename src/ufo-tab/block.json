@@ -1,0 +1,21 @@
+{
+  "apiVersion": 3,
+  "name": "ufo-blocks/ufo-tab",
+  "title": "Ufo Tab",
+  "category": "ufo-blocks",
+  "icon": "RectangleEllipsis",
+  "description": "Un onglet : son titre apparaît dans la barre d'onglets, son contenu dans le panneau.",
+  "parent": ["ufo-blocks/ufo-tabs"],
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "ufo-tools-blocks",
+  "editorScript": "file:./index.js"
+}

@@ -1,14 +1,14 @@
 /* =========================================================================
    ufo-row — Styles d'édition Gutenberg
    La cellule garde ses dimensions réelles ; seule une cellule vide reçoit
-   une hauteur minimale pour accueillir le bouton d'ajout de bloc.
+   une hauteur minimale pour accueillir l’invite « Saisir / pour choisir un bloc ».
    ========================================================================= */
 
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-row {
 	position: relative;
 }
 
-/* Cellule vide : bouton « + » centré, comme une colonne core vide. */
+/* Cellule vide : invite « Saisir / pour choisir un bloc », centrée verticalement. */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-row:has(> .block-list-appender:only-child) {
 	display: flex;
 	flex-direction: column;

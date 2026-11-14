@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`save() ufo-buttons-group center 1`] = `"<div class="wp-block-ufo-blocks-ufo-buttons-group"><div class="flex flex-col lg:flex-row lg:flex-nowrap lg:items-stretch p-4 gap-2 items-center lg:justify-center"></div></div>"`;
+
+exports[`save() ufo-buttons-group left 1`] = `"<div class="wp-block-ufo-blocks-ufo-buttons-group"><div class="flex flex-col lg:flex-row lg:flex-nowrap lg:items-stretch p-4 gap-2 items-start lg:justify-start"></div></div>"`;
+
+exports[`save() ufo-buttons-group right 1`] = `"<div class="wp-block-ufo-blocks-ufo-buttons-group"><div class="flex flex-col lg:flex-row lg:flex-nowrap lg:items-stretch p-4 gap-2 items-end lg:justify-end"></div></div>"`;
+
+exports[`save() ufo-faq avec schema 1`] = `"<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","name":"FAQ","about":"Tarifs"}</script><div class="wp-block-ufo-blocks-ufo-faq"><div class="w-full space-y-3 lg:my-3 my-1 px-2"></div></div>"`;
+
+exports[`save() ufo-faq-item 1`] = `"<details class="wp-block-ufo-blocks-ufo-faq-item group bg-white border border-slate-200 rounded-md"><summary class="flex w-full items-center justify-between px-6 py-6 md:text-lg text-base text-primary tracking-widest font-sans font-semibold cursor-pointer"><span class="faq-question">Combien ça coûte ?</span><span aria-hidden="true" class="ml-4 flex-shrink-0"><span class="group-open:hidden"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></span><span class="hidden group-open:inline-flex"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus" aria-hidden="true"><path d="M5 12h14"></path></svg></span></span></summary><div class="faq-content px-6 pb-4"></div></details>"`;
+
+exports[`save() ufo-grid avec tous les réglages 1`] = `"<div class="wp-block-ufo-blocks-ufo-grid relative ufo-grid-wrapper md:h-screen h-full rounded-xl bg-no-repeat px-8 py-4" style="background-image:url(https://example.com/a.jpg);background-size:cover;background-position:center center"><video class="absolute inset-0 w-full h-full object-cover -z-10" autoplay loop muted playsinline><source src="https://example.com/a.mp4" type="video/mp4"/></video><div class="md:grid grid-cols-1 md:auto-rows-fr auto-rows-auto gap-6 md:grid-cols-3 grid-rows-2 items-center flex flex-col-reverse h-full max-w-content mx-auto w-full"></div></div>"`;
+
+exports[`save() ufo-grid par défaut 1`] = `"<div class="wp-block-ufo-blocks-ufo-grid relative ufo-grid-wrapper px-0 py-0"><div class="grid grid-cols-1 md:auto-rows-fr auto-rows-auto gap-4 md:grid-cols-2"></div></div>"`;
+
+exports[`save() ufo-row avec placement 1`] = `"<div class="wp-block-ufo-blocks-ufo-row ufo-row md:col-span-2 md:col-start-1 row-span-2 h-64 rounded-lg px-4 py-0 flex flex-col justify-end bg-no-repeat" style="background-image:url(https://example.com/b.jpg);background-size:cover;background-position:center center"></div>"`;
+
+exports[`save() ufo-tab 1`] = `"<div class="wp-block-ufo-blocks-ufo-tab"></div>"`;

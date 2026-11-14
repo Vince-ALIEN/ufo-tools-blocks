@@ -12,7 +12,7 @@ export default function Edit({ attributes, setAttributes }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const blockProps = useBlockProps({
-    className: "bg-white border border-gray-200 rounded-md overflow-hidden",
+    className: "bg-white border border-slate-200 rounded-md overflow-hidden",
   });
 
   const innerBlocksProps = useInnerBlocksProps(

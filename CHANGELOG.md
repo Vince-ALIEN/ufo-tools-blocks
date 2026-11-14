@@ -5,6 +5,24 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+- `ufo-faq`: the JSON-LD `FAQPage` is encoded with `JSON_HEX_TAG | JSON_HEX_AMP`. The schema name, description and subject come from the block comment, which kses does not filter: a contributor could close the `<script>` tag and inject a script (stored XSS). The three fields also go through `sanitize_text_field()`.
+
+### Fixed
+- `ufo-faq` JSON-LD: answers nested in other blocks (group, list, columns…) were dropped; all inner blocks are now read at any depth. HTML entities are decoded (`&amp;` → `&`) and paragraphs are separated by a space.
+- `ufo-faq` JSON-LD: the partial schema written by `save()` (no `mainEntity`, invalid for search engines) is always removed, including when the FAQ has no complete question/answer or the schema is disabled.
+- `ufo-title`: no fatal error if the icon helper is missing (`function_exists` check, as in `ufo-button`).
+- Plugin header: "Gutemberg" typo. `composer.json`: support URLs point to the actual repository.
+
+### Changed
+- `ufo-faq-item` and `ufo-tabs`: borders use `border-slate-200` instead of `border-gray-200`. Existing FAQ items stay valid (`deprecated` entry) and switch to slate on their next save.
+
+### Added
+- `ufo-tabs` block (with `ufo-tab` children): underlined tabs. Tab titles are edited directly in the tab bar, the `+` button adds a tab. Front end: ARIA tabs pattern (`tablist` / `tab` / `tabpanel`), arrow keys, Home/End, and the tab containing the URL anchor opens on load. The first tab is open without JavaScript too.
+- Tests: `save()` snapshots and `deprecated` migrations (Jest), Tailwind safelist coverage, FAQ schema filter (PHP). `npm test` runs them, and the release workflow runs it before building.
+
 ## [1.0.4] - 2026-11-13
 
 ### Fixed

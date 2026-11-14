@@ -28,6 +28,7 @@ It pairs with your Tailwind CSS v4 theme: the plugin ships no CSS of its own, st
 | ufo FAQ Item | `ufo-blocks/ufo-faq-item` | Question/answer item (child of ufo FAQ) |
 | UFO Icon | `ufo-blocks/ufo-icon` | Lucide icon with alignment and theme color |
 | ufo Title | `ufo-blocks/ufo-title` | Title with icon and rounded background |
+| Ufo Tabs | `ufo-blocks/ufo-tabs` | Underlined tabs (keyboard accessible); each tab is a `ufo-blocks/ufo-tab` |
 
 The `ufo-blocks/ufo-bento`, `ufo-blocks/ufo-time` and `ufo-blocks/logo-slider` blocks now live in their own plugins, **ufo-tools-bento**, **ufo-tools-time** and **ufo-tools-logo-slider** (same block names, existing content stays valid).
 
@@ -187,6 +188,7 @@ ufo-tools-blocks/
 ├── includes/
 │   ├── ufo-tools-blocks-icons.php # SVG helpers for the button block
 │   └── ufo-faq-schema.php    # Schema.org JSON-LD for FAQ
+├── tests/                    # Jest (js/) and PHP (php/) tests
 ├── src/
 │   ├── shared/               # Shared utilities across blocks
 │   ├── ufo-grid/             # Grid container block
@@ -207,6 +209,8 @@ ufo-tools-blocks/
 │   ├── ufo-faq-item/         # FAQ item
 │   ├── ufo-icon/             # Lucide icon
 │   ├── ufo-title/            # Title with icon
+│   ├── ufo-tabs/             # Tabs (render.php + view.js)
+│   ├── ufo-tab/              # One tab (child of ufo-tabs)
 │   └── icons.js
 ├── ufo-tools-blocks.php      # Main plugin file
 ├── package.json
@@ -223,6 +227,16 @@ ufo-tools-blocks/
 | `npm run lint:css` | CSS linting |
 | `npm run lint:js` | JavaScript linting |
 | `npm run plugin-zip` | Generate plugin archive |
+| `npm test` | Unit tests (Jest) and the FAQ schema PHP test |
+| `npm run test:unit -- -u` | Update `save()` snapshots after adding a `deprecated` entry |
+
+### Tests
+
+- `tests/js/save.test.js`: snapshots of each static block's `save()` output, and every `deprecated` version must still parse and migrate. A failing snapshot means existing content would show "This block contains unexpected or invalid content": add the previous `save()` to `deprecated.js` before updating the snapshots.
+- `tests/js/tailwind-safelist.test.js`: every class the inspector settings can generate must be either written as-is in `src/` or listed in the `@source inline(...)` safelist above. Extend the safelist when you add a value.
+- `tests/php/test-faq-schema.php`: the `ufo-faq` JSON-LD filter, run without WordPress (`php` 7.4+ required).
+
+The release workflow runs `npm test` before building the zip.
 
 ## Further reading
 
