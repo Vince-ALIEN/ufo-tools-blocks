@@ -54,6 +54,8 @@ const iconMap = {
 export const getBlockIcon = ( iconName, options = {} ) => {
 	const Icon = iconMap[ iconName ];
 	if ( ! Icon ) {
+		// Avertit le développeur dans l'éditeur ; le bloc s'affiche sans icône.
+		// eslint-disable-next-line no-console
 		console.warn(
 			`Icon "${ iconName }" not found in iconMap. Add it to icons.js`
 		);

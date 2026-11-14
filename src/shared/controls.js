@@ -11,14 +11,16 @@ import {
 	FlexItem,
 	RangeControl,
 	SelectControl,
-	__experimentalToolsPanel as ToolsPanel,
-	__experimentalToolsPanelItem as ToolsPanelItem,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	__experimentalAlignmentMatrixControl as AlignmentMatrixControl,
 	BaseControl,
 } from '@wordpress/components';
 import { useViewportMatch } from '@wordpress/compose';
+import {
+	ToolsPanel,
+	ToolsPanelItem,
+	ToggleGroupControl,
+	ToggleGroupControlOption,
+	AlignmentMatrixControl,
+} from './wp-components';
 
 /**
  * Même placement du menu « ⋮ » des ToolsPanel que dans les blocs core.
@@ -32,6 +34,9 @@ export function useToolsPanelDropdownMenuProps() {
 
 /**
  * Valeurs par défaut des attributs déclarés dans un block.json.
+ *
+ * @param {Object} metadata Contenu du block.json (clé `attributes`).
+ * @return {Object} Valeur par défaut de chaque attribut, par nom.
  */
 export function getAttributeDefaults( metadata ) {
 	return Object.fromEntries(
@@ -44,6 +49,14 @@ export function getAttributeDefaults( metadata ) {
 /**
  * ToolsPanel dont « Tout réinitialiser » remet les attributs listés à leur
  * valeur par défaut. Chaque enfant est un PanelItem.
+ *
+ * @param {Object}                       props               Propriétés du composant.
+ * @param {string}                       props.label         Titre du panneau.
+ * @param {Object}                       props.defaults      Valeurs par défaut des attributs.
+ * @param {string[]}                     props.keys          Attributs remis à zéro par « Tout réinitialiser ».
+ * @param {(attributes: Object) => void} props.setAttributes setAttributes du bloc.
+ * @param {Element}                      props.children      PanelItem du panneau.
+ * @return {Element} Le ToolsPanel.
  */
 export function UfoToolsPanel( {
 	label,
@@ -67,6 +80,16 @@ export function UfoToolsPanel( {
 /**
  * ToolsPanelItem lié à un ou plusieurs attributs : il a une valeur dès que
  * l'un d'eux s'écarte de sa valeur par défaut.
+ *
+ * @param {Object}                       props                  Propriétés du composant.
+ * @param {string}                       props.label            Libellé dans le menu du panneau.
+ * @param {string[]}                     props.keys             Attributs gérés par cet élément.
+ * @param {Object}                       props.attributes       Attributs du bloc.
+ * @param {Object}                       props.defaults         Valeurs par défaut des attributs.
+ * @param {(attributes: Object) => void} props.setAttributes    setAttributes du bloc.
+ * @param {boolean}                      props.isShownByDefault Affiché sans passer par le menu.
+ * @param {Element}                      props.children         Contrôle(s) de l'élément.
+ * @return {Element} Le ToolsPanelItem.
  */
 export function PanelItem( {
 	label,
@@ -95,6 +118,13 @@ export function PanelItem( {
 	);
 }
 
+/**
+ * Sous-ensemble d'un objet limité à certaines clés.
+ *
+ * @param {Object}   object Objet source.
+ * @param {string[]} keys   Clés à garder.
+ * @return {Object} Nouvel objet avec ces seules clés.
+ */
 function pick( object, keys ) {
 	return Object.fromEntries( keys.map( ( key ) => [ key, object[ key ] ] ) );
 }
@@ -106,6 +136,9 @@ const COMMON_CONTROL_PROPS = {
 
 /**
  * Valeur Tailwind de l'échelle d'espacement (N × 0,25rem = N × 4px).
+ *
+ * @param {string|number} value Pas de l'échelle (« 4 » pour 16px).
+ * @return {string} Taille en pixels, par exemple « 16px ».
  */
 function spacingHelp( value ) {
 	return `${ Number( value || 0 ) * 4 }px`;
@@ -113,6 +146,15 @@ function spacingHelp( value ) {
 
 /**
  * Curseur pour un attribut texte de l'échelle Tailwind (« 0 », « 2 »…).
+ *
+ * @param {Object}                  props          Propriétés du composant.
+ * @param {string}                  props.label    Libellé du curseur.
+ * @param {string}                  props.value    Valeur actuelle (texte, ex. « 4 »).
+ * @param {(value: string) => void} props.onChange Reçoit la nouvelle valeur, en texte.
+ * @param {number}                  props.max      Valeur maximale (16 par défaut).
+ * @param {number}                  props.step     Pas du curseur (2 par défaut).
+ * @param {string}                  props.help     Aide affichée ; par défaut, la taille en pixels.
+ * @return {Element} Le RangeControl.
  */
 export function SpacingRangeControl( {
 	label,
@@ -196,6 +238,14 @@ export function BorderRadiusControl( { value, onChange } ) {
 
 /**
  * Sélecteur de média avec aperçu, boutons Remplacer / Supprimer.
+ *
+ * @param {Object}                  props              Propriétés du composant.
+ * @param {string}                  props.label        Libellé du contrôle.
+ * @param {Object}                  props.media        Média choisi ({ url, id, … }).
+ * @param {string[]}                props.allowedTypes Types acceptés (« image », « video »).
+ * @param {(media: Object) => void} props.onSelect     Reçoit le média choisi.
+ * @param {() => void}              props.onRemove     Appelé par « Supprimer ».
+ * @return {Element} Le contrôle.
  */
 export function MediaControl( {
 	label,
@@ -208,14 +258,19 @@ export function MediaControl( {
 	const isImage = allowedTypes.includes( 'image' );
 
 	return (
-		<BaseControl __nextHasNoMarginBottom label={ label }>
+		<BaseControl __nextHasNoMarginBottom>
+			<BaseControl.VisualLabel>{ label }</BaseControl.VisualLabel>
 			<MediaUploadCheck>
 				<MediaUpload
 					onSelect={ onSelect }
 					allowedTypes={ allowedTypes }
 					value={ media?.id }
 					render={ ( { open } ) => (
-						<div className="ufo-media-control">
+						<div
+							className="ufo-media-control"
+							role="group"
+							aria-label={ label }
+						>
 							{ hasMedia && isImage && (
 								<button
 									type="button"
@@ -281,6 +336,14 @@ const EMPTY_IMAGE = { url: '', id: null, alt: '' };
 /**
  * Panneau « Arrière-plan » de l'onglet Styles : image, taille, position et,
  * pour la grille, vidéo (passée en enfant).
+ *
+ * @param {Object}                       props               Propriétés du composant.
+ * @param {Object}                       props.attributes    Attributs du bloc.
+ * @param {(attributes: Object) => void} props.setAttributes setAttributes du bloc.
+ * @param {Object}                       props.defaults      Valeurs par défaut des attributs.
+ * @param {Element}                      props.children      Éléments en plus (vidéo de la grille).
+ * @param {string[]}                     props.extraKeys     Attributs de ces éléments, pour « Tout réinitialiser ».
+ * @return {Element} Le panneau.
  */
 export function BackgroundPanel( {
 	attributes,
@@ -357,11 +420,12 @@ export function BackgroundPanel( {
 								label={ __( 'Auto', 'ufo-tools-blocks' ) }
 							/>
 						</ToggleGroupControl>
-						<BaseControl
-							__nextHasNoMarginBottom
-							label={ __( 'Position', 'ufo-tools-blocks' ) }
-						>
+						<BaseControl __nextHasNoMarginBottom>
+							<BaseControl.VisualLabel>
+								{ __( 'Position', 'ufo-tools-blocks' ) }
+							</BaseControl.VisualLabel>
 							<AlignmentMatrixControl
+								label={ __( 'Position', 'ufo-tools-blocks' ) }
 								value={ backgroundPosition || 'center center' }
 								onChange={ ( value ) =>
 									setAttributes( {

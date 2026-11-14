@@ -2,6 +2,13 @@
  * Comportement front de ufo-tabs (src/ufo-tabs/view.js) sur le balisage
  * produit par render.php.
  */
+
+/**
+ * Balisage de render.php pour un nombre d'onglets donné.
+ *
+ * @param {number} count Nombre d'onglets.
+ * @return {string} HTML du bloc.
+ */
 const markup = ( count ) => `
 <div data-ufo-tabs>
   <div><div role="tablist">

@@ -9,17 +9,15 @@ import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
 
 const ALLOWED_BLOCKS = [ 'ufo-blocks/ufo-button' ];
 
+const JUSTIFY_CLASSES = { left: 'justify-start', center: 'justify-center' };
+
 export default function Edit( { attributes, setAttributes } ) {
 	const { buttonAlignment } = attributes;
 
 	const blockProps = useBlockProps( { 'data-align': buttonAlignment } );
 
 	const containerClasses = `lg:flex lg:flex-nowrap p-4 gap-2 lg:space-y-0 space-y-2 ${
-		buttonAlignment === 'left'
-			? 'justify-start'
-			: buttonAlignment === 'center'
-				? 'justify-center'
-				: 'justify-end'
+		JUSTIFY_CLASSES[ buttonAlignment ] ?? 'justify-end'
 	}`;
 
 	return (
