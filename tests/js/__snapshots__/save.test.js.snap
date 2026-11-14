@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`save() ufo-buttons-group center 1`] = `"<div class="wp-block-ufo-blocks-ufo-buttons-group"><div class="flex flex-col lg:flex-row lg:flex-nowrap lg:items-stretch p-4 gap-2 items-center lg:justify-center"></div></div>"`;
 
