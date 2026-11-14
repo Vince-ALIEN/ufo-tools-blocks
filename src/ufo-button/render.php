@@ -8,6 +8,8 @@
  *   $block       (WP_Block)
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $button_text   = $attributes['buttonText']   ?? '';
 $button_url    = $attributes['buttonUrl']    ?? '';
 $button_icon   = $attributes['buttonIcon']   ?? '';
