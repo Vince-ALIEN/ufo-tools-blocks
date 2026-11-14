@@ -1,6 +1,6 @@
 {
   "name": "ufo-tools-blocks",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Blocs Gutenberg personnalisés avec Tailwind CSS",
   "main": "index.js",
   "scripts": {
