@@ -12,7 +12,8 @@
 defined( 'ABSPATH' ) || exit;
 
 $icon      = $attributes['icon']     ?? '';
-$icon_size = (int) ( $attributes['iconSize'] ?? 32 );
+// Bornes du réglage de l'éditeur (RangeControl 12 à 120).
+$icon_size = max( 12, min( 120, (int) ( $attributes['iconSize'] ?? 32 ) ) );
 
 if ( empty( $icon ) ) {
 	return;

@@ -8,7 +8,7 @@
  * Version:           1.0.6
  * Author:            Vincent LASSERRE
  * License:           GPL-2.0-or-later
- * License URI:       https://www.ufo-agency.com/
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       ufo-tools-blocks
  * Update URI:        https://github.com/Vince-ALIEN/ufo-tools-blocks
  *
