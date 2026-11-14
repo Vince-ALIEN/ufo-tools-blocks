@@ -9,6 +9,8 @@
  *   $block       (WP_Block)
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $icon      = $attributes['icon']     ?? '';
 $icon_size = (int) ( $attributes['iconSize'] ?? 32 );
 

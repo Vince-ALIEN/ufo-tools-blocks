@@ -14,6 +14,8 @@
  * @package UfoToolsBlocks
  */
 
+defined( 'ABSPATH' ) || exit;
+
 if ( ! function_exists( 'ufo_get_icon_svg' ) ) :
 	/**
 	 * Retourne le HTML <svg> d'une icône Lucide.

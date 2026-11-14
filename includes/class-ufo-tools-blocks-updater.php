@@ -119,7 +119,7 @@ final class Ufo_Tools_Blocks_Updater {
 	 * @return array|null
 	 */
 	private function get_release() {
-		$force  = is_admin() && isset( $_GET['force-check'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$force  = isset( $_GET['force-check'] ) && current_user_can( 'update_plugins' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$cached = $force ? false : get_site_transient( self::CACHE_KEY );
 
 		if ( is_array( $cached ) && array_key_exists( 'release', $cached ) ) {
@@ -177,10 +177,14 @@ final class Ufo_Tools_Blocks_Updater {
 			return null;
 		}
 
+		// Lien de la release : accepté seulement s'il pointe vers ce dépôt.
+		$repo_url = 'https://github.com/' . self::REPO . '/';
+		$html_url = isset( $data['html_url'] ) ? (string) $data['html_url'] : '';
+
 		return array(
 			'version'      => $version,
 			'package'      => $package,
-			'url'          => isset( $data['html_url'] ) ? (string) $data['html_url'] : 'https://github.com/' . self::REPO . '/releases',
+			'url'          => 0 === strpos( $html_url, $repo_url ) ? $html_url : $repo_url . 'releases',
 			'body'         => trim( isset( $data['body'] ) ? (string) $data['body'] : '' ),
 			'published_at' => isset( $data['published_at'] ) ? (string) $data['published_at'] : '',
 		);

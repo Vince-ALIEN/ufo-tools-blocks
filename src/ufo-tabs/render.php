@@ -13,6 +13,8 @@
  *   $block       (WP_Block)
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $tabs = array();
 foreach ( $block->inner_blocks as $inner ) {
 	if ( 'ufo-blocks/ufo-tab' !== $inner->name ) {
