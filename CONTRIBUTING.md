@@ -115,6 +115,33 @@ Créer une Pull Request sur GitHub avec :
 
 ## Standards de code
 
+**Tout le code suit le style WordPress** ([WordPress Coding Standards](https://developer.wordpress.org/coding-standards/)) : tabulations, guillemets simples en JS, espaces dans les parenthèses. Le projet est travaillé sur plusieurs ordinateurs : chaque poste doit être réglé comme ci-dessous, sinon l'éditeur reformate les fichiers dans un autre style et les diffs se remplissent de changements de mise en forme.
+
+### Réglage de chaque ordinateur
+
+À faire une fois par clone du dépôt :
+
+```bash
+npm ci                                                   # installe wp-prettier, ESLint et stylelint du projet
+git config blame.ignoreRevsFile .git-blame-ignore-revs   # git blame ignore le commit de reformatage
+```
+
+Dans l'éditeur :
+
+- **EditorConfig** activé (lit `.editorconfig` : tabulations, LF, UTF-8 ; JSON et YAML en 2 espaces).
+- **Prettier** pour le JS, avec formatage à l'enregistrement, en utilisant le Prettier **du projet** (`node_modules/prettier`, qui est wp-prettier). Un Prettier global ou celui fourni par l'éditeur ne connaît pas l'option `parenSpacing` et retirerait les espaces dans les parenthèses à chaque sauvegarde.
+- **stylelint** pour le CSS (correction à l'enregistrement). Prettier ignore le CSS (`.prettierignore`) : ses règles contredisent celles de stylelint.
+
+### Vérifier
+
+```bash
+npm run check:style   # mise en forme JS (Prettier) et CSS (stylelint)
+npm run format        # reformate le JS selon le style WordPress
+```
+
+`npm test` lance aussi `check:style`, et le workflow de release exécute `npm test` : un fichier mal formaté bloque la release.
+
+
 ### PHP
 
 ```php

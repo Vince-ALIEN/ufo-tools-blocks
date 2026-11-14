@@ -1,0 +1,6 @@
+# CSS : stylelint fait foi (wp-scripts lint-style --fix). Prettier et les règles
+# stylelint de WordPress ne s'accordent pas sur la mise en forme.
+*.css
+build/
+node_modules/
+vendor/

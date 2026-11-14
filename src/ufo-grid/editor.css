@@ -36,9 +36,9 @@
 	outline: 2px solid var(--ufo-color-accent);
 }
 
-/* Marges (haute pour l'étiquette, basse, gauche et droite) et fond de la grille : sur le conteneur
-   des cellules, pour ne pas écraser les classes py-* ni le fond choisi sur la
-   grille elle-même. */
+/* Marges (haute pour l'étiquette, basse, gauche et droite) et fond de la
+   grille : sur le conteneur des cellules, pour ne pas écraser les classes
+   py-* ni le fond choisi sur la grille elle-même. */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout {
 	padding: var(--ufo-grid-space-top) var(--ufo-grid-space-x) var(--ufo-grid-space-bottom);
 	background-color: var(--ufo-color-grid-bg);
@@ -81,6 +81,7 @@
    (gap-N de Tailwind = N × --spacing). La grille n'a plusieurs colonnes
    qu'à partir de md. */
 @media (min-width: 768px) {
+
 	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout {
 		position: relative;
 	}
@@ -91,16 +92,11 @@
 		content: "";
 		position: absolute;
 		inset: var(--ufo-grid-space-top) var(--ufo-grid-space-x) var(--ufo-grid-space-bottom);
+
 		/* Sous les cellules (position: relative, plus loin dans le
 		   document) : les guides restent visibles dans les colonnes vides. */
 		z-index: 0;
-		background-image: repeating-linear-gradient(
-			to right,
-			var(--ufo-color-guide) 0,
-			var(--ufo-color-guide) var(--ufo-col-size),
-			transparent var(--ufo-col-size),
-			transparent calc(var(--ufo-col-size) + var(--ufo-gap-size))
-		);
+		background-image: repeating-linear-gradient(to right, var(--ufo-color-guide) 0, var(--ufo-color-guide) var(--ufo-col-size), transparent var(--ufo-col-size), transparent calc(var(--ufo-col-size) + var(--ufo-gap-size)));
 		opacity: 0;
 		transition: opacity var(--ufo-transition);
 		pointer-events: none;

@@ -17,10 +17,11 @@
     "packages-update": "wp-scripts packages-update",
     "start": "wp-scripts start",
     "test:e2e": "wp-scripts test-e2e",
-    "test": "npm run test:unit && npm run test:php",
+    "test": "npm run check:style && npm run test:unit && npm run test:php",
     "test:unit": "wp-scripts test-unit-jest",
     "test:php": "php tests/php/test-faq-schema.php",
-    "plugin-zip": "wp-scripts plugin-zip --config .distignore"
+    "plugin-zip": "wp-scripts plugin-zip --config .distignore",
+    "check:style": "prettier --check \"**/*.{js,cjs,mjs,jsx}\" && wp-scripts lint-style \"src/**/*.css\""
   },
   "keywords": [
     "wordpress",
@@ -42,6 +43,7 @@
     "@wordpress/hooks": "^4.44.0",
     "@wordpress/i18n": "^6.17.0",
     "@wordpress/jest-preset-default": "^14.2.0",
+    "@wordpress/prettier-config": "^5.1.0",
     "@wordpress/scripts": "^37.1.0",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^30.5.0",

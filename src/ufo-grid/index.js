@@ -10,13 +10,13 @@ import metadata from './block.json';
 /**
  * Enregistrement du bloc Grid
  */
-registerBlockType(metadata.name, {
-    icon: getBlockIcon('LayoutDashboard', {
-        background: '#F6F6F7',
-        color: '#EB9188'
-    }),
-    edit: Edit,
-    save,
-    variations,
-    transforms,
-});
+registerBlockType( metadata.name, {
+	icon: getBlockIcon( 'LayoutDashboard', {
+		background: '#F6F6F7',
+		color: '#EB9188',
+	} ),
+	edit: Edit,
+	save,
+	variations,
+	transforms,
+} );
