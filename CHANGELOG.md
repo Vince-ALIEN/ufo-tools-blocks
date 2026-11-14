@@ -5,6 +5,17 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] - 2026-11-14
+
+### Changed
+- Editor: the experimental WordPress components (`ToolsPanel`, `ToolsPanelItem`, `ToggleGroupControl`, `AlignmentMatrixControl`, `BlockVariationPicker`) are loaded through `src/shared/wp-components.js`, which uses the stable name when the site's WordPress provides it and falls back to the `__experimental` name otherwise.
+- Editor: the icon pickers (`ufo-button`, `ufo-icon`, `ufo-title`), the media picker and the background position matrix are named groups for screen readers (visual label plus `role="group"` / `aria-label`); their label previously pointed to no field.
+- Editor placeholders use the ellipsis character (`…`) instead of three dots.
+- Build tooling: `@wordpress/scripts` 32 → 37. Unit tests stay on Jest (`wp-scripts test-unit-jest`). No high or critical `npm audit` alert remains, none in shipped code.
+- Source code follows the WordPress coding standards (JS and CSS), enforced by `npm run check:style` in `npm test` and therefore in the release workflow.
+
+The front-end output is unchanged: CSS, `render.php`, `block.json` and `ufo-tabs/view.js` are identical to 1.0.7, and the saved markup of the static blocks is unchanged (snapshot tests).
+
 ## [1.0.7] - 2026-11-14
 
 ### Security
