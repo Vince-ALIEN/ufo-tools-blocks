@@ -16,7 +16,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 - `example` in every `block.json` (inserter preview, and a valid model in `/wp/v2/block-types`).
-- `GET /wp-json/ufo-tools-blocks/v1/guide` (usage guide for AI assistants, `docs/blocs-pour-ia.md`, copied into `build/`) and `POST /wp-json/ufo-tools-blocks/v1/check` (checks block markup without saving it). Both require `edit_posts`; `check` is limited to 1 MB and 40 nesting levels.
+- `GET /wp-json/ufo-tools-blocks/v1/guide` (usage guide for AI assistants, `docs/blocs-pour-ia.md`, copied into `build/`) and `POST /wp-json/ufo-tools-blocks/v1/check` (checks block markup without saving it). Both require `edit_posts`; `check` is limited to 1 MB and 40 nesting levels, and details at most 200 errors and 200 warnings (`error_count`, `warning_count` and `truncated` give the totals).
 - `scripts/check-rendering.php` (`wp eval-file`): front-end output of every content using `ufo-blocks/*`, to compare before / after an update.
 - Tests: legacy content fixtures and their migrated version, JS/PHP class equivalence, `block.json` examples.
 

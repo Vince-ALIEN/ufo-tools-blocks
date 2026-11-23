@@ -145,9 +145,14 @@ la palette du thème, `style`) plutôt que des classes.
 
 ```json
 { "valid": false, "version": "1.1.0", "blocks": 12,
+  "error_count": 1, "warning_count": 0, "truncated": false,
   "errors": [ { "block": "ufo-blocks/ufo-row", "path": "0.1", "message": "…" } ],
-  "warnings": [ … ] }
+  "warnings": [] }
 ```
+
+Au plus 200 erreurs et 200 avertissements sont détaillés ; au-delà, `truncated` vaut `true`
+et `error_count` / `warning_count` donnent les totaux. `path` donne la position du bloc
+(indices séparés par des points, à partir de 0).
 
 Erreurs : bloc inconnu du site, bloc hors de son parent (`parent` / `ancestor`), attribut
 non déclaré, type ou `enum` non respecté, ancien HTML statique dans un bloc `ufo-blocks/*`,

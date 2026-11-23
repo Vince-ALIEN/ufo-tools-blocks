@@ -22,6 +22,13 @@ const UFO_TOOLS_BLOCKS_CHECK_MAX_BYTES = 1048576;
 const UFO_TOOLS_BLOCKS_CHECK_MAX_DEPTH = 40;
 
 /**
+ * Nombre maximal de constats détaillés par niveau (erreurs, avertissements)
+ * dans la réponse de /check : sans plafond, 1 Mo de blocs inconnus donnait
+ * une réponse de plus de 4 Mo. Les suivants sont seulement comptés.
+ */
+const UFO_TOOLS_BLOCKS_CHECK_MAX_ISSUES = 200;
+
+/**
  * Blocs du plugin statiques jusqu'à la 1.0.8 : leur ancien HTML enregistré
  * reste accepté (affiché tel quel, migré à la sauvegarde dans l'éditeur).
  */
@@ -125,6 +132,10 @@ function ufo_tools_blocks_rest_check( WP_REST_Request $request ) {
 	$report  = array(
 		'errors'   => array(),
 		'warnings' => array(),
+		'counts'   => array(
+			'errors'   => 0,
+			'warnings' => 0,
+		),
 		'blocks'   => 0,
 	);
 
@@ -132,17 +143,23 @@ function ufo_tools_blocks_rest_check( WP_REST_Request $request ) {
 
 	return rest_ensure_response(
 		array(
-			'valid'    => empty( $report['errors'] ),
-			'version'  => ufo_tools_blocks_version(),
-			'blocks'   => $report['blocks'],
-			'errors'   => $report['errors'],
-			'warnings' => $report['warnings'],
+			'valid'         => 0 === $report['counts']['errors'],
+			'version'       => ufo_tools_blocks_version(),
+			'blocks'        => $report['blocks'],
+			'error_count'   => $report['counts']['errors'],
+			'warning_count' => $report['counts']['warnings'],
+			// Vrai si errors ou warnings ne listent pas tous les constats.
+			'truncated'     => $report['counts']['errors'] > count( $report['errors'] )
+				|| $report['counts']['warnings'] > count( $report['warnings'] ),
+			'errors'        => $report['errors'],
+			'warnings'      => $report['warnings'],
 		)
 	);
 }
 
 /**
- * Ajoute un problème au rapport.
+ * Ajoute un problème au rapport (compté, et détaillé dans la limite de
+ * UFO_TOOLS_BLOCKS_CHECK_MAX_ISSUES).
  *
  * @param array       $report  Rapport (modifié).
  * @param string      $level   errors ou warnings.
@@ -151,6 +168,10 @@ function ufo_tools_blocks_rest_check( WP_REST_Request $request ) {
  * @param string      $message Message.
  */
 function ufo_tools_blocks_check_report( array &$report, $level, $name, $path, $message ) {
+	++$report['counts'][ $level ];
+	if ( count( $report[ $level ] ) >= UFO_TOOLS_BLOCKS_CHECK_MAX_ISSUES ) {
+		return;
+	}
 	$report[ $level ][] = array(
 		'block'   => $name,
 		'path'    => $path,
