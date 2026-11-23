@@ -4,7 +4,7 @@
   "title": "ufo FAQ Item",
   "category": "ufo-blocks",
   "icon": "plus",
-  "description": "Élément FAQ avec question et réponse en InnerBlocks.",
+  "description": "Une question (texte du résumé) et sa réponse (blocs enfants : paragraphes, listes…), dépliable. Uniquement dans un ufo FAQ.",
   "parent": ["ufo-blocks/ufo-faq"],
   "supports": {
     "html": false
@@ -15,8 +15,21 @@
   "attributes": {
     "question": {
       "type": "string",
-      "source": "html",
-      "selector": ".faq-question"
+      "default": ""
     }
-  }
+  },
+  "example": {
+    "attributes": {
+      "question": "Proposez-vous la maintenance ?"
+    },
+    "innerBlocks": [
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "Oui, avec un contrat de maintenance annuel : mises à jour, sauvegardes et surveillance."
+        }
+      }
+    ]
+  },
+  "render": "file:./render.php"
 }

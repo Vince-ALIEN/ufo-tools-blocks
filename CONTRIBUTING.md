@@ -187,6 +187,13 @@ Toute nouvelle fonctionnalité doit inclure :
 1. Mise à jour du `README.md` (attributs, usage)
 2. Mise à jour de `DEVELOPERS.md` si technique
 3. Entrée dans `CHANGELOG.md`
+4. Mise à jour de `docs/blocs-pour-ia.md` (guide servi aux assistants IA par
+   `GET ufo-tools-blocks/v1/guide`) : valeurs acceptées, changements de balisage
+5. Un `example` à jour dans le `block.json` de tout bloc ajouté ou modifié
+
+Pour un changement de classes d'un bloc : modifier ensemble `shared.js` (éditeur) et
+`includes/ufo-tools-blocks-classes.php` (site), jamais `deprecated.js` (balisage déjà
+enregistré, figé).
 
 ---
 

@@ -4,7 +4,7 @@
   "title": "Ufo Tabs",
   "category": "ufo-blocks",
   "icon": "AppWindowMac",
-  "description": "Des onglets soulignés : un titre par onglet, un panneau de contenu par onglet.",
+  "description": "Onglets soulignés, accessibles au clavier : un ufo Tab par onglet (titre + contenu). Le premier onglet est ouvert. Pour présenter des offres ou des contenus alternatifs sans allonger la page.",
   "keywords": ["onglets", "tabs"],
   "supports": {
     "html": false,
@@ -15,5 +15,37 @@
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "viewScript": "file:./view.js",
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "example": {
+    "innerBlocks": [
+      {
+        "name": "ufo-blocks/ufo-tab",
+        "attributes": {
+          "title": "Site vitrine"
+        },
+        "innerBlocks": [
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Cinq à dix pages pour présenter votre activité."
+            }
+          }
+        ]
+      },
+      {
+        "name": "ufo-blocks/ufo-tab",
+        "attributes": {
+          "title": "Boutique"
+        },
+        "innerBlocks": [
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Vente en ligne avec WooCommerce."
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

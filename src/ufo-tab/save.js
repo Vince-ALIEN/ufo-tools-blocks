@@ -1,9 +1,11 @@
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
- * Contenu seul : le titre est lu par le rendu de ufo-tabs (render.php), qui
- * construit la barre d'onglets et enveloppe ce contenu dans le tabpanel.
+ * Rendu serveur (render.php) depuis la 1.1.0 : seuls les attributs (dans le
+ * commentaire du bloc) et les blocs enfants sont enregistrés, donc aucun HTML
+ * à reproduire au caractère près. Les formats enregistrés auparavant sont dans
+ * deprecated.js.
  */
 export default function save() {
-	return <div { ...useInnerBlocksProps.save( useBlockProps.save() ) } />;
+	return <InnerBlocks.Content />;
 }

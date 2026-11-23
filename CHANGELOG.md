@@ -5,6 +5,24 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-23
+
+### Changed
+- **Server-side rendering for every block.** `ufo-grid`, `ufo-row`, `ufo-buttons-group`, `ufo-faq`, `ufo-faq-item` and `ufo-tab` get a `render.php`: saved content now only holds the block comments (attributes) and the inner blocks, so it can no longer show "This block contains unexpected or invalid content", whoever writes it (editor, import, copy-paste, AI assistant), and a later class change no longer requires a `deprecated` entry.
+- Content saved by 1.0.8 and earlier is untouched: its front-end output is identical (it is displayed as saved) and the editor recognises it through a frozen copy of the 1.0.8 `save()` in each `deprecated.js`, then saves it in the new format. Checked on a local copy: 6 posts / 92 `ufo-blocks` blocks valid in the editor, front-end HTML identical before and after the update, and identical between the old and the migrated markup.
+- `ufo-faq-item`: the question is stored in the block comment (`question` attribute) instead of the HTML (`.faq-question`). The JSON-LD FAQPage is built by `ufo-faq/render.php` (the `render_block` filter is removed).
+- Block descriptions rewritten in French, for their use.
+- Items saved in a format older than 1.0.8 (button groups from ufo-blocks < 1.6.0, FAQ items ≤ 1.0.4) still look as before; once re-saved in the editor they take the current style, as they already did.
+
+### Added
+- `example` in every `block.json` (inserter preview, and a valid model in `/wp/v2/block-types`).
+- `GET /wp-json/ufo-tools-blocks/v1/guide` (usage guide for AI assistants, `docs/blocs-pour-ia.md`, copied into `build/`) and `POST /wp-json/ufo-tools-blocks/v1/check` (checks block markup without saving it). Both require `edit_posts`; `check` is limited to 1 MB and 40 nesting levels.
+- `scripts/check-rendering.php` (`wp eval-file`): front-end output of every content using `ufo-blocks/*`, to compare before / after an update.
+- Tests: legacy content fixtures and their migrated version, JS/PHP class equivalence, `block.json` examples.
+
+### Security
+- Background image URL, size and position (block comment attributes) are sanitized before going into the inline style: no way out of `url(…)` and no extra CSS declaration.
+
 ## [1.0.8] - 2026-11-14
 
 ### Changed

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests du filtre JSON-LD de ufo-faq (includes/ufo-faq-schema.php).
+ * Tests du schema JSON-LD de ufo-faq (includes/ufo-faq-schema.php).
  *
  * Autonome, sans WordPress : les quelques fonctions du cœur utilisées sont
  * simulées ci-dessous. Lancer : php tests/php/test-faq-schema.php
@@ -10,11 +10,6 @@
 
 define( 'ABSPATH', __DIR__ . '/' );
 
-$GLOBALS['ufo_test_filters'] = array();
-
-function add_filter( $hook, $callback ) {
-	$GLOBALS['ufo_test_filters'][ $hook ] = $callback;
-}
 function wp_strip_all_tags( $text ) {
 	$text = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $text );
 	return trim( strip_tags( $text ) );
@@ -37,21 +32,38 @@ function check( $label, $condition ) {
 	}
 }
 
-function render_faq( $attrs, $items, $content = '<div class="wp-block-ufo-blocks-ufo-faq"></div>' ) {
-	$callback = $GLOBALS['ufo_test_filters']['render_block'];
-	return $callback( $content, array(
-		'blockName'   => 'ufo-blocks/ufo-faq',
-		'attrs'       => $attrs,
-		'innerBlocks' => $items,
-	) );
+function render_faq( $attrs, $items ) {
+	return ufo_tools_blocks_faq_schema(
+		array(
+			'blockName'   => 'ufo-blocks/ufo-faq',
+			'attrs'       => $attrs,
+			'innerBlocks' => $items,
+		)
+	);
 }
 
+// Format actuel (1.1.0) : question dans les attributs, réponse en blocs enfants.
 function faq_item( $question, $answers ) {
 	return array(
 		'blockName'    => 'ufo-blocks/ufo-faq-item',
+		'attrs'        => array( 'question' => $question ),
 		'innerBlocks'  => $answers,
 		'innerContent' => array_merge(
-			array( '<details><summary><span class="faq-question">' . $question . '</span></summary><div class="faq-content">' ),
+			array( "\n" ),
+			array_fill( 0, count( $answers ), null ),
+			array( "\n" )
+		),
+	);
+}
+
+// Format ≤ 1.0.8 : question seulement dans le HTML enregistré.
+function legacy_faq_item( $question, $answers ) {
+	return array(
+		'blockName'    => 'ufo-blocks/ufo-faq-item',
+		'attrs'        => array(),
+		'innerBlocks'  => $answers,
+		'innerContent' => array_merge(
+			array( '<details class="wp-block-ufo-blocks-ufo-faq-item"><summary><span class="faq-question">' . $question . '</span><span aria-hidden="true" class="ml-4 flex-shrink-0"><span class="group-open:hidden"><svg></svg></span></span></summary><div class="faq-content">' ),
 			array_fill( 0, count( $answers ), null ),
 			array( '</div></details>' )
 		),
@@ -106,18 +118,27 @@ $schema = schema_of( render_faq( array(), array( faq_item( 'Prix &amp; délais ?
 check( 'question décodée', 'Prix & délais ?' === $schema['mainEntity'][0]['name'] );
 check( 'réponse imbriquée complète', 'Premier & second Un Deux' === $schema['mainEntity'][0]['acceptedAnswer']['text'] );
 
-// 3. Schema incomplet de save.js toujours retiré.
-$saved = '<script type="application/ld+json">{"@type":"FAQPage","name":"x"}</script><div class="wp-block-ufo-blocks-ufo-faq"></div>';
-$html  = render_faq( array( 'schemaName' => 'x' ), array(), $saved );
-check( 'sans question : aucun schema', null === schema_of( $html ) );
-$html = render_faq( array( 'enableSchema' => false ), array( faq_item( 'Q ?', array( paragraph( 'R' ) ) ) ), $saved );
-check( 'schema désactivé : aucun schema', null === schema_of( $html ) );
-$html = render_faq( array( 'schemaName' => 'FAQ' ), array( faq_item( 'Q ?', array( paragraph( 'R' ) ) ) ), $saved );
+// 3. Sans question ou schema désactivé : rien.
+check( 'sans question : aucun schema', '' === render_faq( array( 'schemaName' => 'x' ), array() ) );
+check( 'schema désactivé : aucun schema', '' === render_faq( array( 'enableSchema' => false ), array( faq_item( 'Q ?', array( paragraph( 'R' ) ) ) ) ) );
+$html = render_faq( array( 'schemaName' => 'FAQ' ), array( faq_item( 'Q ?', array( paragraph( 'R' ) ) ) ) );
 check( 'un seul schema, complet', 1 === substr_count( $html, 'application/ld+json' ) && 'FAQ' === schema_of( $html )['name'] );
 
-// 4. Autres blocs inchangés.
-$callback = $GLOBALS['ufo_test_filters']['render_block'];
-check( 'autres blocs inchangés', '<p>x</p>' === $callback( '<p>x</p>', array( 'blockName' => 'core/paragraph' ) ) );
+// 4. Contenu enregistré en 1.0.8 : question relue dans le HTML, même quand
+// elle contient elle-même un <span> (format Langue de RichText).
+$schema = schema_of(
+	render_faq(
+		array(),
+		array(
+			legacy_faq_item( 'Ancienne question ?', array( paragraph( 'R1' ) ) ),
+			legacy_faq_item( 'Prix <span lang="en">pricing</span> ?', array( paragraph( 'R2' ) ) ),
+			faq_item( 'Nouvelle question ?', array( paragraph( 'R3' ) ) ),
+		)
+	)
+);
+check( 'question ancienne relue', 'Ancienne question ?' === $schema['mainEntity'][0]['name'] );
+check( 'question ancienne avec <span> complète', 'Prix pricing ?' === $schema['mainEntity'][1]['name'] );
+check( 'question du format actuel', 'Nouvelle question ?' === $schema['mainEntity'][2]['name'] );
 
 echo $failures ? "\n$failures échec(s)\n" : "\nTous les tests passent\n";
 exit( $failures ? 1 : 0 );

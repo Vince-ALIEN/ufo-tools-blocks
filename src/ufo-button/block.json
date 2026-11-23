@@ -4,7 +4,7 @@
   "title": "UFO Button",
   "category": "ufo-blocks",
   "icon": "RectangleHorizontal",
-  "description": "Un bouton personnalisable avec styles Tailwind css et icônes Lucide",
+  "description": "Bouton lien (balise <a>) avec icône Lucide facultative, à gauche ou à droite du texte. Sans URL, il n'a pas de href. Se place seul ou dans un ufo Buttons pour aligner plusieurs boutons.",
   "supports": {
     "html": false,
     "anchor": true,
@@ -57,6 +57,14 @@
     "screenReaderText": {
       "type": "string",
       "default": ""
+    }
+  },
+  "example": {
+    "attributes": {
+      "buttonText": "Demander un devis",
+      "buttonUrl": "https://example.com/contact",
+      "buttonIcon": "ArrowRight",
+      "iconPosition": "right"
     }
   }
 }

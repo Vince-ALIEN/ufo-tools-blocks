@@ -6,7 +6,7 @@
   "title": "ufo Grid",
   "category": "ufo-blocks",
   "icon": "LayoutDashboard",
-  "description": "Système de grille responsive utilisant Tailwind CSS",
+  "description": "Grille de 1 à 6 colonnes (une seule sur mobile) : sections de services, cartes, mosaïques. Chaque cellule est un ufo Row. Réglages : espacement, alignement vertical, largeur contenue, image ou vidéo de fond.",
   "allowedBlocks": ["ufo-blocks/ufo-row", "core/image"],
   "keywords": ["grid", "layout", "columns", "tailwind", "ufo"],
   "textdomain": "ufo-tools-blocks",
@@ -81,6 +81,71 @@
       "enum": ["0", "2", "4", "6", "8", "10", "12", "14", "16"]
     }
   },
+  "example": {
+    "attributes": {
+      "columnsCount": 3,
+      "gap": "6"
+    },
+    "innerBlocks": [
+      {
+        "name": "ufo-blocks/ufo-row",
+        "innerBlocks": [
+          {
+            "name": "ufo-blocks/ufo-title",
+            "attributes": {
+              "content": "Création de site",
+              "level": 3,
+              "icon": "Code"
+            }
+          },
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Des sites WordPress rapides et accessibles."
+            }
+          }
+        ]
+      },
+      {
+        "name": "ufo-blocks/ufo-row",
+        "innerBlocks": [
+          {
+            "name": "ufo-blocks/ufo-title",
+            "attributes": {
+              "content": "Référencement",
+              "level": 3,
+              "icon": "Search"
+            }
+          },
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Être trouvé sur les moteurs de recherche."
+            }
+          }
+        ]
+      },
+      {
+        "name": "ufo-blocks/ufo-row",
+        "innerBlocks": [
+          {
+            "name": "ufo-blocks/ufo-title",
+            "attributes": {
+              "content": "Maintenance",
+              "level": 3,
+              "icon": "ShieldCheck"
+            }
+          },
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Mises à jour et sauvegardes suivies."
+            }
+          }
+        ]
+      }
+    ]
+  },
   "providesContext": {
     "ufo-blocks/columnsCount": "columnsCount"
   },
@@ -107,5 +172,6 @@
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
 }

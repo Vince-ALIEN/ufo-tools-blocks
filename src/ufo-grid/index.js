@@ -2,6 +2,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import './style.css';
 import Edit from './edit';
 import save from './save';
+import deprecated from './deprecated';
 import variations from './variations';
 import transforms from './transforms';
 import { getBlockIcon } from '../icons';
@@ -17,6 +18,7 @@ registerBlockType( metadata.name, {
 	} ),
 	edit: Edit,
 	save,
+	deprecated,
 	variations,
 	transforms,
 } );

@@ -4,7 +4,7 @@
   "title": "ufo Buttons",
   "category": "ufo-blocks",
   "icon": "StretchHorizontal",
-  "description": "Un conteneur pour regrouper plusieurs boutons avec alignement",
+  "description": "Rangée de ufo Button alignés à gauche, au centre ou à droite (en colonne sur mobile). Pour les appels à l'action en bas de section.",
   "supports": {
     "html": false,
     "anchor": true
@@ -17,5 +17,28 @@
       "type": "string",
       "default": "left"
     }
-  }
+  },
+  "example": {
+    "attributes": {
+      "buttonAlignment": "left"
+    },
+    "innerBlocks": [
+      {
+        "name": "ufo-blocks/ufo-button",
+        "attributes": {
+          "buttonText": "Demander un devis",
+          "buttonUrl": "https://example.com/contact",
+          "buttonIcon": "ArrowRight"
+        }
+      },
+      {
+        "name": "ufo-blocks/ufo-button",
+        "attributes": {
+          "buttonText": "Nos réalisations",
+          "buttonUrl": "https://example.com/realisations"
+        }
+      }
+    ]
+  },
+  "render": "file:./render.php"
 }

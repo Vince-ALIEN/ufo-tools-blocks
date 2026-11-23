@@ -4,7 +4,7 @@
   "title": "Ufo Tab",
   "category": "ufo-blocks",
   "icon": "RectangleEllipsis",
-  "description": "Un onglet : son titre apparaît dans la barre d'onglets, son contenu dans le panneau.",
+  "description": "Un onglet d'un ufo Tabs : son titre s'affiche dans la barre d'onglets, ses blocs enfants dans le panneau. Uniquement dans un ufo Tabs.",
   "parent": ["ufo-blocks/ufo-tabs"],
   "supports": {
     "html": false,
@@ -16,6 +16,20 @@
       "default": ""
     }
   },
+  "example": {
+    "attributes": {
+      "title": "Tarifs"
+    },
+    "innerBlocks": [
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "Site vitrine à partir de 2 500 € HT."
+        }
+      }
+    ]
+  },
   "textdomain": "ufo-tools-blocks",
-  "editorScript": "file:./index.js"
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
 }
