@@ -30,6 +30,15 @@ It pairs with your Tailwind CSS v4 theme: the plugin ships no CSS of its own, st
 | ufo Title | `ufo-blocks/ufo-title` | Title with icon and rounded background |
 | Ufo Tabs | `ufo-blocks/ufo-tabs` | Underlined tabs (keyboard accessible); each tab is a `ufo-blocks/ufo-tab` |
 
+Since 1.1.0 every block is rendered on the server (`render.php`): saved content only holds block comments with their attributes and the inner blocks, so it can no longer become "unexpected or invalid", whoever writes it (editor, import, AI assistant). Content saved by 1.0.8 and earlier is displayed unchanged and switches to the new format the next time it is saved in the editor.
+
+### For AI assistants
+
+Each `block.json` has an `example`, published by `GET /wp-json/wp/v2/block-types?namespace=ufo-blocks&context=edit`. For users who can edit posts (`edit_posts`), the plugin also adds:
+
+- `GET /wp-json/ufo-tools-blocks/v1/guide`: usage guide (Markdown, [`docs/blocs-pour-ia.md`](docs/blocs-pour-ia.md), in French) and installed version;
+- `POST /wp-json/ufo-tools-blocks/v1/check` with `{ "content": "…" }`: checks block markup without saving it (unknown blocks, parents, undeclared attributes, types and `enum`, malformed comments).
+
 The `ufo-blocks/ufo-bento`, `ufo-blocks/ufo-time` and `ufo-blocks/logo-slider` blocks now live in their own plugins, **ufo-tools-bento**, **ufo-tools-time** and **ufo-tools-logo-slider** (same block names, existing content stays valid).
 
 ## Installation
@@ -72,7 +81,7 @@ This plugin was called `ufo-blocks` up to 1.8.0. Install and activate `ufo-tools
 
 ### Publishing a release
 
-Bump the version in `ufo-tools-blocks.php`, `package.json` and `CHANGELOG.md`, commit, then push the matching tag. The `Release` workflow builds the zip and attaches it to the GitHub release.
+Bump the version in `ufo-tools-blocks.php`, `package.json` and `CHANGELOG.md`, update [`docs/blocs-pour-ia.md`](docs/blocs-pour-ia.md) (markup changes, accepted values), commit, then push the matching tag. The `Release` workflow builds the zip and attaches it to the GitHub release.
 
 ```bash
 git tag v1.6.0 && git push origin v1.6.0
@@ -201,7 +210,7 @@ ufo-tools-blocks/
 │   │   ├── block.json
 │   │   ├── shared.js         # getTailwindClasses(), getBlockStyle()
 │   │   ├── inspector.js
-│   │   ├── edit.js / save.js
+│   │   ├── edit.js / save.js / deprecated.js / render.php
 │   │   └── editor.css / style.css
 │   ├── ufo-button/           # Button with Lucide icon
 │   ├── ufo-buttons-group/    # Button group
@@ -228,15 +237,28 @@ ufo-tools-blocks/
 | `npm run lint:js` | JavaScript linting |
 | `npm run plugin-zip` | Generate plugin archive |
 | `npm test` | Unit tests (Jest) and the FAQ schema PHP test |
-| `npm run test:unit -- -u` | Update `save()` snapshots after adding a `deprecated` entry |
+| `npm run test:unit -- -u` | Update snapshots after a deliberate change |
+| `UPDATE_FIXTURES=1 npm run test:unit` | Regenerate `tests/fixtures/migrated/` after a deliberate change |
 
 ### Tests
 
-- `tests/js/save.test.js`: snapshots of each static block's `save()` output, and every `deprecated` version must still parse and migrate. A failing snapshot means existing content would show "This block contains unexpected or invalid content": add the previous `save()` to `deprecated.js` before updating the snapshots.
+- `tests/js/save.test.js`: snapshots of the current saved format (comments and inner blocks only) and of the frozen 1.0.8 markup kept in each `deprecated.js`; every `deprecated` version must still parse and migrate. The 1.0.8 snapshots must never change, or published content would show "This block contains unexpected or invalid content".
+- `tests/js/legacy-content.test.js`: content saved by 1.0.8 and earlier (`tests/fixtures/*.html`) opens valid, migrates without losing FAQ questions, anchors or settings, and its migrated version (`tests/fixtures/migrated/`) is up to date and stable.
+- `tests/js/classes-php.test.js`: the editor (`src/*/shared.js`) and the server (`includes/ufo-tools-blocks-classes.php`) produce the same classes for every inspector value (runs `php`).
+- `tests/js/block-examples.test.js`: every `block.json` `example` is valid content.
 - `tests/js/tailwind-safelist.test.js`: every class the inspector settings can generate must be either written as-is in `src/` or listed in the `@source inline(...)` safelist above. Extend the safelist when you add a value.
-- `tests/php/test-faq-schema.php`: the `ufo-faq` JSON-LD filter, run without WordPress (`php` 7.4+ required).
+- `tests/php/test-faq-schema.php`: the `ufo-faq` JSON-LD, run without WordPress (`php` 7.4+ required).
 
 The release workflow runs `npm test` before building the zip.
+
+Front-end check on a copy of a site, before and after an update (`diff` must be empty; also renders the fixtures and their migrated version, which must match):
+
+```bash
+ddev wp eval-file wp-content/plugins/ufo-tools-blocks/scripts/check-rendering.php /var/www/html/wp-content/uploads/ufo-check/avant
+# update the plugin
+ddev wp eval-file wp-content/plugins/ufo-tools-blocks/scripts/check-rendering.php /var/www/html/wp-content/uploads/ufo-check/apres
+diff -r wp-content/uploads/ufo-check/avant wp-content/uploads/ufo-check/apres
+```
 
 ## Further reading
 

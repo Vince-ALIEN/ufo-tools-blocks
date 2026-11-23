@@ -1,86 +1,45 @@
 /**
- * Balisage enregistré par les blocs statiques.
+ * Balisage enregistré par les blocs.
  *
- * Toute modification de save() rend invalides les blocs déjà publiés
- * (« Ce bloc contient un contenu inattendu ») sauf si l'ancienne version est
- * ajoutée à deprecated.js. Les snapshots rendent ce changement visible : s'ils
- * changent, ajouter une entrée deprecated, puis mettre à jour les snapshots
- * (npm run test:unit -- -u).
+ * Depuis la 1.1.0, tous les blocs sont rendus par le serveur : le contenu
+ * enregistré se limite au commentaire (attributs) et aux blocs enfants
+ * (« format actuel »). Le balisage statique de la 1.0.8 reste reconnu grâce à
+ * deprecated.js : ses snapshots ne doivent jamais changer, sans quoi les
+ * contenus publiés deviendraient « inattendus ou non valides » dans
+ * l'éditeur.
  */
 import {
-	registerBlockType,
-	unregisterBlockType,
 	createBlock,
-	getBlockTypes,
-	getCategories,
-	setCategories,
 	getSaveContent,
 	serialize,
 	parse,
 } from '@wordpress/blocks';
+import {
+	BLOCKS,
+	registerBlocks,
+	unregisterBlocks,
+} from './support/register-blocks';
 
-import gridMeta from '../../src/ufo-grid/block.json';
-import gridSave from '../../src/ufo-grid/save';
-import rowMeta from '../../src/ufo-row/block.json';
-import rowSave from '../../src/ufo-row/save';
-import faqMeta from '../../src/ufo-faq/block.json';
-import faqSave from '../../src/ufo-faq/save';
-import faqItemMeta from '../../src/ufo-faq-item/block.json';
-import faqItemSave from '../../src/ufo-faq-item/save';
-import faqItemDeprecated from '../../src/ufo-faq-item/deprecated';
-import groupMeta from '../../src/ufo-buttons-group/block.json';
-import groupSave from '../../src/ufo-buttons-group/save';
-import groupDeprecated from '../../src/ufo-buttons-group/deprecated';
-import tabsMeta from '../../src/ufo-tabs/block.json';
-import tabMeta from '../../src/ufo-tab/block.json';
-import tabSave from '../../src/ufo-tab/save';
-import { InnerBlocks } from '@wordpress/block-editor';
+beforeAll( registerBlocks );
+afterAll( unregisterBlocks );
 
-const BLOCKS = [
-	[ gridMeta, gridSave ],
-	[ rowMeta, rowSave ],
-	[ faqMeta, faqSave ],
-	[ faqItemMeta, faqItemSave, faqItemDeprecated ],
-	[ groupMeta, groupSave, groupDeprecated ],
-	[ tabsMeta, () => <InnerBlocks.Content /> ],
-	[ tabMeta, tabSave ],
-];
-
-beforeAll( () => {
-	// Catégorie déclarée côté PHP (block_categories_all) dans le plugin.
-	setCategories( [
-		...getCategories(),
-		{ slug: 'ufo-blocks', title: 'UFO Blocks' },
-	] );
-	BLOCKS.forEach( ( [ metadata, save, deprecated = [] ] ) => {
-		const {
-			$schema,
-			editorScript,
-			editorStyle,
-			style,
-			viewScript,
-			render,
-			...settings
-		} = metadata;
-		registerBlockType( metadata.name, {
-			...settings,
-			edit: () => null,
-			save,
-			deprecated,
-		} );
-	} );
-} );
-
-afterAll( () => {
-	getBlockTypes().forEach( ( { name } ) => unregisterBlockType( name ) );
-} );
-
+const DEPRECATED = Object.fromEntries(
+	BLOCKS.map( ( [ metadata, , deprecated = [] ] ) => [
+		metadata.name,
+		deprecated,
+	] )
+);
 const saveOf = ( name, attributes = {} ) => {
 	const block = createBlock( name, attributes );
-	return getSaveContent( block.name, block.attributes, block.innerBlocks );
+	const [ legacy ] = DEPRECATED[ name ];
+	return getSaveContent(
+		{ name, save: legacy.save, attributes: legacy.attributes },
+		block.attributes,
+		block.innerBlocks
+	);
 };
 
-describe( 'save()', () => {
+describe( 'balisage 1.0.8 (deprecated[0], figé)', () => {
 	test( 'ufo-grid par défaut', () => {
 		expect( saveOf( 'ufo-blocks/ufo-grid' ) ).toMatchSnapshot();
 	} );
@@ -150,6 +109,31 @@ describe( 'save()', () => {
 			).toMatchSnapshot();
 		}
 	);
+} );
+
+describe( 'format actuel : attributs et blocs enfants seulement', () => {
+	const paragraph = () =>
+		createBlock( 'core/paragraph', { content: 'Contenu' } );
+
+	test.each( [
+		[ 'ufo-blocks/ufo-grid', { columnsCount: 3, gap: '6' }, 'ufo-row' ],
+		[ 'ufo-blocks/ufo-row', { colSpan: '2', paddingX: '4' }, null ],
+		[ 'ufo-blocks/ufo-buttons-group', { buttonAlignment: 'center' }, null ],
+		[ 'ufo-blocks/ufo-faq', { schemaName: 'FAQ' }, 'ufo-faq-item' ],
+		[
+			'ufo-blocks/ufo-faq-item',
+			{ question: 'Combien <em>ça</em> coûte ?' },
+			null,
+		],
+		[ 'ufo-blocks/ufo-tab', { title: 'Tarifs' }, null ],
+	] )( '%s', ( name, attributes, child ) => {
+		const inner = child
+			? [ createBlock( `ufo-blocks/${ child }`, {}, [ paragraph() ] ) ]
+			: [ paragraph() ];
+		const html = serialize( [ createBlock( name, attributes, inner ) ] );
+		expect( html ).not.toMatch( /<(div|details|script)/ );
+		expect( html ).toMatchSnapshot();
+	} );
 } );
 
 describe( 'contenu existant', () => {

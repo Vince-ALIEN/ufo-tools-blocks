@@ -6,7 +6,7 @@
   "title": "ufo Row",
   "category": "ufo-blocks",
   "icon": "PanelLeftDashed",
-  "description": "Élément de grille pour le système ufo Grid",
+  "description": "Cellule d'un ufo Grid : contient n'importe quels blocs. Peut s'étendre sur plusieurs colonnes ou lignes, avec alignement vertical, hauteur, arrondi, marges internes et image de fond. Uniquement dans un ufo Grid.",
   "parent": ["ufo-blocks/ufo-grid"],
   "usesContext": ["ufo-blocks/columnsCount"],
   "keywords": ["row", "column", "layout", "ufo"],
@@ -79,6 +79,30 @@
       "default": "center center"
     }
   },
+  "example": {
+    "attributes": {
+      "colSpan": "2",
+      "verticalAlignment": "center",
+      "paddingX": "6",
+      "paddingY": "6"
+    },
+    "innerBlocks": [
+      {
+        "name": "ufo-blocks/ufo-title",
+        "attributes": {
+          "content": "Notre méthode",
+          "level": 2,
+          "icon": "Sparkles"
+        }
+      },
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "Un interlocuteur unique, du premier rendez-vous à la mise en ligne."
+        }
+      }
+    ]
+  },
   "supports": {
     "__experimentalOnEnter": true,
     "reusable": false,
@@ -102,5 +126,6 @@
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
 }

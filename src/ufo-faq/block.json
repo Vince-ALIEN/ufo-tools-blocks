@@ -4,7 +4,7 @@
   "title": "ufo FAQ",
   "category": "ufo-blocks",
   "icon": "TableOfContents",
-  "description": "Un bloc FAQ avec accordéon et données structurées personnalisables pour le SEO.",
+  "description": "Liste de questions fréquentes en accordéon : un ufo FAQ Item par question. Génère le JSON-LD FAQPage pour le référencement (nom, description et sujet facultatifs).",
   "supports": {
     "html": false,
     "anchor": true
@@ -29,5 +29,41 @@
       "type": "string",
       "default": ""
     }
-  }
+  },
+  "example": {
+    "attributes": {
+      "schemaName": "Questions fréquentes"
+    },
+    "innerBlocks": [
+      {
+        "name": "ufo-blocks/ufo-faq-item",
+        "attributes": {
+          "question": "Combien de temps faut-il pour créer un site ?"
+        },
+        "innerBlocks": [
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Comptez quatre à huit semaines selon le nombre de pages et de contenus à rédiger."
+            }
+          }
+        ]
+      },
+      {
+        "name": "ufo-blocks/ufo-faq-item",
+        "attributes": {
+          "question": "Le site sera-t-il facile à modifier ?"
+        },
+        "innerBlocks": [
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Oui : vous modifiez textes et images vous-même dans l'éditeur de WordPress."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "render": "file:./render.php"
 }

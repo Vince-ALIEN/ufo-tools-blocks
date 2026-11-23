@@ -5,7 +5,7 @@
  * Description:       A set of Gutenberg blocks built with Tailwind CSS classes.
  * Requires at least: 6.1
  * Requires PHP:      7.4
- * Version:           1.0.8
+ * Version:           1.1.0
  * Author:            Vincent LASSERRE
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -41,7 +41,10 @@ if (in_array(UFO_TOOLS_BLOCKS_PREDECESSOR, (array) get_option('active_plugins', 
     return;
 }
 
+require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-classes.php';
+require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-render.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ufo-faq-schema.php';
+require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-ufo-tools-blocks-updater.php';
 
 // Mises à jour depuis les releases GitHub (hors is_admin() : la

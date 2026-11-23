@@ -4,7 +4,7 @@
   "title": "UFO Icon",
   "category": "ufo-blocks",
   "icon": "LucideLogo",
-  "description": "Affiche une icône Lucide avec alignement et couleur du thème.",
+  "description": "Icône Lucide seule, avec taille, alignement et couleur du thème. Pour illustrer une carte ou une liste ; pour un titre avec icône, utiliser ufo title.",
   "supports": {
     "html": false,
     "anchor": true,
@@ -37,6 +37,13 @@
     "textAlign": {
       "type": "string",
       "default": "left"
+    }
+  },
+  "example": {
+    "attributes": {
+      "icon": "Rocket",
+      "iconSize": 48,
+      "textAlign": "center"
     }
   },
   "textdomain": "ufo-tools-blocks",

@@ -1,11 +1,12 @@
 <?php
 /**
- * Génère le schema FAQPage complet (avec mainEntity) pour le bloc ufo-faq.
+ * FAQ : question d'un ufo-faq-item et schema FAQPage complet (avec
+ * mainEntity) d'un ufo-faq, utilisés par leurs render.php.
  *
- * save.js ne peut pas accéder aux données des inner blocks, donc il produit
- * un FAQPage sans mainEntity. Ce filtre intercepte le rendu, retire ce schema
- * incomplet, extrait les questions/réponses depuis les inner blocks, puis
- * injecte le schema complet.
+ * Jusqu'à la 1.0.8, ufo-faq était statique : save.js produisait un FAQPage
+ * incomplet (sans mainEntity) qu'un filtre render_block remplaçait. Depuis la
+ * 1.1.0, ufo-faq/render.php produit lui-même le schema et ignore l'ancien HTML
+ * enregistré, donc aussi cet ancien schema.
  *
  * @package ufo-tools-blocks
  */
@@ -57,29 +58,42 @@ function ufo_tools_blocks_faq_plain_text( $html ) {
 }
 
 /**
- * Filtre render_block du bloc ufo-faq.
+ * Question d'un ufo-faq-item (HTML de RichText).
  *
- * @param string $block_content HTML rendu du bloc.
- * @param array  $block         Bloc parsé.
+ * Attribut du commentaire de bloc depuis la 1.1.0 ; avant, elle n'existait que
+ * dans le HTML enregistré (<span class="faq-question">), relu ici tant que le
+ * contenu n'a pas été réenregistré.
+ *
+ * @param array $item Bloc ufo-faq-item parsé (parse_blocks()).
  * @return string
  */
-function ufo_tools_blocks_faq_render_schema( $block_content, $block ) {
-	if ( 'ufo-blocks/ufo-faq' !== $block['blockName'] ) {
-		return $block_content;
+function ufo_tools_blocks_faq_question_html( $item ) {
+	$question = $item['attrs']['question'] ?? '';
+	if ( is_string( $question ) && '' !== $question ) {
+		return $question;
 	}
 
-	// Toujours retirer le schema incomplet produit par save.js : sans
-	// mainEntity, un FAQPage est invalide pour les moteurs de recherche.
-	$block_content = preg_replace(
-		'/<script\s+type="application\/ld\+json">.*?<\/script>\s*/s',
-		'',
-		$block_content,
-		1
-	);
+	$html = implode( '', array_filter( (array) ( $item['innerContent'] ?? array() ), 'is_string' ) );
+	// La question est suivie de l'icône (<span aria-hidden="true">) dans tous
+	// les formats enregistrés : la question peut contenir elle-même des <span>.
+	if ( preg_match( '/<span class="faq-question">(.*?)<\/span><span aria-hidden="true"/s', $html, $q )
+		|| preg_match( '/<span[^>]+class="[^"]*faq-question[^"]*"[^>]*>(.*?)<\/span>/s', $html, $q ) ) {
+		return $q[1];
+	}
+	return '';
+}
 
+/**
+ * Balise <script> JSON-LD FAQPage d'un bloc ufo-faq, vide si le schema est
+ * désactivé ou si aucune question n'a de réponse.
+ *
+ * @param array $block Bloc ufo-faq parsé (parse_blocks()).
+ * @return string
+ */
+function ufo_tools_blocks_faq_schema( $block ) {
 	$attrs = isset( $block['attrs'] ) ? (array) $block['attrs'] : array();
 	if ( ! ( $attrs['enableSchema'] ?? true ) ) {
-		return $block_content;
+		return '';
 	}
 
 	$main_entity = array();
@@ -89,10 +103,7 @@ function ufo_tools_blocks_faq_render_schema( $block_content, $block ) {
 			continue;
 		}
 
-		// Question : stockée dans le HTML du bloc (source "html", .faq-question).
-		$item_html = implode( '', array_filter( (array) $item['innerContent'], 'is_string' ) );
-		preg_match( '/<span[^>]+class="[^"]*faq-question[^"]*"[^>]*>(.*?)<\/span>/s', $item_html, $q );
-		$question = isset( $q[1] ) ? ufo_tools_blocks_faq_plain_text( $q[1] ) : '';
+		$question = ufo_tools_blocks_faq_plain_text( ufo_tools_blocks_faq_question_html( $item ) );
 
 		// Réponse : HTML de tous les inner blocks, à toute profondeur.
 		$answer_html = '';
@@ -116,7 +127,7 @@ function ufo_tools_blocks_faq_render_schema( $block_content, $block ) {
 	}
 
 	if ( empty( $main_entity ) ) {
-		return $block_content;
+		return '';
 	}
 
 	$json_ld = array(
@@ -137,13 +148,10 @@ function ufo_tools_blocks_faq_render_schema( $block_content, $block ) {
 		}
 	}
 
-	// JSON_HEX_TAG / JSON_HEX_AMP : < > & encodés en <… pour qu'aucune
+	// JSON_HEX_TAG / JSON_HEX_AMP : < > & encodés en \u003C… pour qu'aucune
 	// valeur (attributs du commentaire de bloc, non filtrés par kses) ne
 	// puisse fermer la balise <script> (XSS stockée par un contributeur).
-	$schema_tag = '<script type="application/ld+json">'
+	return '<script type="application/ld+json">'
 		. wp_json_encode( $json_ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP )
 		. '</script>' . "\n";
-
-	return $schema_tag . $block_content;
 }
-add_filter( 'render_block', 'ufo_tools_blocks_faq_render_schema', 10, 2 );

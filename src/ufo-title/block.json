@@ -4,7 +4,7 @@
   "title": "Ufo title",
   "category": "ufo-blocks",
   "icon": "Heading",
-  "description": "Un titre avec icône et fond arrondi.",
+  "description": "Titre (h1 à h6) précédé d'une icône Lucide sur fond arrondi. Pour les titres de cartes et de sections ; le texte est l'attribut content, sans bloc enfant.",
   "supports": {
     "anchor": true,
     "className": true,
@@ -51,6 +51,13 @@
     "icon": {
       "type": "string",
       "default": ""
+    }
+  },
+  "example": {
+    "attributes": {
+      "content": "Création de site",
+      "level": 3,
+      "icon": "Code"
     }
   },
   "textdomain": "ufo-tools-blocks",

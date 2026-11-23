@@ -11,30 +11,38 @@ ufo-tools-blocks/
 │
 ├── includes/
 │   ├── class-ufo-tools-blocks-updater.php     # Mises à jour depuis les releases GitHub
-│   ├── ufo-faq-schema.php                     # JSON-LD FAQPage (filtre render_block)
+│   ├── ufo-faq-schema.php                     # JSON-LD FAQPage (appelé par ufo-faq/render.php)
+│   ├── ufo-tools-blocks-classes.php           # Classes Tailwind (portage PHP des shared.js)
+│   ├── ufo-tools-blocks-render.php            # Aides des render.php (ancien format, fond)
+│   ├── ufo-tools-blocks-rest.php              # Routes ufo-tools-blocks/v1 (guide, check)
 │   └── ufo-tools-blocks-icons.php             # ufo_get_icon_svg() (généré au build)
 │
 ├── src/                        # Sources (avant compilation)
 │   ├── icons.js                # Icônes de blocs (lucide-react)
 │   ├── shared/                 # Contrôles d'inspecteur et icônes partagés
-│   ├── ufo-grid/               # Conteneur de grille          (statique)
-│   ├── ufo-row/                # Cellule de grille            (statique, enfant de ufo-grid)
-│   ├── ufo-faq/                # FAQ + schema                 (statique)
-│   ├── ufo-faq-item/           # Question / réponse           (statique, enfant de ufo-faq)
-│   ├── ufo-buttons-group/      # Groupe de boutons            (statique)
+│   ├── ufo-grid/               # Conteneur de grille          (dynamique : render.php)
+│   ├── ufo-row/                # Cellule de grille            (dynamique, enfant de ufo-grid)
+│   ├── ufo-faq/                # FAQ + schema                 (dynamique : render.php)
+│   ├── ufo-faq-item/           # Question / réponse           (dynamique, enfant de ufo-faq)
+│   ├── ufo-buttons-group/      # Groupe de boutons            (dynamique : render.php)
 │   ├── ufo-button/             # Bouton avec icône            (dynamique : render.php)
 │   ├── ufo-title/              # Titre avec icône             (dynamique : render.php)
 │   ├── ufo-tabs/               # Onglets                      (dynamique : render.php + view.js)
-│   ├── ufo-tab/                # Un onglet                    (statique, enfant de ufo-tabs)
+│   ├── ufo-tab/                # Un onglet                    (dynamique, enfant de ufo-tabs)
 │   └── ufo-icon/               # Icône Lucide                 (dynamique : render.php)
 │       Chaque bloc : block.json, index.js, edit.js, save.js, *.css,
 │       et selon le cas shared.js, inspector.js, deprecated.js, render.php
 │
-├── scripts/generate-icon-svgs.js  # Génère les SVG PHP des icônes (prebuild)
+├── docs/blocs-pour-ia.md       # Guide pour les assistants IA (copié dans build/)
+│
+├── scripts/
+│   ├── generate-icon-svgs.js   # Génère les SVG PHP des icônes (prebuild)
+│   └── check-rendering.php     # Rendu front de tous les contenus (wp eval-file), avant / après
 │
 ├── tests/
-│   ├── js/                     # Jest : snapshots de save(), deprecated, safelist Tailwind
-│   └── php/                    # Filtre JSON-LD de ufo-faq (sans WordPress)
+│   ├── fixtures/               # Contenus enregistrés en 1.0.8 et leur version migrée
+│   ├── js/                     # Jest : format enregistré, deprecated, migrations, classes JS = PHP, exemples, safelist
+│   └── php/                    # JSON-LD de ufo-faq, pont PHP du test des classes
 │
 ├── build/                      # Fichiers compilés (npm run build, non versionné)
 │
@@ -59,10 +67,13 @@ ufo-tools-blocks.php
 ufo_tools_blocks_block_init()
     └→ register_block_type(__DIR__ . '/build/<bloc>')   × 10
 
-Les blocs dynamiques (button, title, icon, tabs) sont rendus par leur render.php ;
+Tous les blocs sont rendus par leur render.php (depuis la 1.1.0) ;
+les blocs à enfants enveloppent $content (rendu des enfants, déjà calculé par
+WordPress) ; un contenu encore enregistré dans l'ancien format statique
+(≤ 1.0.8) est affiché tel quel ($content contient déjà son enveloppe) ;
 ufo-tabs construit la barre d'onglets depuis les titres des ufo-tab enfants ;
-ufo-faq passe par le filtre render_block de includes/ufo-faq-schema.php,
-qui ajoute le JSON-LD FAQPage construit à partir des questions/réponses.
+ufo-faq ajoute le JSON-LD FAQPage construit à partir des questions/réponses
+(includes/ufo-faq-schema.php).
 ```
 
 ### Rendu dans l'éditeur
@@ -86,13 +97,16 @@ Attribut modifié → setAttributes() → re-render
 ```
 Utilisateur publie
     ↓
-save.js retourne le JSX
-    ↓
-WordPress sérialise en HTML dans post_content
+save.js retourne <InnerBlocks.Content /> : post_content ne contient que les
+commentaires de blocs (attributs) et les blocs enfants
     ↓
 Requête frontend
     ↓
-HTML statique servi directement
+render.php calcule classes et enveloppe à partir des attributs
+(includes/ufo-tools-blocks-classes.php, mêmes classes que shared.js)
+
+Contenu enregistré avant la 1.1.0 : reconnu dans l'éditeur par deprecated.js
+(copie figée du save() de la 1.0.8), migré à la prochaine sauvegarde.
 ```
 
 ## Architecture CSS

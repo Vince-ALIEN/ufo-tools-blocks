@@ -1,13 +1,11 @@
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { getTailwindClasses, getBlockStyle } from './shared';
+import { InnerBlocks } from '@wordpress/block-editor';
 
-export default function save( { attributes } ) {
-	const blockProps = useBlockProps.save( {
-		className: getTailwindClasses( attributes ),
-		style: getBlockStyle( attributes ),
-	} );
-
-	const innerBlocksProps = useInnerBlocksProps.save( blockProps );
-
-	return <div { ...innerBlocksProps } />;
+/**
+ * Rendu serveur (render.php) depuis la 1.1.0 : seuls les attributs (dans le
+ * commentaire du bloc) et les blocs enfants sont enregistrés, donc aucun HTML
+ * à reproduire au caractère près. Les formats enregistrés auparavant sont dans
+ * deprecated.js.
+ */
+export default function save() {
+	return <InnerBlocks.Content />;
 }

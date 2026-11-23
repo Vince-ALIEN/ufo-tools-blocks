@@ -1,5 +1,6 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
+const CopyPlugin = require( 'copy-webpack-plugin' );
 
 const defaultEntryPoints = defaultConfig.entry();
 
@@ -8,6 +9,16 @@ module.exports = {
 	entry: {
 		...defaultEntryPoints,
 	},
+	plugins: [
+		...defaultConfig.plugins,
+		// Guide pour les assistants IA, servi par GET ufo-tools-blocks/v1/guide :
+		// build/ est dans le zip de release, docs/ non.
+		new CopyPlugin( {
+			patterns: [
+				{ from: 'docs/blocs-pour-ia.md', to: 'blocs-pour-ia.md' },
+			],
+		} ),
+	],
 	optimization: {
 		...defaultConfig.optimization,
 		minimizer: [
