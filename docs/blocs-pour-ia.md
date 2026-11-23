@@ -39,6 +39,11 @@ renvoie aussi la version du plugin installée.
 
 `ufo-row`, `ufo-faq-item` et `ufo-tab` ne s'utilisent que dans leur parent.
 
+**Pages et articles** : `ufo-grid` et `ufo-row` (mise en page) sont réservés aux **pages**.
+Un **article** n'utilise que les autres blocs UFO, placés entre les paragraphes, au premier
+niveau. Envoyer `"post_type"` à `/check` pour que le site le vérifie (règle ajustable par site
+avec le filtre `ufo_tools_blocks_check_disallowed_blocks`).
+
 Combinaisons usuelles :
 
 - **Section de services** : `ufo-grid` (`columnsCount` 3, `gap` "6") → 3 `ufo-row` → chacune
@@ -141,10 +146,12 @@ la palette du thème, `style`) plutôt que des classes.
 ## 5. Vérification côté serveur
 
 `POST /wp-json/ufo-tools-blocks/v1/check` (utilisateur avec `edit_posts`), corps JSON
-`{ "content": "<balisage complet>" }`, 1 Mo au plus. Réponse :
+`{ "content": "<balisage complet>", "post_type": "post" }`, 1 Mo au plus. `post_type`
+(facultatif, depuis la 1.1.1) est le type du contenu de destination : il signale en erreur
+les blocs qui n'y sont pas utilisés (section 2). Réponse :
 
 ```json
-{ "valid": false, "version": "1.1.0", "blocks": 12,
+{ "valid": false, "version": "1.1.1", "post_type": "post", "blocks": 12,
   "error_count": 1, "warning_count": 0, "truncated": false,
   "errors": [ { "block": "ufo-blocks/ufo-row", "path": "0.1", "message": "…" } ],
   "warnings": [] }
@@ -154,7 +161,7 @@ Au plus 200 erreurs et 200 avertissements sont détaillés ; au-delà, `truncate
 et `error_count` / `warning_count` donnent les totaux. `path` donne la position du bloc
 (indices séparés par des points, à partir de 0).
 
-Erreurs : bloc inconnu du site, bloc hors de son parent (`parent` / `ancestor`), attribut
+Erreurs : bloc inconnu du site, bloc non utilisé dans ce type de contenu (avec `post_type`), bloc hors de son parent (`parent` / `ancestor`), attribut
 non déclaré, type ou `enum` non respecté, ancien HTML statique dans un bloc `ufo-blocks/*`,
 commentaire de bloc mal fermé. Avertissements : HTML libre hors bloc, bloc d'une autre
 bibliothèque à vérifier dans l'éditeur. Rien n'est enregistré.
@@ -173,6 +180,7 @@ le bloc s'affiche « contenu inattendu ou non valide ». Sur ces sites :
 
 | Version | Changement |
 |---|---|
+| 1.1.1 | `/check` accepte `post_type` : `ufo-grid` / `ufo-row` signalés dans un article. Balisage des blocs inchangé. |
 | 1.1.0 | Rendu serveur de `ufo-grid`, `ufo-row`, `ufo-buttons-group`, `ufo-faq`, `ufo-faq-item`, `ufo-tab` : commentaire + enfants seulement. `ufo-faq-item.question` passe du HTML (`.faq-question`) au commentaire. Ancien format accepté et migré à la sauvegarde. Exemples dans les `block.json`, guide et routes `ufo-tools-blocks/v1`. |
 | 1.0.5 | `ufo-faq-item` : bordure `border-slate-200` (au lieu de `border-gray-200`). Bloc `ufo-tabs` / `ufo-tab`. |
 | 1.0.2 | `ufo-button` utilisable hors `ufo-buttons-group`. |

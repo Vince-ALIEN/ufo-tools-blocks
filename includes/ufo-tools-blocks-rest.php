@@ -5,7 +5,8 @@
  *   GET  /wp-json/ufo-tools-blocks/v1/guide  guide d'usage des blocs (Markdown)
  *                                            et version du plugin installée
  *   POST /wp-json/ufo-tools-blocks/v1/check  vérifie un balisage de blocs sans
- *                                            rien enregistrer
+ *                                            rien enregistrer, éventuellement pour
+ *                                            un type de contenu (post_type)
  *
  * Réservées aux utilisateurs qui peuvent écrire des contenus (edit_posts).
  * Voir docs/blocs-pour-ia.md.
@@ -93,11 +94,42 @@ function ufo_tools_blocks_register_rest_routes() {
 					'required'    => true,
 					'maxLength'   => UFO_TOOLS_BLOCKS_CHECK_MAX_BYTES,
 				),
+				'post_type' => array(
+					'description'       => __( 'Type de contenu de destination (page, post…) : signale les blocs qui n’y sont pas utilisés.', 'ufo-tools-blocks' ),
+					'type'              => 'string',
+					'validate_callback' => static function ( $value ) {
+						return post_type_exists( (string) $value )
+							? true
+							: new WP_Error( 'rest_invalid_param', __( 'Type de contenu inconnu.', 'ufo-tools-blocks' ), array( 'status' => 400 ) );
+					},
+				),
 			),
 		)
 	);
 }
 add_action( 'rest_api_init', 'ufo_tools_blocks_register_rest_routes' );
+
+/**
+ * Blocs non utilisés dans un type de contenu, signalés en erreur par /check
+ * quand post_type est fourni.
+ *
+ * Par défaut, les articles n'utilisent ni ufo-grid ni ufo-row (mise en page
+ * réservée aux pages). Un site peut changer la règle :
+ *
+ *     add_filter( 'ufo_tools_blocks_check_disallowed_blocks', function ( $blocks, $post_type ) {
+ *         return 'realisation' === $post_type ? array( 'ufo-blocks/ufo-tabs' ) : $blocks;
+ *     }, 10, 2 );
+ *
+ * @param string $post_type Type de contenu.
+ * @return string[] Noms de blocs.
+ */
+function ufo_tools_blocks_check_disallowed_blocks( $post_type ) {
+	$defaults = array(
+		'post' => array( 'ufo-blocks/ufo-grid', 'ufo-blocks/ufo-row' ),
+	);
+	$blocks   = apply_filters( 'ufo_tools_blocks_check_disallowed_blocks', $defaults[ $post_type ] ?? array(), $post_type );
+	return array_values( array_filter( (array) $blocks, 'is_string' ) );
+}
 
 /**
  * GET /guide : guide Markdown copié dans build/ au build (docs/ dans une copie
@@ -128,15 +160,19 @@ function ufo_tools_blocks_rest_guide() {
  * @return WP_REST_Response
  */
 function ufo_tools_blocks_rest_check( WP_REST_Request $request ) {
-	$content = (string) $request->get_param( 'content' );
-	$report  = array(
-		'errors'   => array(),
-		'warnings' => array(),
-		'counts'   => array(
+	$content   = (string) $request->get_param( 'content' );
+	$post_type = $request->get_param( 'post_type' );
+	$post_type = is_string( $post_type ) && '' !== $post_type ? $post_type : null;
+	$report    = array(
+		'disallowed' => null === $post_type ? array() : ufo_tools_blocks_check_disallowed_blocks( $post_type ),
+		'post_type'  => $post_type,
+		'errors'     => array(),
+		'warnings'   => array(),
+		'counts'     => array(
 			'errors'   => 0,
 			'warnings' => 0,
 		),
-		'blocks'   => 0,
+		'blocks'     => 0,
 	);
 
 	ufo_tools_blocks_check_blocks( parse_blocks( $content ), null, array(), '', $report );
@@ -145,6 +181,7 @@ function ufo_tools_blocks_rest_check( WP_REST_Request $request ) {
 		array(
 			'valid'         => 0 === $report['counts']['errors'],
 			'version'       => ufo_tools_blocks_version(),
+			'post_type'     => $post_type,
 			'blocks'        => $report['blocks'],
 			'error_count'   => $report['counts']['errors'],
 			'warning_count' => $report['counts']['warnings'],
@@ -269,6 +306,11 @@ function ufo_tools_blocks_check_blocks( array $blocks, $parent, array $ancestors
 		if ( ! $type ) {
 			ufo_tools_blocks_check_report( $report, 'errors', $name, $path, __( 'Bloc inconnu sur ce site.', 'ufo-tools-blocks' ) );
 			continue;
+		}
+
+		if ( in_array( $name, $report['disallowed'], true ) ) {
+			/* translators: %s: type de contenu (post, page…) */
+			ufo_tools_blocks_check_report( $report, 'errors', $name, $path, sprintf( __( 'Bloc non utilisé dans ce type de contenu (%s) : le retirer en gardant ses blocs enfants.', 'ufo-tools-blocks' ), $report['post_type'] ) );
 		}
 
 		if ( ! empty( $type->parent ) && ! in_array( $parent, (array) $type->parent, true ) ) {

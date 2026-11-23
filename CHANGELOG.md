@@ -5,6 +5,14 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-11-23
+
+### Added
+- `POST ufo-tools-blocks/v1/check` accepts an optional `post_type` (destination content type, must exist): blocks not used in that type are reported as errors. By default, posts use neither `ufo-grid` nor `ufo-row` (layout is for pages). Sites can change the rule with the `ufo_tools_blocks_check_disallowed_blocks` filter (`$blocks`, `$post_type`). Without `post_type`, the check is unchanged.
+- The AI guide (`docs/blocs-pour-ia.md`) documents the page / post rule.
+
+Saved markup and front-end output are unchanged.
+
 ## [1.1.0] - 2026-11-23
 
 ### Changed
