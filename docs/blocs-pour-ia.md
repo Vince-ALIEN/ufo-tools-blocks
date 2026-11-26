@@ -172,7 +172,7 @@ la palette du thème, `style`) plutôt que des classes.
 les blocs qui n'y sont pas utilisés (section 2). Réponse :
 
 ```json
-{ "valid": false, "version": "1.1.1", "post_type": "post", "blocks": 12,
+{ "valid": false, "version": "1.2.0", "post_type": "post", "blocks": 12,
   "error_count": 1, "warning_count": 0, "truncated": false,
   "errors": [ { "block": "ufo-blocks/ufo-row", "path": "0.1", "message": "…" } ],
   "warnings": [] }
@@ -201,7 +201,7 @@ le bloc s'affiche « contenu inattendu ou non valide ». Sur ces sites :
 
 | Version | Changement |
 |---|---|
-| (prochaine) | Nouvelle grille insérée dans l'éditeur : `"equalRows":false` écrit explicitement (absent = `true`, inchangé). Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target et chiffres Digit0 … Digit9. |
+| 1.2.0 | Nouvelle grille insérée dans l'éditeur : `"equalRows":false` écrit explicitement (absent = `true`, inchangé). Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target et chiffres Digit0 … Digit9. |
 | 1.1.1 | `/check` accepte `post_type` : `ufo-grid` / `ufo-row` signalés dans un article. Balisage des blocs inchangé. |
 | 1.1.0 | Rendu serveur de `ufo-grid`, `ufo-row`, `ufo-buttons-group`, `ufo-faq`, `ufo-faq-item`, `ufo-tab` : commentaire + enfants seulement. `ufo-faq-item.question` passe du HTML (`.faq-question`) au commentaire. Ancien format accepté et migré à la sauvegarde. Exemples dans les `block.json`, guide et routes `ufo-tools-blocks/v1`. |
 | 1.0.5 | `ufo-faq-item` : bordure `border-slate-200` (au lieu de `border-gray-200`). Bloc `ufo-tabs` / `ufo-tab`. |
