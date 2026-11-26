@@ -154,7 +154,7 @@ Styles de bloc (`className`) : `ufo-button` accepte `is-style-primary` (défaut)
 `ufo-button`) : nom Lucide en CamelCase, parmi ceux que le plugin sait rendre :
 AlarmClockPlus, Apple, ArrowLeft, ArrowRight, ArrowUpRight, Briefcase, Calendar, ChartBar,
 ChartNoAxesCombined, ChevronDown, ChevronLeft, ChevronRight, Clock, Code, Coffee, Database,
-Download, Flame, Globe, GraduationCap, Handshake, HardDriveDownload, Headphones, Heart, Home,
+Digit0 … Digit9 (chiffres), Download, Flame, Globe, GraduationCap, Handshake, HardDriveDownload, Headphones, Heart, Home,
 Key, Leaf, Lightbulb, Lock, Mail, Map, MapPin, MessageCirclePlus, Microscope, Moon, MoveRight,
 MoveUpRight, Pen, PenTool, Phone, Plane, Rocket, Search, Send, Server, Settings, Shield,
 ShieldCheck, ShoppingBag, Sparkles, SquareArrowOutUpRight, Star, Sun, Target, TriangleAlert,
@@ -200,7 +200,7 @@ le bloc s'affiche « contenu inattendu ou non valide ». Sur ces sites :
 
 | Version | Changement |
 |---|---|
-| (prochaine) | Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target. |
+| (prochaine) | Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target et chiffres Digit0 … Digit9. |
 | 1.1.1 | `/check` accepte `post_type` : `ufo-grid` / `ufo-row` signalés dans un article. Balisage des blocs inchangé. |
 | 1.1.0 | Rendu serveur de `ufo-grid`, `ufo-row`, `ufo-buttons-group`, `ufo-faq`, `ufo-faq-item`, `ufo-tab` : commentaire + enfants seulement. `ufo-faq-item.question` passe du HTML (`.faq-question`) au commentaire. Ancien format accepté et migré à la sauvegarde. Exemples dans les `block.json`, guide et routes `ufo-tools-blocks/v1`. |
 | 1.0.5 | `ufo-faq-item` : bordure `border-slate-200` (au lieu de `border-gray-200`). Bloc `ufo-tabs` / `ufo-tab`. |

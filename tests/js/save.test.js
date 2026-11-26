@@ -128,6 +128,18 @@ describe( 'balisage 1.0.8 (deprecated[0], figé)', () => {
 		).toMatchSnapshot();
 	} );
 
+	test( 'ufo-time-line-item (ufo-blocks), icône chiffre', () => {
+		expect(
+			saveOf( 'ufo-blocks/ufo-time-line-item', {
+				icon: 'Digit1',
+				date: 'Étape 1',
+				title: 'Inscription',
+				markerColor: 'primary',
+				customMarkerColor: '#D73904',
+			} )
+		).toMatchSnapshot();
+	} );
+
 	test.each( [ 'left', 'center', 'right' ] )(
 		'ufo-buttons-group %s',
 		( buttonAlignment ) => {

@@ -62,6 +62,7 @@ import {
 } from 'lucide-react';
 import iconNames from './icon-names.json';
 import { ICON_LABELS, camelToWords } from './icon-labels';
+import { CUSTOM_ICONS } from './custom-icons';
 
 export const ICONS = {
 	AlarmClockPlus,
@@ -121,6 +122,7 @@ export const ICONS = {
 	TriangleAlert,
 	Upload,
 	User,
+	...CUSTOM_ICONS,
 };
 
 export const ICON_LIST = iconNames
