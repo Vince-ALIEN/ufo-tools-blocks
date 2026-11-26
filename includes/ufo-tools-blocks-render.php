@@ -3,7 +3,8 @@
  * Aides au rendu serveur des blocs à enfants (render.php).
  *
  * Depuis la 1.1.0, ufo-grid, ufo-row, ufo-buttons-group, ufo-faq,
- * ufo-faq-item et ufo-tab n'enregistrent plus que leurs attributs et leurs
+ * ufo-faq-item et ufo-tab (et ufo-time-line, ufo-time-line-item,
+ * ufo-heading-group, venus du plugin ufo-blocks) n'enregistrent plus que leurs attributs et leurs
  * blocs enfants : le HTML d'enveloppe est produit à l'affichage, autour de
  * $content (rendu des blocs enfants, déjà calculé par WordPress : ne pas
  * rendre $block->inner_blocks une seconde fois).
@@ -28,6 +29,34 @@ defined( 'ABSPATH' ) || exit;
 function ufo_tools_blocks_is_legacy( WP_Block $block ) {
 	$chunks = isset( $block->parsed_block['innerContent'] ) ? (array) $block->parsed_block['innerContent'] : array();
 	return '' !== trim( implode( '', array_filter( $chunks, 'is_string' ) ) );
+}
+
+/**
+ * Style du marqueur de ufo-time-line-item : couleur choisie à 15 % d'opacité,
+ * vide sans couleur. Même calcul que hexToRgba() (edit.js, deprecated.js) :
+ * « rgba(r, g, b, 0.15) ».
+ *
+ * La couleur vient du commentaire de bloc (modifiable par un contributeur) :
+ * seules les couleurs hexadécimales sont acceptées.
+ *
+ * @param string $hex Couleur (customMarkerColor).
+ * @return string Déclaration CSS, ou chaîne vide.
+ */
+function ufo_tools_blocks_time_line_marker_bg( $hex ) {
+	$hex = (string) sanitize_hex_color( $hex );
+	if ( '' === $hex ) {
+		return '';
+	}
+	$hex = ltrim( $hex, '#' );
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+	return sprintf(
+		'background-color:rgba(%d, %d, %d, 0.15)',
+		hexdec( substr( $hex, 0, 2 ) ),
+		hexdec( substr( $hex, 2, 2 ) ),
+		hexdec( substr( $hex, 4, 2 ) )
+	);
 }
 
 /**

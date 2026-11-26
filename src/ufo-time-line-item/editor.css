@@ -1,0 +1,47 @@
+/* =========================================================================
+   ufo-time-line-item — Styles d'édition Gutenberg (picker d'icônes)
+   ========================================================================= */
+
+.ufo-icon-picker {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 4px;
+	margin-top: 8px;
+	margin-bottom: 16px;
+}
+
+.ufo-icon-picker__item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 1;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #fff;
+	cursor: pointer;
+	transition: background 0.15s, border-color 0.15s;
+	padding: 0;
+}
+
+.ufo-icon-picker__item:hover {
+	background: #f0f0f0;
+	border-color: #aaa;
+}
+
+.ufo-icon-picker__item.is-selected {
+	background: #1e1e1e;
+	border-color: #1e1e1e;
+	color: #fff;
+}
+
+.ufo-icon-picker__item:focus-visible {
+	outline: 2px solid #007cba;
+	outline-offset: 1px;
+}
+
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-time-line-item.is-selected {
+	outline: 2px solid var(--ufo-color-accent-strong, #7c3aed);
+	outline-offset: 4px;
+	border-radius: 4px;
+}

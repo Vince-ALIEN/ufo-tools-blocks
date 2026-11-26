@@ -55,9 +55,12 @@ if ( '' !== $sr_text ) {
 if ( $has_url && $opens_new_tab ) {
 	$sr_parts[] = __( '(nouvel onglet)', 'ufo-tools-blocks' );
 }
-// `screen-reader-text` : classe WordPress standard, stylée par tout thème.
+// Masqué visuellement par deux classes : `screen-reader-text` (classe
+// WordPress, définie par les thèmes classiques) et `sr-only` (Tailwind) :
+// un thème Tailwind ne définit pas forcément `screen-reader-text`, et le
+// texte s'affichait alors dans le bouton.
 $sr_html = ! empty( $sr_parts )
-	? '<span class="screen-reader-text"> ' . esc_html( implode( ' ', $sr_parts ) ) . '</span>'
+	? '<span class="screen-reader-text sr-only"> ' . esc_html( implode( ' ', $sr_parts ) ) . '</span>'
 	: '';
 
 // ── Icône SVG ─────────────────────────────────────────────────────────────────
@@ -72,8 +75,12 @@ if ( ! empty( $button_icon ) && function_exists( 'ufo_get_icon_svg' ) ) {
 }
 
 // ── Wrapper ───────────────────────────────────────────────────────────────────
+// not-prose : dans un contenu .prose (Tailwind Typography), la règle des liens
+// (.prose :where(a), placée après les styles du thème) remplacerait la couleur
+// du texte du bouton (blanc des styles is-style-primary / is-style-secondary),
+// sa graisse et son soulignement.
 $wrapper_attrs = get_block_wrapper_attributes( [
-	'class' => 'btn inline-flex items-center gap-2 no-underline group'
+	'class' => 'btn not-prose inline-flex items-center gap-2 no-underline group'
 		. ( $has_url ? ' cursor-pointer' : '' )
 		. ( $is_full_width ? ' w-full justify-center' : '' ),
 ] );

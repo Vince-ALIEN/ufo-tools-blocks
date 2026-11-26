@@ -29,6 +29,7 @@ renvoie aussi la version du plugin installée.
 | `ufo-blocks/ufo-grid` | Grille de 1 à 6 colonnes (une seule sur mobile) | `ufo-row` (ou `core/image`) |
 | `ufo-blocks/ufo-row` | Cellule de grille : placement, hauteur, fond | n'importe quels blocs |
 | `ufo-blocks/ufo-title` | Titre h1–h6 avec icône Lucide sur fond arrondi | aucun (texte = attribut `content`) |
+| `ufo-blocks/ufo-heading-group` | Étiquette au-dessus d'un titre de section | `core/paragraph` (classe `tag`) puis `core/heading` |
 | `ufo-blocks/ufo-icon` | Icône Lucide seule | aucun |
 | `ufo-blocks/ufo-buttons-group` | Rangée de boutons alignés | `ufo-button` |
 | `ufo-blocks/ufo-button` | Bouton lien avec icône | aucun |
@@ -36,8 +37,11 @@ renvoie aussi la version du plugin installée.
 | `ufo-blocks/ufo-faq-item` | Une question (attribut `question`) et sa réponse | paragraphes, listes… |
 | `ufo-blocks/ufo-tabs` | Onglets accessibles au clavier | `ufo-tab` |
 | `ufo-blocks/ufo-tab` | Un onglet (attribut `title`) | n'importe quels blocs |
+| `ufo-blocks/ufo-time-line` | Frise chronologique verticale | `ufo-time-line-item` |
+| `ufo-blocks/ufo-time-line-item` | Une étape : `date`, `title`, `icon` dans un marqueur rond | paragraphes, listes… |
 
-`ufo-row`, `ufo-faq-item` et `ufo-tab` ne s'utilisent que dans leur parent.
+`ufo-row`, `ufo-faq-item`, `ufo-tab` et `ufo-time-line-item` ne s'utilisent que dans leur
+parent.
 
 **Pages et articles** : `ufo-grid` et `ufo-row` (mise en page) sont réservés aux **pages**.
 Un **article** n'utilise que les autres blocs UFO, placés entre les paragraphes, au premier
@@ -52,6 +56,11 @@ Combinaisons usuelles :
 - **Questions fréquentes** : `ufo-faq` → un `ufo-faq-item` par question, réponse en
   `core/paragraph` / `core/list`.
 - **Offres alternatives** : `ufo-tabs` → un `ufo-tab` par offre.
+- **Introduction de section** : `ufo-heading-group` → `core/paragraph` (`"className":"tag"`,
+  style du thème possible : `tag is-style-tag-primary`) + `core/heading` (niveau 2). Couleurs,
+  marges, alignement (`wide`, `full`) et ancre par les supports WordPress.
+- **Parcours, calendrier, étapes d'une démarche** : `ufo-time-line` → un `ufo-time-line-item`
+  par étape, détail en `core/paragraph` / `core/list`.
 
 ## 3. Balisage (version 1.1.0 et suivantes)
 
@@ -81,6 +90,14 @@ classes Tailwind pour ces blocs : le serveur les produit à l'affichage.
 <!-- wp:ufo-blocks/ufo-buttons-group {"buttonAlignment":"center"} -->
 <!-- wp:ufo-blocks/ufo-button {"buttonText":"Demander un devis","buttonUrl":"/contact/","buttonIcon":"ArrowRight"} /-->
 <!-- /wp:ufo-blocks/ufo-buttons-group -->
+
+<!-- wp:ufo-blocks/ufo-time-line -->
+<!-- wp:ufo-blocks/ufo-time-line-item {"icon":"Search","date":"Septembre","title":"Premier rendez-vous"} -->
+<!-- wp:paragraph -->
+<p>Nous faisons le point sur vos besoins.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:ufo-blocks/ufo-time-line-item -->
+<!-- /wp:ufo-blocks/ufo-time-line -->
 ```
 
 Règles :
@@ -90,7 +107,7 @@ Règles :
 - Les attributs sont du **JSON** : guillemets doubles, nombres sans guillemets
   (`"columnsCount":3`), chaînes pour les valeurs Tailwind (`"gap":"6"`, `"paddingX":"4"`).
 - Un attribut égal à sa valeur par défaut peut être omis.
-- Dans une valeur HTML (`question`, `content`, `buttonText`), le texte peut contenir
+- Dans une valeur HTML (`question`, `content`, `buttonText`, `date`, `title`), le texte peut contenir
   `<strong>`, `<em>`, `<a href>`. Échapper `<`, `>` et `&` en `<`, `>`, `&`
   comme le fait WordPress (`wp_json_encode` / `serialize_block_attributes`), et ne jamais
   écrire `--` dans un commentaire de bloc.
@@ -127,18 +144,21 @@ plutôt que de retoucher l'ancien HTML.
 | `titleAlignment` | title | `"left"`, `"center"`, `"right"` |
 | `enableSchema` | faq | `true` (défaut) / `false` |
 | `schemaName`, `schemaDescription`, `schemaAbout` | faq | texte brut, facultatif |
+| `textColor`, `markerColor` | time-line-item | slug de la palette du thème (titre / icône) |
+| `customTextColor`, `customMarkerColor` | time-line-item | même couleur en `"#rrggbb"` : bordure de la date / fond du marqueur (à 15 %) ; sans elle, marqueur violet par défaut |
 
 Styles de bloc (`className`) : `ufo-button` accepte `is-style-primary` (défaut) et
 `is-style-secondary`.
 
-**Icônes** (`icon` de `ufo-title` / `ufo-icon`, `buttonIcon` de `ufo-button`) : nom Lucide en
-CamelCase, parmi ceux que le plugin sait rendre : AlarmClockPlus, Apple, ArrowLeft,
-ArrowRight, ArrowUpRight, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, Clock,
-Code, Coffee, Database, Download, Globe, GraduationCap, Handshake, HardDriveDownload,
-Headphones, Heart, Home, Key, Leaf, Lock, Mail, Map, MapPin, MessageCirclePlus, Microscope,
-Moon, MoveRight, MoveUpRight, Pen, PenTool, Phone, Plane, Rocket, Search, Send, Server,
-Settings, Shield, ShieldCheck, ShoppingBag, Sparkles, SquareArrowOutUpRight, Star, Sun,
-TriangleAlert, Upload, User. Une icône hors liste n'est pas affichée.
+**Icônes** (`icon` de `ufo-title` / `ufo-icon` / `ufo-time-line-item`, `buttonIcon` de
+`ufo-button`) : nom Lucide en CamelCase, parmi ceux que le plugin sait rendre :
+AlarmClockPlus, Apple, ArrowLeft, ArrowRight, ArrowUpRight, Briefcase, Calendar, ChartBar,
+ChartNoAxesCombined, ChevronDown, ChevronLeft, ChevronRight, Clock, Code, Coffee, Database,
+Download, Flame, Globe, GraduationCap, Handshake, HardDriveDownload, Headphones, Heart, Home,
+Key, Leaf, Lightbulb, Lock, Mail, Map, MapPin, MessageCirclePlus, Microscope, Moon, MoveRight,
+MoveUpRight, Pen, PenTool, Phone, Plane, Rocket, Search, Send, Server, Settings, Shield,
+ShieldCheck, ShoppingBag, Sparkles, SquareArrowOutUpRight, Star, Sun, Target, TriangleAlert,
+Upload, User. Une icône hors liste n'est pas affichée.
 
 Couleurs : utiliser les supports WordPress (`backgroundColor`, `textColor` avec un slug de
 la palette du thème, `style`) plutôt que des classes.
@@ -180,6 +200,7 @@ le bloc s'affiche « contenu inattendu ou non valide ». Sur ces sites :
 
 | Version | Changement |
 |---|---|
+| (prochaine) | Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target. |
 | 1.1.1 | `/check` accepte `post_type` : `ufo-grid` / `ufo-row` signalés dans un article. Balisage des blocs inchangé. |
 | 1.1.0 | Rendu serveur de `ufo-grid`, `ufo-row`, `ufo-buttons-group`, `ufo-faq`, `ufo-faq-item`, `ufo-tab` : commentaire + enfants seulement. `ufo-faq-item.question` passe du HTML (`.faq-question`) au commentaire. Ancien format accepté et migré à la sauvegarde. Exemples dans les `block.json`, guide et routes `ufo-tools-blocks/v1`. |
 | 1.0.5 | `ufo-faq-item` : bordure `border-slate-200` (au lieu de `border-gray-200`). Bloc `ufo-tabs` / `ufo-tab`. |

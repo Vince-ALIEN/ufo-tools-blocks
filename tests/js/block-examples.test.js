@@ -27,7 +27,18 @@ const blocks = Object.fromEntries(
 
 // Blocs du cœur utilisés dans les exemples, avec les attributs employés.
 const CORE = {
-	'core/paragraph': { attributes: { content: { type: 'string' } } },
+	'core/paragraph': {
+		attributes: {
+			content: { type: 'string' },
+			className: { type: 'string' },
+		},
+	},
+	'core/heading': {
+		attributes: {
+			content: { type: 'string' },
+			level: { type: 'number' },
+		},
+	},
 };
 
 const typeOf = ( value ) => {
@@ -88,8 +99,8 @@ const problemsOf = ( name, { attributes = {}, innerBlocks = [] }, parent ) => {
 };
 
 describe( 'example des block.json', () => {
-	test( 'les 10 blocs sont présents', () => {
-		expect( Object.keys( blocks ) ).toHaveLength( 10 );
+	test( 'les 13 blocs sont présents', () => {
+		expect( Object.keys( blocks ) ).toHaveLength( 13 );
 	} );
 
 	test.each( Object.keys( blocks ) )( '%s a un exemple', ( name ) => {

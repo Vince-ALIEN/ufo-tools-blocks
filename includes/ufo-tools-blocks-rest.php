@@ -30,7 +30,8 @@ const UFO_TOOLS_BLOCKS_CHECK_MAX_DEPTH = 40;
 const UFO_TOOLS_BLOCKS_CHECK_MAX_ISSUES = 200;
 
 /**
- * Blocs du plugin statiques jusqu'à la 1.0.8 : leur ancien HTML enregistré
+ * Blocs du plugin statiques jusqu'à la 1.0.8 (ufo-time-line,
+ * ufo-time-line-item et ufo-heading-group : dans le plugin ufo-blocks) : leur ancien HTML enregistré
  * reste accepté (affiché tel quel, migré à la sauvegarde dans l'éditeur).
  */
 const UFO_TOOLS_BLOCKS_FORMERLY_STATIC = array(
@@ -40,6 +41,9 @@ const UFO_TOOLS_BLOCKS_FORMERLY_STATIC = array(
 	'ufo-blocks/ufo-faq-item',
 	'ufo-blocks/ufo-buttons-group',
 	'ufo-blocks/ufo-tab',
+	'ufo-blocks/ufo-time-line',
+	'ufo-blocks/ufo-time-line-item',
+	'ufo-blocks/ufo-heading-group',
 );
 
 /**

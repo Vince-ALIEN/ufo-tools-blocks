@@ -1,0 +1,52 @@
+{
+  "apiVersion": 3,
+  "name": "ufo-blocks/ufo-time-line",
+  "title": "UFO Timeline",
+  "category": "ufo-blocks",
+  "icon": "clock",
+  "description": "Frise chronologique verticale : un ufo Timeline Item par étape (date, titre, icône, contenu libre), reliés par une ligne. Pour un parcours, un calendrier ou les étapes d'une démarche.",
+  "supports": {
+    "html": false,
+    "anchor": true
+  },
+  "textdomain": "ufo-tools-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "example": {
+    "innerBlocks": [
+      {
+        "name": "ufo-blocks/ufo-time-line-item",
+        "attributes": {
+          "icon": "Search",
+          "date": "Septembre",
+          "title": "Premier rendez-vous"
+        },
+        "innerBlocks": [
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Nous faisons le point sur vos besoins et vos contenus existants."
+            }
+          }
+        ]
+      },
+      {
+        "name": "ufo-blocks/ufo-time-line-item",
+        "attributes": {
+          "icon": "Rocket",
+          "date": "Novembre",
+          "title": "Mise en ligne"
+        },
+        "innerBlocks": [
+          {
+            "name": "core/paragraph",
+            "attributes": {
+              "content": "Le site est publié, puis suivi pendant un mois."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "render": "file:./render.php"
+}

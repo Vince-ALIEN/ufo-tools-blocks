@@ -18,6 +18,12 @@ exports[`balisage 1.0.8 (deprecated[0], figé) ufo-row avec placement 1`] = `"<d
 
 exports[`balisage 1.0.8 (deprecated[0], figé) ufo-tab 1`] = `"<div class="wp-block-ufo-blocks-ufo-tab"></div>"`;
 
+exports[`balisage 1.0.8 (deprecated[0], figé) ufo-time-line (ufo-blocks) 1`] = `"<div class="wp-block-ufo-blocks-ufo-time-line"><ol class="relative border-l-3 border-secondary ml-3 lg:my-3 my-1 px-2"></ol></div>"`;
+
+exports[`balisage 1.0.8 (deprecated[0], figé) ufo-time-line-item (ufo-blocks), icône et couleurs 1`] = `"<li class="wp-block-ufo-blocks-ufo-time-line-item relative ml-3 list-none pb-8 pl-6 last:pb-0"><span class="absolute -left-13 top-0 h-10 w-10 rounded-full bg-white" aria-hidden="true"></span><span class="absolute -left-13 top-0 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-background" style="background-color:rgba(4, 132, 129, 0.15)" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target has-secondary-color" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></span><time class="inline-block mb-1 ml-6 rounded border-2 border-gray-200 bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700" style="border-color:#D73904">3<sup>e</sup></time><h3 class="my-1 ml-6 text-base md:text-lg font-semibold has-primary-color">Choix <em>final</em></h3><div class="ml-6 text-sm text-gray-600 [&amp;&gt;p:last-child]:mb-0"></div></li>"`;
+
+exports[`balisage 1.0.8 (deprecated[0], figé) ufo-time-line-item (ufo-blocks), sans réglage 1`] = `"<li class="wp-block-ufo-blocks-ufo-time-line-item relative ml-3 list-none pb-8 pl-6 last:pb-0"><span class="absolute -left-13 top-0 h-10 w-10 rounded-full bg-white" aria-hidden="true"></span><span class="absolute -left-13 top-0 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-background bg-violet-100" aria-hidden="true"></span><time class="inline-block mb-1 ml-6 rounded border-2 border-gray-200 bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700">2026</time><h3 class="my-1 ml-6 text-base md:text-lg font-semibold text-gray-900">Étape</h3><div class="ml-6 text-sm text-gray-600 [&amp;&gt;p:last-child]:mb-0"></div></li>"`;
+
 exports[`format actuel : attributs et blocs enfants seulement ufo-blocks/ufo-buttons-group 1`] = `
 "<!-- wp:ufo-blocks/ufo-buttons-group {"buttonAlignment":"center"} -->
 <!-- wp:paragraph -->
@@ -68,4 +74,22 @@ exports[`format actuel : attributs et blocs enfants seulement ufo-blocks/ufo-tab
 <p>Contenu</p>
 <!-- /wp:paragraph -->
 <!-- /wp:ufo-blocks/ufo-tab -->"
+`;
+
+exports[`format actuel : attributs et blocs enfants seulement ufo-blocks/ufo-time-line 1`] = `
+"<!-- wp:ufo-blocks/ufo-time-line -->
+<!-- wp:ufo-blocks/ufo-time-line-item -->
+<!-- wp:paragraph -->
+<p>Contenu</p>
+<!-- /wp:paragraph -->
+<!-- /wp:ufo-blocks/ufo-time-line-item -->
+<!-- /wp:ufo-blocks/ufo-time-line -->"
+`;
+
+exports[`format actuel : attributs et blocs enfants seulement ufo-blocks/ufo-time-line-item 1`] = `
+"<!-- wp:ufo-blocks/ufo-time-line-item {"icon":"Target","date":"Mars","title":"Choix \\u003cem\\u003efinal\\u003c/em\\u003e","markerColor":"primary","customMarkerColor":"#D73904"} -->
+<!-- wp:paragraph -->
+<p>Contenu</p>
+<!-- /wp:paragraph -->
+<!-- /wp:ufo-blocks/ufo-time-line-item -->"
 `;

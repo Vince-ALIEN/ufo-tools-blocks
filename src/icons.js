@@ -12,6 +12,9 @@ import {
 	Heading,
 	AppWindowMac,
 	RectangleEllipsis,
+	Clock,
+	CircleDot,
+	Heading2,
 } from 'lucide-react';
 
 // Logo de Lucide (absent de lucide-react), d'après logo.svg du dépôt
@@ -48,6 +51,9 @@ const iconMap = {
 	Heading,
 	AppWindowMac,
 	RectangleEllipsis,
+	Clock,
+	CircleDot,
+	Heading2,
 	LucideLogo,
 };
 

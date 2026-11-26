@@ -5,6 +5,19 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **`ufo-time-line` and `ufo-time-line-item`** (vertical timeline), taken over from the `ufo-blocks` plugin with the same block names and markup. Like the other blocks, they are rendered on the server (`render.php`): saved content only holds the block comments and the inner blocks; the step `date` and `title` move from the HTML (`<time>`, `<h3>`) to the block comment.
+- Timelines saved by `ufo-blocks` are recognised by `deprecated.js` (frozen copy of its `save()`), displayed as saved and migrated on the next save in the editor. Checked on a local copy: the 3 timelines of the existing page render identically with `ufo-blocks` and with this plugin, and the old and migrated markup of `tests/fixtures/time-line.html` render identically.
+- **`ufo-heading-group`** (tag paragraph above a section heading, with color, spacing, alignment and anchor supports), also taken over from `ufo-blocks` and rendered on the server. Groups saved by `ufo-blocks` are recognised by `deprecated.js`, displayed as saved and migrated on the next save, with their settings; old and migrated markup of `tests/fixtures/heading-group.html` render identically.
+- Icons ChartBar, ChartNoAxesCombined, Flame, Lightbulb and Target (used by `ufo-blocks` content), available to every block with an icon.
+- `/check` accepts the old `ufo-blocks` timeline and heading group HTML (warning) like the other formerly static blocks.
+
+### Fixed
+- `ufo-button`: the `not-prose` class is back on the link (it was in `ufo-blocks`). In a Tailwind Typography `.prose` content, the theme's link rule (`.prose :where(a)`, same specificity, later in the CSS) replaced the button text color (white for `is-style-primary` / `is-style-secondary`), weight and underline.
+- `ufo-button`: the screen-reader text ("(nouvel onglet)", custom screen-reader text) was visible in themes that don't define WordPress' `screen-reader-text` class, which is the case for Tailwind themes. It now also has Tailwind's `sr-only` class.
+
 ## [1.1.1] - 2026-11-23
 
 ### Added

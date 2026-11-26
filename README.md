@@ -28,7 +28,9 @@ It pairs with your Tailwind CSS v4 theme: the plugin ships no CSS of its own, st
 | ufo FAQ Item | `ufo-blocks/ufo-faq-item` | Question/answer item (child of ufo FAQ) |
 | UFO Icon | `ufo-blocks/ufo-icon` | Lucide icon with alignment and theme color |
 | ufo Title | `ufo-blocks/ufo-title` | Title with icon and rounded background |
+| UFO Heading Group | `ufo-blocks/ufo-heading-group` | Tag (short paragraph) above a section heading |
 | Ufo Tabs | `ufo-blocks/ufo-tabs` | Underlined tabs (keyboard accessible); each tab is a `ufo-blocks/ufo-tab` |
+| UFO Timeline | `ufo-blocks/ufo-time-line` | Vertical timeline; each step is a `ufo-blocks/ufo-time-line-item` (date, title, icon, free content) |
 
 Since 1.1.0 every block is rendered on the server (`render.php`): saved content only holds block comments with their attributes and the inner blocks, so it can no longer become "unexpected or invalid", whoever writes it (editor, import, AI assistant). Content saved by 1.0.8 and earlier is displayed unchanged and switches to the new format the next time it is saved in the editor.
 
@@ -220,6 +222,9 @@ ufo-tools-blocks/
 │   ├── ufo-title/            # Title with icon
 │   ├── ufo-tabs/             # Tabs (render.php + view.js)
 │   ├── ufo-tab/              # One tab (child of ufo-tabs)
+│   ├── ufo-heading-group/    # Tag above a section heading
+│   ├── ufo-time-line/        # Vertical timeline
+│   ├── ufo-time-line-item/   # One step (child of ufo-time-line)
 │   └── icons.js
 ├── ufo-tools-blocks.php      # Main plugin file
 ├── package.json

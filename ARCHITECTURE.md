@@ -6,14 +6,14 @@
 ufo-tools-blocks/
 │
 ├── ufo-tools-blocks.php        # Fichier principal du plugin
-│   ├── ufo_tools_blocks_block_init()          # Enregistrement des 10 blocs
+│   ├── ufo_tools_blocks_block_init()          # Enregistrement des 13 blocs
 │   └── ufo_tools_blocks_register_category()   # Catégorie "UFO Blocks"
 │
 ├── includes/
 │   ├── class-ufo-tools-blocks-updater.php     # Mises à jour depuis les releases GitHub
 │   ├── ufo-faq-schema.php                     # JSON-LD FAQPage (appelé par ufo-faq/render.php)
 │   ├── ufo-tools-blocks-classes.php           # Classes Tailwind (portage PHP des shared.js)
-│   ├── ufo-tools-blocks-render.php            # Aides des render.php (ancien format, fond)
+│   ├── ufo-tools-blocks-render.php            # Aides des render.php (ancien format, fond, marqueur de frise)
 │   ├── ufo-tools-blocks-rest.php              # Routes ufo-tools-blocks/v1 (guide, check)
 │   └── ufo-tools-blocks-icons.php             # ufo_get_icon_svg() (généré au build)
 │
@@ -29,6 +29,9 @@ ufo-tools-blocks/
 │   ├── ufo-title/              # Titre avec icône             (dynamique : render.php)
 │   ├── ufo-tabs/               # Onglets                      (dynamique : render.php + view.js)
 │   ├── ufo-tab/                # Un onglet                    (dynamique, enfant de ufo-tabs)
+│   ├── ufo-heading-group/      # Étiquette + titre de section (dynamique : render.php)
+│   ├── ufo-time-line/          # Frise chronologique          (dynamique : render.php)
+│   ├── ufo-time-line-item/     # Une étape de frise           (dynamique, enfant de ufo-time-line)
 │   └── ufo-icon/               # Icône Lucide                 (dynamique : render.php)
 │       Chaque bloc : block.json, index.js, edit.js, save.js, *.css,
 │       et selon le cas shared.js, inspector.js, deprecated.js, render.php
@@ -65,7 +68,7 @@ WordPress init
 ufo-tools-blocks.php
     ↓
 ufo_tools_blocks_block_init()
-    └→ register_block_type(__DIR__ . '/build/<bloc>')   × 10
+    └→ register_block_type(__DIR__ . '/build/<bloc>')   × 13
 
 Tous les blocs sont rendus par leur render.php (depuis la 1.1.0) ;
 les blocs à enfants enveloppent $content (rendu des enfants, déjà calculé par
@@ -145,6 +148,10 @@ ufo-grid
 ufo-faq
     └── ufo-faq-item (1..N)   ← parent déclaré dans block.json
             └── [tout bloc WordPress : la réponse]
+
+ufo-time-line
+    └── ufo-time-line-item (1..N)   ← parent déclaré dans block.json
+            └── [tout bloc WordPress : le détail de l'étape]
 
 ufo-buttons-group
     └── ufo-button (0..N)     ← ufo-button peut aussi être utilisé seul
