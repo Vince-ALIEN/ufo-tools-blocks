@@ -1,0 +1,57 @@
+{
+  "apiVersion": 3,
+  "name": "ufo-blocks/ufo-time-line-item",
+  "title": "UFO Timeline Item",
+  "category": "ufo-blocks",
+  "icon": "marker",
+  "description": "Une étape de frise chronologique : date, titre, icône Lucide dans un marqueur rond et contenu libre (blocs enfants : paragraphes, listes…). Uniquement dans un ufo Timeline.",
+  "parent": ["ufo-blocks/ufo-time-line"],
+  "supports": {
+    "html": false
+  },
+  "textdomain": "ufo-tools-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "attributes": {
+    "icon": {
+      "type": "string",
+      "default": ""
+    },
+    "date": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "textColor": {
+      "type": "string"
+    },
+    "customTextColor": {
+      "type": "string"
+    },
+    "markerColor": {
+      "type": "string"
+    },
+    "customMarkerColor": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "attributes": {
+      "icon": "Calendar",
+      "date": "Mars 2027",
+      "title": "Ouverture des inscriptions"
+    },
+    "innerBlocks": [
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "Les dossiers se déposent en ligne jusqu'au 15 avril."
+        }
+      }
+    ]
+  },
+  "render": "file:./render.php"
+}

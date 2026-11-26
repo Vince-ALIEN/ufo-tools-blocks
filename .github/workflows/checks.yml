@@ -1,0 +1,120 @@
+# Contrôles de la revue de sécurité, à chaque push sur main et à chaque pull
+# request : tests et style, audit des dépendances livrées, PHPCS (sniffs de
+# sécurité WordPress) et compatibilité PHP 7.4, secrets dans tout l'historique
+# (gitleaks), Plugin Check sur le contenu de l'archive livrée.
+#
+# Aucun job n'a de droit d'écriture ni de secret : jeton en lecture seule,
+# checkout sans identifiants conservés.
+name: Contrôles
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      - name: Tests et style
+        run: |
+          npm ci
+          npm test
+
+      # Dépendances livrées aux visiteurs seulement : les outils de build ont
+      # des alertes connues, suivies à part.
+      - name: Audit des dépendances livrées
+        run: npm audit --package-lock-only --omit=dev
+
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - name: Outils PHPCS (require-dev de composer.json)
+        run: composer install --no-interaction --no-progress
+
+      - name: PHPCS, sniffs de sécurité WordPress
+        run: >
+          vendor/bin/phpcs --standard=WordPress-Extra
+          --sniffs=WordPress.Security.EscapeOutput,WordPress.Security.NonceVerification,WordPress.Security.ValidatedSanitizedInput,WordPress.Security.SafeRedirect,WordPress.Security.PluginMenuSlug,WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders,WordPress.PHP.DevelopmentFunctions,WordPress.PHP.DiscouragedPHPFunctions
+          --extensions=php --ignore=node_modules,vendor,build
+          src includes ufo-tools-blocks.php uninstall.php
+
+      # Aligné sur « Requires PHP » de ufo-tools-blocks.php.
+      - name: Compatibilité PHP 7.4
+        run: >
+          vendor/bin/phpcs --standard=PHPCompatibilityWP
+          --runtime-set testVersion 7.4-
+          --extensions=php --ignore=node_modules,vendor,build .
+
+  secrets:
+    runs-on: ubuntu-latest
+    env:
+      GITLEAKS_VERSION: 8.30.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Binaire officiel, vérifié par la somme SHA-256 publiée avec la release.
+      - name: Installation de gitleaks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/gitleaks" && cd "$RUNNER_TEMP/gitleaks"
+          gh release download "v$GITLEAKS_VERSION" --repo gitleaks/gitleaks \
+            -p "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            -p "gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          grep "linux_x64.tar.gz" "gitleaks_${GITLEAKS_VERSION}_checksums.txt" | sha256sum -c -
+          tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" gitleaks
+
+      - name: Secrets dans tout l'historique
+        run: '"$RUNNER_TEMP/gitleaks/gitleaks" git . --no-banner --redact'
+
+  plugin-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      # Plugin Check porte sur ce qui est livré (l'archive), pas sur les
+      # fichiers de développement (src/, tests/, fichiers cachés…).
+      - name: Archive du plugin
+        run: |
+          npm ci
+          npm run build
+          npm run plugin-zip
+          mkdir -p dist
+          unzip -q ufo-tools-blocks.zip -d dist
+
+      # Catégorie « plugin_repo » exclue : le plugin est distribué par GitHub
+      # (Update URI, pas de readme.txt WordPress.org).
+      - uses: WordPress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # v1.1.9
+        with:
+          build-dir: dist/ufo-tools-blocks
+          categories: security,general

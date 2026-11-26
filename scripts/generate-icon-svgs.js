@@ -16,6 +16,9 @@ const path = require( 'path' );
 
 const ROOT = path.resolve( __dirname, '..' );
 const iconNames = require( path.join( ROOT, 'src/shared/icon-names.json' ) );
+const customIcons = require(
+	path.join( ROOT, 'src/shared/custom-icons.json' )
+);
 const lucideVer = require(
 	path.join( ROOT, 'node_modules/lucide-react/package.json' )
 ).version;
@@ -24,10 +27,24 @@ const outputPath = path.join( ROOT, 'includes/ufo-tools-blocks-icons.php' );
 // Créer le dossier includes/ si nécessaire
 fs.mkdirSync( path.join( ROOT, 'includes' ), { recursive: true } );
 
+// Icônes personnalisées (absentes de lucide-react) : Digit0 … Digit9. Le SVG
+// PHP est construit depuis src/shared/custom-icons.json, qui alimente aussi
+// le composant React de src/shared/custom-icons.js.
+const CUSTOM_NAME_RE = /^Digit([0-9])$/;
+const customIconNames = iconNames.filter( ( n ) => CUSTOM_NAME_RE.test( n ) );
+const lucideIconNames = iconNames.filter( ( n ) => ! CUSTOM_NAME_RE.test( n ) );
+const { x, y, fontSize, fontWeight, fontFamily } = customIcons.digitStyle;
+
 const paths = {};
 const errors = [];
 
-iconNames.forEach( ( name ) => {
+customIconNames.forEach( ( name ) => {
+	const digit = CUSTOM_NAME_RE.exec( name )[ 1 ];
+	paths[ name ] =
+		`<text x="${ x }" y="${ y }" text-anchor="middle" dominant-baseline="central" font-size="${ fontSize }" font-weight="${ fontWeight }" font-family="${ fontFamily }" fill="currentColor" stroke="none">${ digit }</text>`;
+} );
+
+lucideIconNames.forEach( ( name ) => {
 	const Icon = lucide[ name ];
 	if ( ! Icon ) {
 		errors.push( name );
@@ -117,8 +134,8 @@ console.log(
 
 // Génère src/shared/icons.js (imports nommés pour le tree-shaking webpack)
 const iconsJsPath = path.join( ROOT, 'src/shared/icons.js' );
-const importList = iconNames.map( ( n ) => `\t${ n },` ).join( '\n' );
-const iconEntries = iconNames.map( ( n ) => `\t${ n },` ).join( '\n' );
+const importList = lucideIconNames.map( ( n ) => `\t${ n },` ).join( '\n' );
+const iconEntries = lucideIconNames.map( ( n ) => `\t${ n },` ).join( '\n' );
 
 const iconsJs = `// ⚠️  Fichier généré automatiquement — ne pas modifier manuellement.
 //     Source     : src/shared/icon-names.json
@@ -128,9 +145,11 @@ ${ importList }
 } from 'lucide-react';
 import iconNames from './icon-names.json';
 import { ICON_LABELS, camelToWords } from './icon-labels';
+import { CUSTOM_ICONS } from './custom-icons';
 
 export const ICONS = {
 ${ iconEntries }
+\t...CUSTOM_ICONS,
 };
 
 export const ICON_LIST = iconNames

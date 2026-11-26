@@ -84,7 +84,8 @@
   "example": {
     "attributes": {
       "columnsCount": 3,
-      "gap": "6"
+      "gap": "6",
+      "equalRows": false
     },
     "innerBlocks": [
       {

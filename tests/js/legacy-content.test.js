@@ -123,9 +123,61 @@ describe( 'contenus enregistrés en 1.0.8 et avant', () => {
 				[ 'ufo-grid', 'services' ],
 				[ 'ufo-row', 'cellule' ],
 				[ 'ufo-tabs', 'onglets' ],
+				[ 'ufo-time-line', 'parcours' ],
+				[ 'ufo-heading-group', 'calendrier' ],
 			] )
 		);
-		expect( anchors ).toHaveLength( 7 );
+		expect( anchors ).toHaveLength( 9 );
+	} );
+
+	test( 'réglages de ufo-heading-group conservés (supports)', () => {
+		const [ , group ] = parse( read( 'heading-group.html' ) ).filter(
+			( { name } ) => name === 'ufo-blocks/ufo-heading-group'
+		);
+		expect( console ).toHaveInformed();
+		expect( group.attributes ).toMatchObject( {
+			align: 'wide',
+			textColor: 'primary',
+			backgroundColor: 'secondary-10',
+			style: { spacing: { padding: { top: '2rem', bottom: '2rem' } } },
+		} );
+		expect( group.innerBlocks.map( ( { name } ) => name ) ).toEqual( [
+			'core/paragraph',
+			'core/heading',
+		] );
+	} );
+
+	test( 'étapes de frise conservées (ufo-blocks) : date, titre, réglages', () => {
+		const items = ufoBlocks( parse( read( 'time-line.html' ) ) )
+			.filter( ( { name } ) => name === 'ufo-blocks/ufo-time-line-item' )
+			.map( ( { attributes } ) => ( {
+				...attributes,
+				date: String( attributes.date ),
+				title: String( attributes.title ),
+			} ) );
+		expect( console ).toHaveInformed();
+		expect( items ).toEqual( [
+			{
+				icon: 'Leaf',
+				date: 'Septembre – Octobre',
+				title: 'Premier rendez-vous',
+				textColor: 'success',
+				customTextColor: '#639560',
+				markerColor: 'success',
+				customMarkerColor: '#639560',
+				className: 'ml-6',
+			},
+			expect.objectContaining( {
+				icon: 'Search',
+				date: 'Novembre',
+				markerColor: 'secondary-10',
+			} ),
+			expect.objectContaining( {
+				icon: 'Target',
+				title: 'Mise en <em>ligne</em>',
+			} ),
+			{ icon: '', date: 'Ensuite', title: 'Sans réglage' },
+		] );
 	} );
 
 	test( 'réglages de la grille conservés', () => {

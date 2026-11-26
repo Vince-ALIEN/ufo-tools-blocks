@@ -56,7 +56,8 @@ function Edit( { attributes, setAttributes } ) {
 		) || !! ( screenReaderText && screenReaderText.trim() );
 
 	const buttonClasses = clsx(
-		'btn inline-flex items-center gap-2 no-underline group cursor-pointer',
+		// not-prose : voir render.php (couleur des liens de .prose).
+		'btn not-prose inline-flex items-center gap-2 no-underline group cursor-pointer',
 		{ 'w-full justify-center is-full-width': isFullWidth }
 	);
 

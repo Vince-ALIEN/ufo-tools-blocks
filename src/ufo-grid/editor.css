@@ -3,8 +3,8 @@
    Pour distinguer la grille de ses cellules, l'éditeur (seulement) donne à
    la grille un fond violet léger, un contour violet, une étiquette toujours
    visible et des marges qui lui appartiennent (un clic dessus la
-   sélectionne). Les cellules y apparaissent comme des cartes blanches à
-   contour gris. Le site n'a ni ces marges ni ces couleurs.
+   sélectionne). Les cellules y ont un contour pointillé tiré de la couleur
+   du texte, sans fond. Le site n'a ni ces marges ni ces couleurs.
    ========================================================================= */
 
 .editor-styles-wrapper {
@@ -13,8 +13,12 @@
 	--ufo-color-outline: rgba(124, 58, 237, 0.35);
 	--ufo-color-grid-frame: rgba(124, 58, 237, 0.55);
 	--ufo-color-grid-bg: rgba(124, 58, 237, 0.06);
-	--ufo-color-cell-frame: rgba(30, 30, 30, 0.25);
-	--ufo-color-cell-bg: #fff;
+
+	/* Contour des cellules et fond de sélection tirés de la couleur du texte,
+	   jamais un fond opaque : un fond blanc rendait illisible un texte blanc
+	   posé sur une section sombre, un contour gris foncé y disparaissait. */
+	--ufo-color-cell-frame: color-mix(in srgb, currentcolor 30%, transparent);
+	--ufo-color-selected-bg: color-mix(in srgb, currentcolor 4%, transparent);
 	--ufo-grid-space-top: 32px;
 	--ufo-grid-space-bottom: 12px;
 	--ufo-grid-space-x: 12px;
@@ -108,15 +112,11 @@
 	}
 }
 
-/* Cellules : cartes blanches à contour gris (fond blanc seulement si la
-   cellule n'a pas de fond choisi). */
+/* Cellules : contour pointillé seulement, sans fond, pour que le fond de la
+   grille ou de la section (sombre, avec texte blanc…) reste visible. */
 .editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.is-selected) {
 	outline: 1px dashed var(--ufo-color-cell-frame);
 	outline-offset: -1px;
-}
-
-.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout > .wp-block-ufo-blocks-ufo-row:not(.has-background):not([style*="background"]) {
-	background-color: var(--ufo-color-cell-bg);
 }
 
 /* Inspecteur : aperçu des médias d'arrière-plan (ufo-grid et ufo-row). */

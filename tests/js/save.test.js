@@ -101,6 +101,45 @@ describe( 'balisage 1.0.8 (deprecated[0], figé)', () => {
 		).toMatchSnapshot();
 	} );
 
+	test( 'ufo-time-line (ufo-blocks)', () => {
+		expect( saveOf( 'ufo-blocks/ufo-time-line' ) ).toMatchSnapshot();
+	} );
+
+	test( 'ufo-time-line-item (ufo-blocks), sans réglage', () => {
+		expect(
+			saveOf( 'ufo-blocks/ufo-time-line-item', {
+				date: '2026',
+				title: 'Étape',
+			} )
+		).toMatchSnapshot();
+	} );
+
+	test( 'ufo-time-line-item (ufo-blocks), icône et couleurs', () => {
+		expect(
+			saveOf( 'ufo-blocks/ufo-time-line-item', {
+				icon: 'Target',
+				date: '3<sup>e</sup>',
+				title: 'Choix <em>final</em>',
+				textColor: 'primary',
+				customTextColor: '#D73904',
+				markerColor: 'secondary',
+				customMarkerColor: '#048481',
+			} )
+		).toMatchSnapshot();
+	} );
+
+	test( 'ufo-time-line-item (ufo-blocks), icône chiffre', () => {
+		expect(
+			saveOf( 'ufo-blocks/ufo-time-line-item', {
+				icon: 'Digit1',
+				date: 'Étape 1',
+				title: 'Inscription',
+				markerColor: 'primary',
+				customMarkerColor: '#D73904',
+			} )
+		).toMatchSnapshot();
+	} );
+
 	test.each( [ 'left', 'center', 'right' ] )(
 		'ufo-buttons-group %s',
 		( buttonAlignment ) => {
@@ -126,6 +165,18 @@ describe( 'format actuel : attributs et blocs enfants seulement', () => {
 			null,
 		],
 		[ 'ufo-blocks/ufo-tab', { title: 'Tarifs' }, null ],
+		[ 'ufo-blocks/ufo-time-line', {}, 'ufo-time-line-item' ],
+		[
+			'ufo-blocks/ufo-time-line-item',
+			{
+				icon: 'Target',
+				date: 'Mars',
+				title: 'Choix <em>final</em>',
+				markerColor: 'primary',
+				customMarkerColor: '#D73904',
+			},
+			null,
+		],
 	] )( '%s', ( name, attributes, child ) => {
 		const inner = child
 			? [ createBlock( `ufo-blocks/${ child }`, {}, [ paragraph() ] ) ]
@@ -159,9 +210,16 @@ describe( 'contenu existant', () => {
 	test.each( deprecatedCases )(
 		'%s : deprecated[%i] est migré',
 		( name, index, version ) => {
-			const attributes = name.endsWith( 'faq-item' )
-				? { question: 'Ancienne question' }
-				: {};
+			const attributes = {
+				'ufo-blocks/ufo-faq-item': { question: 'Ancienne question' },
+				'ufo-blocks/ufo-time-line-item': {
+					icon: 'Target',
+					date: 'Mars',
+					title: 'Ancienne étape',
+					markerColor: 'primary',
+					customMarkerColor: '#D73904',
+				},
+			}[ name ];
 			const block = createBlock( name, attributes );
 			const html = getSaveContent(
 				{
@@ -172,11 +230,16 @@ describe( 'contenu existant', () => {
 				},
 				block.attributes
 			);
-			const comment =
-				Object.keys( block.attributes ).length &&
-				! name.endsWith( 'faq-item' )
-					? ` ${ JSON.stringify( block.attributes ) }`
-					: '';
+			// Attributs du commentaire : ceux que l'ancien format ne lisait
+			// pas dans le HTML (source).
+			const commentAttributes = Object.fromEntries(
+				Object.entries( block.attributes ).filter(
+					( [ key ] ) => ! version.attributes?.[ key ]?.source
+				)
+			);
+			const comment = Object.keys( commentAttributes ).length
+				? ` ${ JSON.stringify( commentAttributes ) }`
+				: '';
 			const [ parsed ] = parse(
 				`<!-- wp:${ name }${ comment } -->\n${ html }\n<!-- /wp:${ name } -->`
 			);

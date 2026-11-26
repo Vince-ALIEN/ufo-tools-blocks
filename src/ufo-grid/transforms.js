@@ -101,6 +101,8 @@ const transforms = {
 					{
 						...pickShared( attributes ),
 						columnsCount,
+						// Comme core/columns : pas de lignes de hauteur égale.
+						equalRows: false,
 						verticalAlignment: verticalAlignment(
 							attributes.verticalAlignment
 						),

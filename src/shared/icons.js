@@ -9,6 +9,8 @@ import {
 	ArrowUpRight,
 	Briefcase,
 	Calendar,
+	ChartBar,
+	ChartNoAxesCombined,
 	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
@@ -17,6 +19,7 @@ import {
 	Coffee,
 	Database,
 	Download,
+	Flame,
 	Globe,
 	GraduationCap,
 	Handshake,
@@ -26,6 +29,7 @@ import {
 	Home,
 	Key,
 	Leaf,
+	Lightbulb,
 	Lock,
 	Mail,
 	Map,
@@ -51,12 +55,14 @@ import {
 	SquareArrowOutUpRight,
 	Star,
 	Sun,
+	Target,
 	TriangleAlert,
 	Upload,
 	User,
 } from 'lucide-react';
 import iconNames from './icon-names.json';
 import { ICON_LABELS, camelToWords } from './icon-labels';
+import { CUSTOM_ICONS } from './custom-icons';
 
 export const ICONS = {
 	AlarmClockPlus,
@@ -66,6 +72,8 @@ export const ICONS = {
 	ArrowUpRight,
 	Briefcase,
 	Calendar,
+	ChartBar,
+	ChartNoAxesCombined,
 	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
@@ -74,6 +82,7 @@ export const ICONS = {
 	Coffee,
 	Database,
 	Download,
+	Flame,
 	Globe,
 	GraduationCap,
 	Handshake,
@@ -83,6 +92,7 @@ export const ICONS = {
 	Home,
 	Key,
 	Leaf,
+	Lightbulb,
 	Lock,
 	Mail,
 	Map,
@@ -108,9 +118,11 @@ export const ICONS = {
 	SquareArrowOutUpRight,
 	Star,
 	Sun,
+	Target,
 	TriangleAlert,
 	Upload,
 	User,
+	...CUSTOM_ICONS,
 };
 
 export const ICON_LIST = iconNames

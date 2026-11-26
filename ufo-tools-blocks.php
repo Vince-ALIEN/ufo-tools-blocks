@@ -71,6 +71,9 @@ function ufo_tools_blocks_block_init()
     register_block_type(__DIR__ . "/build/ufo-icon");
     register_block_type(__DIR__ . "/build/ufo-tabs");
     register_block_type(__DIR__ . "/build/ufo-tab");
+    register_block_type(__DIR__ . "/build/ufo-time-line");
+    register_block_type(__DIR__ . "/build/ufo-time-line-item");
+    register_block_type(__DIR__ . "/build/ufo-heading-group");
 }
 add_action("init", "ufo_tools_blocks_block_init");
 

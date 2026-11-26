@@ -28,7 +28,9 @@ It pairs with your Tailwind CSS v4 theme: the plugin ships no CSS of its own, st
 | ufo FAQ Item | `ufo-blocks/ufo-faq-item` | Question/answer item (child of ufo FAQ) |
 | UFO Icon | `ufo-blocks/ufo-icon` | Lucide icon with alignment and theme color |
 | ufo Title | `ufo-blocks/ufo-title` | Title with icon and rounded background |
+| UFO Heading Group | `ufo-blocks/ufo-heading-group` | Tag (short paragraph) above a section heading |
 | Ufo Tabs | `ufo-blocks/ufo-tabs` | Underlined tabs (keyboard accessible); each tab is a `ufo-blocks/ufo-tab` |
+| UFO Timeline | `ufo-blocks/ufo-time-line` | Vertical timeline; each step is a `ufo-blocks/ufo-time-line-item` (date, title, icon, free content) |
 
 Since 1.1.0 every block is rendered on the server (`render.php`): saved content only holds block comments with their attributes and the inner blocks, so it can no longer become "unexpected or invalid", whoever writes it (editor, import, AI assistant). Content saved by 1.0.8 and earlier is displayed unchanged and switches to the new format the next time it is saved in the editor.
 
@@ -156,7 +158,7 @@ CSS Grid container. Only accepts `ufo Row` blocks as direct children.
 | gap | string | '4' | Gap between cells (0–8) |
 | verticalAlignment | string | '' | Vertical alignment of cells |
 | reverseMobile | boolean | false | Reverse order on mobile |
-| equalRows | boolean | true | Equal row heights (`auto-rows-fr`) |
+| equalRows | boolean | true | Equal row heights (`auto-rows-fr`). `true` when absent, for grids already saved; new grids inserted in the editor (any layout but the mosaic) and grids converted from `core/columns` get `false` explicitly, and "Reset all" sets it to `false`. |
 | minHeight | string | '' | Minimum height |
 | borderRadius | string | '' | Border radius |
 | isBoxed | boolean | false | Centered container with max-width |
@@ -220,6 +222,9 @@ ufo-tools-blocks/
 │   ├── ufo-title/            # Title with icon
 │   ├── ufo-tabs/             # Tabs (render.php + view.js)
 │   ├── ufo-tab/              # One tab (child of ufo-tabs)
+│   ├── ufo-heading-group/    # Tag above a section heading
+│   ├── ufo-time-line/        # Vertical timeline
+│   ├── ufo-time-line-item/   # One step (child of ufo-time-line)
 │   └── icons.js
 ├── ufo-tools-blocks.php      # Main plugin file
 ├── package.json
@@ -249,7 +254,7 @@ ufo-tools-blocks/
 - `tests/js/tailwind-safelist.test.js`: every class the inspector settings can generate must be either written as-is in `src/` or listed in the `@source inline(...)` safelist above. Extend the safelist when you add a value.
 - `tests/php/test-faq-schema.php`: the `ufo-faq` JSON-LD, run without WordPress (`php` 7.4+ required).
 
-The release workflow runs `npm test` before building the zip.
+The release workflow runs `npm test` before building the zip. The `Contrôles` workflow (`.github/workflows/checks.yml`) runs on every push to `main` and every pull request: tests and style, `npm audit --omit=dev`, PHPCS WordPress security sniffs, PHP 7.4 compatibility, gitleaks on the whole history, and Plugin Check (security, general) on the contents of the release zip.
 
 Front-end check on a copy of a site, before and after an update (`diff` must be empty; also renders the fixtures and their migrated version, which must match):
 

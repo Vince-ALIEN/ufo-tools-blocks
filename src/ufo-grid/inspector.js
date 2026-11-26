@@ -18,7 +18,9 @@ import {
 } from '../shared/controls';
 import metadata from './block.json';
 
-const DEFAULTS = getAttributeDefaults( metadata );
+// « Réinitialiser » désactive les lignes de hauteur égale, comme à l'insertion
+// (variations.js) ; block.json garde true pour les grilles déjà enregistrées.
+const DEFAULTS = { ...getAttributeDefaults( metadata ), equalRows: false };
 
 const GRID_KEYS = [
 	'columnsCount',

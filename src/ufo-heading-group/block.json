@@ -1,0 +1,51 @@
+{
+  "apiVersion": 3,
+  "name": "ufo-blocks/ufo-heading-group",
+  "title": "UFO Heading Group",
+  "category": "ufo-blocks",
+  "icon": "heading",
+  "description": "Étiquette (paragraphe court, style « tag ») au-dessus d'un titre de section (core/heading), regroupés dans un conteneur. Pour introduire une section ; pour un titre avec icône, utiliser ufo title.",
+  "allowedBlocks": ["core/paragraph", "core/heading"],
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": ["wide", "full"],
+    "color": {
+      "text": true,
+      "background": true,
+      "__experimentalDefaultControls": {
+        "text": true
+      }
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "margin": false,
+        "padding": false
+      }
+    }
+  },
+  "textdomain": "ufo-tools-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "example": {
+    "innerBlocks": [
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "className": "tag",
+          "content": "Nouveauté"
+        }
+      },
+      {
+        "name": "core/heading",
+        "attributes": {
+          "level": 2,
+          "content": "Le calendrier de l'année"
+        }
+      }
+    ]
+  },
+  "render": "file:./render.php"
+}
