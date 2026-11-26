@@ -254,7 +254,7 @@ ufo-tools-blocks/
 - `tests/js/tailwind-safelist.test.js`: every class the inspector settings can generate must be either written as-is in `src/` or listed in the `@source inline(...)` safelist above. Extend the safelist when you add a value.
 - `tests/php/test-faq-schema.php`: the `ufo-faq` JSON-LD, run without WordPress (`php` 7.4+ required).
 
-The release workflow runs `npm test` before building the zip.
+The release workflow runs `npm test` before building the zip. The `Contrôles` workflow (`.github/workflows/checks.yml`) runs on every push to `main` and every pull request: tests and style, `npm audit --omit=dev`, PHPCS WordPress security sniffs, PHP 7.4 compatibility, gitleaks on the whole history, and Plugin Check (security, general) on the contents of the release zip.
 
 Front-end check on a copy of a site, before and after an update (`diff` must be empty; also renders the fixtures and their migrated version, which must match):
 
