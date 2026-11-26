@@ -50,7 +50,7 @@ avec le filtre `ufo_tools_blocks_check_disallowed_blocks`).
 
 Combinaisons usuelles :
 
-- **Section de services** : `ufo-grid` (`columnsCount` 3, `gap` "6") → 3 `ufo-row` → chacune
+- **Section de services** : `ufo-grid` (`columnsCount` 3, `gap` "6", `equalRows` false) → 3 `ufo-row` → chacune
   un `ufo-title` (niveau 3, icône) + `core/paragraph`.
 - **Appel à l'action** : `ufo-buttons-group` → 1 ou 2 `ufo-button`.
 - **Questions fréquentes** : `ufo-faq` → un `ufo-faq-item` par question, réponse en
@@ -69,7 +69,7 @@ les blocs enfants : aucun HTML d'enveloppe. Ne jamais écrire de `<div>`, `<deta
 classes Tailwind pour ces blocs : le serveur les produit à l'affichage.
 
 ```html
-<!-- wp:ufo-blocks/ufo-grid {"columnsCount":3,"gap":"6"} -->
+<!-- wp:ufo-blocks/ufo-grid {"columnsCount":3,"gap":"6","equalRows":false} -->
 <!-- wp:ufo-blocks/ufo-row -->
 <!-- wp:ufo-blocks/ufo-title {"content":"Création de site","level":3,"icon":"Code"} /-->
 
@@ -135,7 +135,8 @@ plutôt que de retoucher l'ancien HTML.
 | `colSpan`, `rowSpan` | row | `""`, `"1"` à `"6"` |
 | `colStart` / `colEnd` | row | `"1"`–`"7"` / `"1"`–`"8"` |
 | `rowStart` / `rowEnd` | row | `"1"`–`"7"` |
-| `reverseMobile`, `equalRows`, `isBoxed` | grid | `true` / `false` |
+| `reverseMobile`, `isBoxed` | grid | `true` / `false` |
+| `equalRows` | grid | `true` / `false` : **écrire `false`** pour une nouvelle grille (comme l'éditeur), `true` seulement si une cellule couvre plusieurs lignes. Absent = `true` (sens des grilles déjà enregistrées). |
 | `backgroundImage` | grid, row | `{"url":"…","id":123,"alt":""}` (média de la bibliothèque) |
 | `backgroundVideo` | grid | `{"url":"….mp4","id":123}` |
 | `buttonAlignment` | buttons-group | `"left"`, `"center"`, `"right"` |
@@ -200,7 +201,7 @@ le bloc s'affiche « contenu inattendu ou non valide ». Sur ces sites :
 
 | Version | Changement |
 |---|---|
-| (prochaine) | Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target et chiffres Digit0 … Digit9. |
+| (prochaine) | Nouvelle grille insérée dans l'éditeur : `"equalRows":false` écrit explicitement (absent = `true`, inchangé). Blocs `ufo-heading-group`, `ufo-time-line` / `ufo-time-line-item` repris de `ufo-blocks`, rendus par le serveur : `date` et `title` passent du HTML (`<time>`, `<h3>`) au commentaire. Ancien HTML de `ufo-blocks` accepté et migré à la sauvegarde. Icônes ChartBar, ChartNoAxesCombined, Flame, Lightbulb, Target et chiffres Digit0 … Digit9. |
 | 1.1.1 | `/check` accepte `post_type` : `ufo-grid` / `ufo-row` signalés dans un article. Balisage des blocs inchangé. |
 | 1.1.0 | Rendu serveur de `ufo-grid`, `ufo-row`, `ufo-buttons-group`, `ufo-faq`, `ufo-faq-item`, `ufo-tab` : commentaire + enfants seulement. `ufo-faq-item.question` passe du HTML (`.faq-question`) au commentaire. Ancien format accepté et migré à la sauvegarde. Exemples dans les `block.json`, guide et routes `ufo-tools-blocks/v1`. |
 | 1.0.5 | `ufo-faq-item` : bordure `border-slate-200` (au lieu de `border-gray-200`). Bloc `ufo-tabs` / `ufo-tab`. |

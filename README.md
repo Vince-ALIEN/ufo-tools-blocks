@@ -158,7 +158,7 @@ CSS Grid container. Only accepts `ufo Row` blocks as direct children.
 | gap | string | '4' | Gap between cells (0–8) |
 | verticalAlignment | string | '' | Vertical alignment of cells |
 | reverseMobile | boolean | false | Reverse order on mobile |
-| equalRows | boolean | true | Equal row heights (`auto-rows-fr`) |
+| equalRows | boolean | true | Equal row heights (`auto-rows-fr`). `true` when absent, for grids already saved; new grids inserted in the editor (any layout but the mosaic) and grids converted from `core/columns` get `false` explicitly, and "Reset all" sets it to `false`. |
 | minHeight | string | '' | Minimum height |
 | borderRadius | string | '' | Border radius |
 | isBoxed | boolean | false | Centered container with max-width |

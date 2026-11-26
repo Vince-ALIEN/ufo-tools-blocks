@@ -15,7 +15,11 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `/check` accepts the old `ufo-blocks` timeline and heading group HTML (warning) like the other formerly static blocks.
 - CI workflow `Contrôles` on every push to `main` and every pull request: tests and style, audit of shipped dependencies, PHPCS security sniffs, PHP 7.4 compatibility, gitleaks on the whole history, Plugin Check on the release zip contents.
 
+### Changed
+- `ufo-grid`: "Lignes de hauteur égale" (`equalRows`) is no longer on for a new grid. The editor writes `equalRows: false` on insertion (every layout except the mosaic, whose large cell spans two rows), on conversion from `core/columns` and on "Tout réinitialiser". The `block.json` default stays `true`, so grids already saved without the attribute keep their equal rows: saved content and front-end output are unchanged.
+
 ### Fixed
+- Editor only: grid cells without their own background were white (`#fff`), and `ufo-heading-group`, `ufo-icon` and `ufo-buttons-group` turned white when selected. On a dark section with white text, the content became unreadable. Grid cells no longer get any editor background (dashed outline only), the selected state is a light tint of the text color, and the cell outline is derived from the text color (`color-mix(in srgb, currentcolor …, transparent)`), so both stay readable on light and dark backgrounds. Front-end output unchanged.
 - `ufo-button`: the `not-prose` class is back on the link (it was in `ufo-blocks`). In a Tailwind Typography `.prose` content, the theme's link rule (`.prose :where(a)`, same specificity, later in the CSS) replaced the button text color (white for `is-style-primary` / `is-style-secondary`), weight and underline.
 - `ufo-button`: the screen-reader text ("(nouvel onglet)", custom screen-reader text) was visible in themes that don't define WordPress' `screen-reader-text` class, which is the case for Tailwind themes. It now also has Tailwind's `sr-only` class.
 

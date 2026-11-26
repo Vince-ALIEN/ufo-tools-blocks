@@ -51,6 +51,11 @@ function rows( count, attributes = {} ) {
 /**
  * Dispositions proposées à l'insertion de la grille, sur le modèle des
  * variations de core/columns, plus une mosaïque propre à la grille.
+ *
+ * equalRows est écrit explicitement : une nouvelle grille n'a pas de lignes
+ * de hauteur égale (sauf la mosaïque, dont la grande cellule couvre deux
+ * lignes). La valeur par défaut de block.json reste true, sens des grilles
+ * déjà enregistrées sans l'attribut.
  */
 const variations = [
 	{
@@ -58,7 +63,7 @@ const variations = [
 		title: __( '100', 'ufo-tools-blocks' ),
 		description: __( 'Une colonne', 'ufo-tools-blocks' ),
 		icon: layoutIcon( 1, 1, [ [ 0, 0, 1, 1 ] ] ),
-		attributes: { columnsCount: 1 },
+		attributes: { columnsCount: 1, equalRows: false },
 		innerBlocks: rows( 1 ),
 		scope: [ 'block' ],
 	},
@@ -71,7 +76,7 @@ const variations = [
 			[ 1, 0, 1, 1 ],
 		] ),
 		isDefault: true,
-		attributes: { columnsCount: 2 },
+		attributes: { columnsCount: 2, equalRows: false },
 		innerBlocks: rows( 2 ),
 		scope: [ 'block' ],
 	},
@@ -86,7 +91,7 @@ const variations = [
 			[ 0, 0, 1, 1 ],
 			[ 1, 0, 2, 1 ],
 		] ),
-		attributes: { columnsCount: 3 },
+		attributes: { columnsCount: 3, equalRows: false },
 		innerBlocks: [ [ ROW ], [ ROW, { colSpan: '2' } ] ],
 		scope: [ 'block' ],
 	},
@@ -101,7 +106,7 @@ const variations = [
 			[ 0, 0, 2, 1 ],
 			[ 2, 0, 1, 1 ],
 		] ),
-		attributes: { columnsCount: 3 },
+		attributes: { columnsCount: 3, equalRows: false },
 		innerBlocks: [ [ ROW, { colSpan: '2' } ], [ ROW ] ],
 		scope: [ 'block' ],
 	},
@@ -114,7 +119,7 @@ const variations = [
 			[ 1, 0, 1, 1 ],
 			[ 2, 0, 1, 1 ],
 		] ),
-		attributes: { columnsCount: 3 },
+		attributes: { columnsCount: 3, equalRows: false },
 		innerBlocks: rows( 3 ),
 		scope: [ 'block' ],
 	},
@@ -130,7 +135,7 @@ const variations = [
 			[ 1, 0, 2, 1 ],
 			[ 3, 0, 1, 1 ],
 		] ),
-		attributes: { columnsCount: 4 },
+		attributes: { columnsCount: 4, equalRows: false },
 		innerBlocks: [ [ ROW ], [ ROW, { colSpan: '2' } ], [ ROW ] ],
 		scope: [ 'block' ],
 	},
@@ -144,7 +149,7 @@ const variations = [
 			[ 2, 0, 1, 1 ],
 			[ 3, 0, 1, 1 ],
 		] ),
-		attributes: { columnsCount: 4 },
+		attributes: { columnsCount: 4, equalRows: false },
 		innerBlocks: rows( 4 ),
 		scope: [ 'block' ],
 	},
