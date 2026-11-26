@@ -5,7 +5,7 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0] - 2026-11-26
 
 ### Added
 - **`ufo-time-line` and `ufo-time-line-item`** (vertical timeline), taken over from the `ufo-blocks` plugin with the same block names and markup. Like the other blocks, they are rendered on the server (`render.php`): saved content only holds the block comments and the inner blocks; the step `date` and `title` move from the HTML (`<time>`, `<h3>`) to the block comment.
