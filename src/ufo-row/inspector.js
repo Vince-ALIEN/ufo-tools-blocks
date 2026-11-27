@@ -1,4 +1,4 @@
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import {
 	InspectorControls,
 	BlockControls,
@@ -14,6 +14,7 @@ import {
 	UfoToolsPanel,
 	PanelItem,
 	SpacingRangeControl,
+	MarginTopControl,
 	HeightSelectControl,
 	BorderRadiusControl,
 	BackgroundPanel,
@@ -39,28 +40,6 @@ const DIMENSION_KEYS = [
 	'paddingY',
 	'marginTop',
 ];
-
-function marginTopHelp( value ) {
-	const amount = parseInt( value, 10 ) || 0;
-	if ( amount < 0 ) {
-		return sprintf(
-			/* translators: %d: décalage en pixels. */
-			__(
-				'Décalage de %dpx vers le haut, quand les cellules sont côte à côte (pas sur mobile, où elles sont empilées).',
-				'ufo-tools-blocks'
-			),
-			-amount * 4
-		);
-	}
-	return sprintf(
-		/* translators: %d: marge en pixels. */
-		__(
-			'%dpx au-dessus de la cellule. Une valeur négative la décale vers le haut.',
-			'ufo-tools-blocks'
-		),
-		amount * 4
-	);
-}
 
 const ROW_MIN_HEIGHT_OPTIONS = [
 	...MIN_HEIGHT_OPTIONS,
@@ -316,21 +295,11 @@ export default function Inspector( {
 						keys={ [ 'marginTop' ] }
 						isShownByDefault
 					>
-						<RangeControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
-							label={ __( 'Marge haute', 'ufo-tools-blocks' ) }
-							value={ parseInt( marginTop, 10 ) || 0 }
-							onChange={ ( next ) =>
-								setAttributes( {
-									marginTop: next ? String( next ) : '',
-								} )
+						<MarginTopControl
+							value={ marginTop }
+							onChange={ ( value ) =>
+								setAttributes( { marginTop: value } )
 							}
-							min={ -16 }
-							max={ 16 }
-							step={ 2 }
-							withInputField
-							help={ marginTopHelp( marginTop ) }
 						/>
 					</PanelItem>
 				</UfoToolsPanel>

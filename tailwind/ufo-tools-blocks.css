@@ -50,12 +50,10 @@
 @source inline("auto-rows-fr");
 @source inline("grid-rows-{1,2,3,4,5,6}");
 
-/* Marge haute, à saisir dans « Classes CSS additionnelles » (aucun réglage
-   ne la génère) : espacement (mt-*) ou chevauchement de la section
-   précédente (-mt-*), éventuellement à partir d'un point de rupture
-   (lg:-mt-8). */
+/* Marge haute, à toutes les largeurs : réglage « Marge haute » de ufo-row et
+   core/image, ou classe saisie dans « Classe(s) CSS additionnelle(s) »
+   (ufo-grid qui chevauche la section précédente : -mt-8). */
 @source inline("{,-}mt-{0,2,4,6,8,10,12,14,16}");
-@source inline("{sm,md,lg,xl}:{,-}mt-{0,2,4,6,8,10,12,14,16}");
 
 /* Marges internes, hauteur minimale, arrondis. */
 @source inline("px-{0,2,4,6,8,10,12,14,16}");

@@ -167,7 +167,7 @@ Grid cell. Must be a direct child of `ufo Grid`.
 | height | string | '' | Fixed height |
 | paddingX | string | '0' | Horizontal padding (0–16) |
 | paddingY | string | '0' | Vertical padding (0–16) |
-| marginTop | string | '' | Top margin, -16 to 16 by 2: `mt-N` at every width; negative, `-mt-N` (upward offset) from the grid's `breakpoint` only, where cells sit side by side |
+| marginTop | string | '' | Top margin, -16 to 16 by 2, at every width: `mt-N`, or `-mt-N` (upward offset) for a negative value |
 | borderRadius | string | '' | Border radius |
 | backgroundImage | object | — | Background image (url, id, alt) |
 | backgroundSize | string | 'cover' | Background image size |

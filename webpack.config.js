@@ -8,6 +8,9 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		...defaultEntryPoints,
+		// Réglages ajoutés aux blocs core (chargé dans l'éditeur par
+		// includes/ufo-tools-blocks-extensions.php).
+		'extensions/image-margin-top': './src/extensions/image-margin-top.js',
 	},
 	plugins: [
 		...defaultConfig.plugins,

@@ -174,19 +174,19 @@ function ufo_tools_blocks_grid_inner_classes( array $attributes ) {
 }
 
 /**
- * ufo-row : marge haute (marginTopClass de src/ufo-row/shared.js). mt-N à
- * toutes les largeurs ; négative, -mt-N à partir du point de rupture.
+ * Marge haute de ufo-row et core/image (marginTopClass de
+ * src/ufo-row/shared.js), à toutes les largeurs : mt-N, ou -mt-N (décalage
+ * vers le haut) pour une valeur négative.
  *
- * @param mixed  $value      Attribut marginTop ("-16" … "16", pairs).
- * @param string $breakpoint Résultat de ufo_tools_blocks_breakpoint().
+ * @param mixed $value Attribut marge haute ("-16" … "16", pairs).
  * @return string Classe, ou chaîne vide sans marge.
  */
-function ufo_tools_blocks_margin_top_class( $value, $breakpoint ) {
+function ufo_tools_blocks_margin_top_class( $value ) {
 	$amount = is_scalar( $value ) ? (int) $value : 0;
 	if ( 0 === $amount ) {
 		return '';
 	}
-	return $amount > 0 ? 'mt-' . $amount : ufo_tools_blocks_at( $breakpoint, '-mt-' . ( -$amount ) );
+	return $amount > 0 ? 'mt-' . $amount : '-mt-' . ( -$amount );
 }
 
 /**
@@ -238,7 +238,7 @@ function ufo_tools_blocks_row_classes( array $attributes, $breakpoint = null ) {
 		}
 	}
 
-	$margin_top = ufo_tools_blocks_margin_top_class( $attributes['marginTop'] ?? null, $bp );
+	$margin_top = ufo_tools_blocks_margin_top_class( $attributes['marginTop'] ?? null );
 	if ( '' !== $margin_top ) {
 		$classes[] = $margin_top;
 	}

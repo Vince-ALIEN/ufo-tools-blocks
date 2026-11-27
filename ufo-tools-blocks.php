@@ -43,6 +43,7 @@ if (in_array(UFO_TOOLS_BLOCKS_PREDECESSOR, (array) get_option('active_plugins', 
 
 require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-classes.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-render.php';
+require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-extensions.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ufo-faq-schema.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ufo-tools-blocks-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-ufo-tools-blocks-updater.php';

@@ -127,7 +127,7 @@ plutôt que de retoucher l'ancien HTML.
 | `rowsCount` | grid | nombre 0 (auto) à 6 |
 | `gap` | grid | `"0"` à `"8"` |
 | `paddingX`, `paddingY` | grid, row | `"0"`, `"2"`, `"4"` … `"16"` (pairs) |
-| `marginTop` | row | `""` (aucune), `"2"` … `"16"` (pairs) : marge au-dessus de la cellule ; `"-2"` … `"-16"` : décalage vers le haut, seulement quand les cellules sont côte à côte |
+| `marginTop` (row), `ufoMarginTop` (`core/image`) | row, image | `""` (aucune), `"2"` … `"16"` (pairs) : marge au-dessus ; `"-2"` … `"-16"` : décalage vers le haut. À toutes les largeurs |
 | `verticalAlignment` | grid, row | `"top"`, `"center"`, `"bottom"` (ou absent) |
 | `minHeight` | grid | `""`, `"24"` … `"150"`, `"h-full"`, `"screen"` |
 | `minHeight` | row | `""`, `"24"` … `"150"`, `"full"`, `"screen"` |

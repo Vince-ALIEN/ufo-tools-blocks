@@ -14,12 +14,14 @@ ufo-tools-blocks/
 │   ├── ufo-faq-schema.php                     # JSON-LD FAQPage (appelé par ufo-faq/render.php)
 │   ├── ufo-tools-blocks-classes.php           # Classes Tailwind (portage PHP des shared.js)
 │   ├── ufo-tools-blocks-render.php            # Aides des render.php (ancien format, fond, marqueur de frise)
+│   ├── ufo-tools-blocks-extensions.php        # Réglages ajoutés aux blocs core (marge haute de core/image)
 │   ├── ufo-tools-blocks-rest.php              # Routes ufo-tools-blocks/v1 (guide, check)
 │   └── ufo-tools-blocks-icons.php             # ufo_get_icon_svg() (généré au build)
 │
 ├── src/                        # Sources (avant compilation)
 │   ├── icons.js                # Icônes de blocs (lucide-react)
 │   ├── shared/                 # Contrôles d'inspecteur et icônes partagés
+│   ├── extensions/             # Réglages ajoutés aux blocs core (core/image : marge haute)
 │   ├── ufo-grid/               # Conteneur de grille          (dynamique : render.php)
 │   ├── ufo-row/                # Cellule de grille            (dynamique, enfant de ufo-grid)
 │   ├── ufo-faq/                # FAQ + schema                 (dynamique : render.php)
