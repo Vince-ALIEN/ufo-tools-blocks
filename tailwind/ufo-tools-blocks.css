@@ -1,0 +1,57 @@
+/**
+ * Ufo Tools Blocks : sources Tailwind CSS v4 pour le thème.
+ *
+ * Le plugin ne livre pas de CSS : le thème compile Tailwind. Il importe ce
+ * fichier, copié dans build/tailwind.css au build (build/ est dans le zip de
+ * release, tailwind/ non), depuis son point d'entrée CSS :
+ *
+ *   @import "../../../plugins/ufo-tools-blocks/build/tailwind.css";
+ *
+ * (chemin relatif au fichier du thème qui contient l'import). Recompiler le
+ * CSS du thème après chaque mise à jour du plugin.
+ *
+ * Les chemins des @source ci-dessous sont relatifs à ce fichier, et
+ * ../build/ désigne le même dossier depuis tailwind/ et depuis build/. On scanne
+ * build/ et non src/ : build/ existe dans une copie git (après npm run build)
+ * comme dans le zip de release, qui ne contient pas src/.
+ *
+ * Les @source inline ajoutent les classes construites dynamiquement
+ * (md:grid-cols-${ n }…), absentes telles quelles des fichiers scannés.
+ * tests/js/tailwind-safelist.test.js vérifie que chaque classe que
+ * l'inspecteur peut produire est ici ou écrite telle quelle dans src/.
+ */
+
+/* stylelint-disable scss/at-rule-no-unknown -- directives Tailwind v4. */
+
+@source "../build/**/*.js";
+@source "../build/**/*.php";
+
+/* ufo-row : placement, au point de rupture de la grille (sm, md, lg, xl)
+   ou sans préfixe (« Toujours »). */
+@source inline("{sm,md,lg,xl}:col-span-{1,2,3,4,5,6}");
+@source inline("col-span-{1,2,3,4,5,6}");
+@source inline("{sm,md,lg,xl}:col-start-{1,2,3,4,5,6,7}");
+@source inline("col-start-{1,2,3,4,5,6,7}");
+@source inline("{sm,md,lg,xl}:col-end-{1,2,3,4,5,6,7,8}");
+@source inline("col-end-{1,2,3,4,5,6,7,8}");
+@source inline("row-span-{1,2,3,4,5,6}");
+@source inline("row-start-{1,2,3,4,5,6,7}");
+@source inline("row-end-{1,2,3,4,5,6,7}");
+
+/* ufo-grid et ufo-row : hauteur fixe (aussi « Hauteur minimale »). */
+@source inline("h-{24,32,40,48,56,64,72,80,96,120,150}");
+
+/* ufo-grid : colonnes, lignes égales, inversion mobile et hauteur écran,
+   au point de rupture choisi ou sans préfixe. */
+@source inline("gap-{0,1,2,3,4,5,6,7,8}");
+@source inline("grid-cols-{1,2,3,4,5,6}");
+@source inline("{sm,md,lg,xl}:grid-cols-{1,2,3,4,5,6}");
+@source inline("{sm,md,lg,xl}:{grid,auto-rows-fr,h-screen}");
+@source inline("auto-rows-fr");
+@source inline("grid-rows-{1,2,3,4,5,6}");
+
+/* Marges internes, hauteur minimale, arrondis. */
+@source inline("px-{0,2,4,6,8,10,12,14,16}");
+@source inline("py-{0,2,4,6,8,10,12,14,16}");
+@source inline("min-h-{32,48,64,80,96,192}");
+@source inline("rounded-{sm,md,lg,xl,2xl,3xl}");

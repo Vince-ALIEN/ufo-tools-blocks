@@ -16,6 +16,9 @@ module.exports = {
 		new CopyPlugin( {
 			patterns: [
 				{ from: 'docs/blocs-pour-ia.md', to: 'blocs-pour-ia.md' },
+				// Sources Tailwind importées par le thème : ses chemins
+				// (../build/…) valent depuis tailwind/ comme depuis build/.
+				{ from: 'tailwind/ufo-tools-blocks.css', to: 'tailwind.css' },
 			],
 		} ),
 	],

@@ -38,6 +38,8 @@ ufo-tools-blocks/
 │
 ├── docs/blocs-pour-ia.md       # Guide pour les assistants IA (copié dans build/)
 │
+├── tailwind/ufo-tools-blocks.css  # Sources Tailwind pour le thème (@source de build/ + safelist), copié dans build/tailwind.css, importé par le thème
+│
 ├── scripts/
 │   ├── generate-icon-svgs.js   # Génère les SVG PHP des icônes (prebuild)
 │   └── check-rendering.php     # Rendu front de tous les contenus (wp eval-file), avant / après

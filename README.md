@@ -93,41 +93,15 @@ git tag v1.6.0 && git push origin v1.6.0
 
 `ufo-tools-blocks` ships no CSS. It is designed to work with a theme that already runs Tailwind CSS v4.
 
-Add the following directives to your theme's CSS entry point so Tailwind scans the plugin's source files and includes all required utility classes in the build:
+The plugin provides its Tailwind sources in `build/tailwind.css` (copied at build time from `tailwind/ufo-tools-blocks.css`): `@source` directives that scan `build/` (present in a git copy after `npm run build` and in the release zip), and the `@source inline(...)` safelist of the classes built dynamically from block settings (e.g. `lg:grid-cols-3`), which Tailwind cannot detect by scanning files. Import it from your theme's CSS entry point, with a path relative to the file holding the import:
 
 ```css
-/**
- * Add your plugins folder
- */
-@source "../../../plugins/ufo-tools-blocks/src/**/*.js";
-@source "../../../plugins/ufo-tools-blocks/src/**/*.php";
-
-@source inline("{sm,md,lg,xl}:col-span-{1,2,3,4,5,6}");
-@source inline("col-span-{1,2,3,4,5,6}");
-@source inline("{sm,md,lg,xl}:col-start-{1,2,3,4,5,6,7}");
-@source inline("col-start-{1,2,3,4,5,6,7}");
-@source inline("{sm,md,lg,xl}:col-end-{1,2,3,4,5,6,7,8}");
-@source inline("col-end-{1,2,3,4,5,6,7,8}");
-@source inline("row-span-{1,2,3,4,5,6}");
-@source inline("row-start-{1,2,3,4,5,6,7}");
-@source inline("row-end-{1,2,3,4,5,6,7}");
-
-/* ufo-grid & ufo-row — fixed height (also used by the "Hauteur minimale" setting) */
-@source inline("h-{24,32,40,48,56,64,72,80,96,120,150}");
-
-@source inline("gap-{0,1,2,3,4,5,6,7,8}");
-@source inline("grid-cols-{1,2,3,4,5,6}");
-@source inline("{sm,md,lg,xl}:grid-cols-{1,2,3,4,5,6}");
-@source inline("{sm,md,lg,xl}:{grid,auto-rows-fr,h-screen}");
-@source inline("auto-rows-fr");
-@source inline("grid-rows-{1,2,3,4,5,6}");
-@source inline("px-{0,2,4,6,8,10,12,14,16}");
-@source inline("py-{0,2,4,6,8,10,12,14,16}");
-@source inline("min-h-{32,48,64,80,96,192}");
-@source inline("rounded-{sm,md,lg,xl,2xl,3xl}");
+@import "../../../plugins/ufo-tools-blocks/build/tailwind.css";
 ```
 
-The `@source inline(...)` directives are required for dynamically generated classes (e.g. `md:col-span-3`) that Tailwind cannot detect through file scanning alone.
+Rebuild the theme's CSS after each plugin update: when a release adds classes, the theme picks them up without any edit, but only once recompiled.
+
+Themes that copied the former `@source` / `@source inline(...)` lines from this README can replace them all with this import.
 
 ### Starter themes
 
@@ -258,7 +232,7 @@ ufo-tools-blocks/
 - `tests/js/legacy-content.test.js`: content saved by 1.0.8 and earlier (`tests/fixtures/*.html`) opens valid, migrates without losing FAQ questions, anchors or settings, and its migrated version (`tests/fixtures/migrated/`) is up to date and stable.
 - `tests/js/classes-php.test.js`: the editor (`src/*/shared.js`) and the server (`includes/ufo-tools-blocks-classes.php`) produce the same classes for every inspector value (runs `php`).
 - `tests/js/block-examples.test.js`: every `block.json` `example` is valid content.
-- `tests/js/tailwind-safelist.test.js`: every class the inspector settings can generate must be either written as-is in `src/` or listed in the `@source inline(...)` safelist above. Extend the safelist when you add a value.
+- `tests/js/tailwind-safelist.test.js`: every class the inspector settings can generate must be either written as-is in `src/` or listed in the `@source inline(...)` safelist of `tailwind/ufo-tools-blocks.css`. Extend the safelist when you add a value.
 - `tests/php/test-faq-schema.php`: the `ufo-faq` JSON-LD, run without WordPress (`php` 7.4+ required).
 
 The release workflow runs `npm test` before building the zip. The `Contrôles` workflow (`.github/workflows/checks.yml`) runs on every push to `main` and every pull request: tests and style, `npm audit --omit=dev`, PHPCS WordPress security sniffs, PHP 7.4 compatibility, gitleaks on the whole history, and Plugin Check (security, general) on the contents of the release zip.
