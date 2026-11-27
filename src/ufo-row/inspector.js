@@ -314,6 +314,7 @@ export default function Inspector( {
 						{ ...itemProps }
 						label={ __( 'Marge haute', 'ufo-tools-blocks' ) }
 						keys={ [ 'marginTop' ] }
+						isShownByDefault
 					>
 						<RangeControl
 							__nextHasNoMarginBottom
