@@ -71,6 +71,28 @@ function ufo_tools_blocks_media_url( $media ) {
 }
 
 /**
+ * Point de rupture de la grille (breakpointOf de src/shared/breakpoint.js) :
+ * none, sm, md, lg ou xl, md pour toute autre valeur.
+ *
+ * @param mixed $value Attribut breakpoint de ufo-grid, ou contexte de ufo-row.
+ * @return string
+ */
+function ufo_tools_blocks_breakpoint( $value ) {
+	return in_array( $value, array( 'none', 'sm', 'md', 'lg', 'xl' ), true ) ? $value : 'md';
+}
+
+/**
+ * Classe active à partir du point de rupture (at() de src/shared/breakpoint.js).
+ *
+ * @param string $breakpoint Résultat de ufo_tools_blocks_breakpoint().
+ * @param string $class_name Classe sans préfixe.
+ * @return string lg:grid-cols-2, ou grid-cols-2 pour none.
+ */
+function ufo_tools_blocks_at( $breakpoint, $class_name ) {
+	return 'none' === $breakpoint ? $class_name : $breakpoint . ':' . $class_name;
+}
+
+/**
  * ufo-grid : classes de l'enveloppe (getWrapperClasses).
  *
  * @param array $attributes Attributs du bloc.
@@ -79,9 +101,10 @@ function ufo_tools_blocks_media_url( $media ) {
 function ufo_tools_blocks_grid_wrapper_classes( array $attributes ) {
 	$min_height = $attributes['minHeight'] ?? null;
 	$radius     = $attributes['borderRadius'] ?? null;
+	$bp         = ufo_tools_blocks_breakpoint( $attributes['breakpoint'] ?? null );
 
 	if ( 'screen' === $min_height ) {
-		$height = 'md:h-screen h-full';
+		$height = 'none' === $bp ? 'h-screen' : $bp . ':h-screen h-full';
 	} else {
 		$height = 'h-full' === $min_height ? 'h-full' : false;
 	}
@@ -119,6 +142,11 @@ function ufo_tools_blocks_grid_inner_classes( array $attributes ) {
 	$rows       = $attributes['rowsCount'] ?? null;
 	$alignment  = $attributes['verticalAlignment'] ?? null;
 	$min_height = $attributes['minHeight'] ?? null;
+	$bp         = ufo_tools_blocks_breakpoint( $attributes['breakpoint'] ?? null );
+	$always     = 'none' === $bp;
+	$reverse    = $reverse && ! $always;
+	$equal_rows = ufo_tools_blocks_truthy( $attributes['equalRows'] ?? null );
+	$columns    = ufo_tools_blocks_has( $attributes, 'columnsCount' );
 
 	if ( 'screen' === $min_height ) {
 		$height = 'h-full';
@@ -130,12 +158,12 @@ function ufo_tools_blocks_grid_inner_classes( array $attributes ) {
 
 	return ufo_tools_blocks_class_list(
 		array(
-			$reverse ? 'md:grid' : 'grid',
-			'grid-cols-1',
-			ufo_tools_blocks_truthy( $attributes['equalRows'] ?? null ) ? 'md:auto-rows-fr' : false,
-			'auto-rows-auto',
+			$reverse ? ufo_tools_blocks_at( $bp, 'grid' ) : 'grid',
+			$always && $columns ? false : 'grid-cols-1',
+			$equal_rows ? ufo_tools_blocks_at( $bp, 'auto-rows-fr' ) : false,
+			$always && $equal_rows ? false : 'auto-rows-auto',
 			ufo_tools_blocks_has( $attributes, 'gap' ) ? 'gap-' . ufo_tools_blocks_class_value( $attributes['gap'] ) : false,
-			ufo_tools_blocks_has( $attributes, 'columnsCount' ) ? 'md:grid-cols-' . ufo_tools_blocks_class_value( $attributes['columnsCount'] ) : false,
+			$columns ? ufo_tools_blocks_at( $bp, 'grid-cols-' . ufo_tools_blocks_class_value( $attributes['columnsCount'] ) ) : false,
 			ufo_tools_blocks_truthy( $rows ) ? 'grid-rows-' . ufo_tools_blocks_class_value( $rows ) : false,
 			is_string( $alignment ) && isset( $alignments[ $alignment ] ) ? $alignments[ $alignment ] : false,
 			$reverse ? 'flex flex-col-reverse' : false,
@@ -149,9 +177,12 @@ function ufo_tools_blocks_grid_inner_classes( array $attributes ) {
  * ufo-row : classes de la cellule (getTailwindClasses).
  *
  * @param array $attributes Attributs du bloc.
+ * @param mixed $breakpoint Point de rupture de la grille parente (contexte
+ *                          ufo-blocks/breakpoint), md par défaut.
  * @return string
  */
-function ufo_tools_blocks_row_classes( array $attributes ) {
+function ufo_tools_blocks_row_classes( array $attributes, $breakpoint = null ) {
+	$bp         = ufo_tools_blocks_breakpoint( $breakpoint );
 	$alignments = array(
 		'top'    => 'flex flex-col justify-start',
 		'center' => 'flex flex-col justify-center',
@@ -162,9 +193,9 @@ function ufo_tools_blocks_row_classes( array $attributes ) {
 		'full'   => 'h-full',
 	);
 	$prefixed   = array(
-		'colSpan'      => 'md:col-span-',
-		'colStart'     => 'md:col-start-',
-		'colEnd'       => 'md:col-end-',
+		'colSpan'      => ufo_tools_blocks_at( $bp, 'col-span-' ),
+		'colStart'     => ufo_tools_blocks_at( $bp, 'col-start-' ),
+		'colEnd'       => ufo_tools_blocks_at( $bp, 'col-end-' ),
 		'rowSpan'      => 'row-span-',
 		'rowStart'     => 'row-start-',
 		'rowEnd'       => 'row-end-',

@@ -23,7 +23,9 @@ if ( ufo_tools_blocks_is_legacy( $block ) ) {
 	return;
 }
 
-$ufo_row_extra = array( 'class' => ufo_tools_blocks_row_classes( $attributes ) );
+$ufo_row_extra = array(
+	'class' => ufo_tools_blocks_row_classes( $attributes, $block->context['ufo-blocks/breakpoint'] ?? null ),
+);
 $ufo_row_style = ufo_tools_blocks_background_style( $attributes );
 if ( '' !== $ufo_row_style ) {
 	$ufo_row_extra['style'] = $ufo_row_style;

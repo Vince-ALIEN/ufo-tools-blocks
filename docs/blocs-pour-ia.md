@@ -123,6 +123,7 @@ plutôt que de retoucher l'ancien HTML.
 | Attribut | Blocs | Valeurs |
 |---|---|---|
 | `columnsCount` | grid | nombre 1 à 6 |
+| `breakpoint` | grid | `"none"` (colonnes à toutes les largeurs, mobile compris), `"sm"`, `"md"` (défaut), `"lg"`, `"xl"` : largeur à partir de laquelle les cellules forment des colonnes (empilées en dessous) |
 | `rowsCount` | grid | nombre 0 (auto) à 6 |
 | `gap` | grid | `"0"` à `"8"` |
 | `paddingX`, `paddingY` | grid, row | `"0"`, `"2"`, `"4"` … `"16"` (pairs) |

@@ -12,6 +12,7 @@ const path = require( 'path' );
 import { getWrapperClasses, getInnerClasses } from '../../src/ufo-grid/shared';
 import { getTailwindClasses } from '../../src/ufo-row/shared';
 import { MIN_HEIGHT_OPTIONS } from '../../src/shared/controls';
+import { BREAKPOINTS } from '../../src/shared/breakpoint';
 
 const ROOT = path.resolve( __dirname, '../..' );
 
@@ -74,13 +75,28 @@ const paddings = range( 0, 16, 2 );
 describe( 'safelist Tailwind du README', () => {
 	test( "ufo-grid : toutes les valeurs de l'inspecteur", () => {
 		const generated = [];
-		range( 1, 6 ).forEach( ( columnsCount ) =>
+		BREAKPOINTS.forEach( ( breakpoint ) => {
+			range( 1, 6 ).forEach( ( columnsCount ) =>
+				generated.push(
+					...classesOf(
+						getInnerClasses( {
+							breakpoint,
+							columnsCount: Number( columnsCount ),
+						} )
+					)
+				)
+			);
 			generated.push(
 				...classesOf(
-					getInnerClasses( { columnsCount: Number( columnsCount ) } )
+					getWrapperClasses( { breakpoint, minHeight: 'screen' } ),
+					getInnerClasses( {
+						breakpoint,
+						reverseMobile: true,
+						equalRows: true,
+					} )
 				)
-			)
-		);
+			);
+		} );
 		range( 0, 8 ).forEach( ( gap ) =>
 			generated.push( ...classesOf( getInnerClasses( { gap } ) ) )
 		);
@@ -136,10 +152,14 @@ describe( 'safelist Tailwind du README', () => {
 			paddingY: paddings.filter( ( value ) => value !== '0' ),
 			verticalAlignment: [ 'top', 'center', 'bottom' ],
 		};
-		Object.entries( placements ).forEach( ( [ key, values ] ) =>
-			values.forEach( ( value ) =>
-				generated.push(
-					...classesOf( getTailwindClasses( { [ key ]: value } ) )
+		BREAKPOINTS.forEach( ( breakpoint ) =>
+			Object.entries( placements ).forEach( ( [ key, values ] ) =>
+				values.forEach( ( value ) =>
+					generated.push(
+						...classesOf(
+							getTailwindClasses( { [ key ]: value }, breakpoint )
+						)
+					)
 				)
 			)
 		);

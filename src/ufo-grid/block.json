@@ -6,7 +6,7 @@
   "title": "ufo Grid",
   "category": "ufo-blocks",
   "icon": "LayoutDashboard",
-  "description": "Grille de 1 à 6 colonnes (une seule sur mobile) : sections de services, cartes, mosaïques. Chaque cellule est un ufo Row. Réglages : espacement, alignement vertical, largeur contenue, image ou vidéo de fond.",
+  "description": "Grille de 1 à 6 colonnes (une seule sous le point de rupture choisi, md par défaut, ou à toutes les largeurs) : sections de services, cartes, mosaïques. Chaque cellule est un ufo Row. Réglages : espacement, alignement vertical, largeur contenue, image ou vidéo de fond.",
   "allowedBlocks": ["ufo-blocks/ufo-row", "core/image"],
   "keywords": ["grid", "layout", "columns", "tailwind", "ufo"],
   "textdomain": "ufo-tools-blocks",
@@ -14,6 +14,11 @@
     "columnsCount": {
       "type": "number",
       "default": 2
+    },
+    "breakpoint": {
+      "type": "string",
+      "default": "md",
+      "enum": ["none", "sm", "md", "lg", "xl"]
     },
     "rowsCount": {
       "type": "number",
@@ -148,7 +153,8 @@
     ]
   },
   "providesContext": {
-    "ufo-blocks/columnsCount": "columnsCount"
+    "ufo-blocks/columnsCount": "columnsCount",
+    "ufo-blocks/breakpoint": "breakpoint"
   },
   "supports": {
     "align": ["wide", "full"],

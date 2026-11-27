@@ -1,3 +1,5 @@
+import { breakpointOf, at } from '../shared/breakpoint';
+
 export const ALIGNMENT_CLASSES = {
 	top: 'items-start',
 	center: 'items-center',
@@ -11,13 +13,14 @@ const HEIGHT_CLASSES = {
 export function getWrapperClasses( attributes ) {
 	const { minHeight, borderRadius, backgroundImage, paddingX, paddingY } =
 		attributes;
+	const bp = breakpointOf( attributes.breakpoint );
 
 	return [
 		'relative',
 		'ufo-grid-wrapper',
-		minHeight === 'screen'
-			? 'md:h-screen h-full'
-			: minHeight === 'h-full' && 'h-full',
+		minHeight === 'screen' &&
+			( bp === 'none' ? 'h-screen' : `${ bp }:h-screen h-full` ),
+		minHeight === 'h-full' && 'h-full',
 		borderRadius && `rounded-${ borderRadius }`,
 		backgroundImage?.url && 'bg-no-repeat',
 		paddingX !== undefined && `px-${ paddingX }`,
@@ -38,17 +41,23 @@ export function getInnerClasses( attributes ) {
 		minHeight,
 		isBoxed,
 	} = attributes;
+	const bp = breakpointOf( attributes.breakpoint );
+	// Sans point de rupture, pas d'état « mobile » : ni inversion, ni classes
+	// de base que les classes sans préfixe contrediraient.
+	const always = bp === 'none';
+	const reverse = reverseMobile && ! always;
+	const hasColumns = columnsCount !== undefined;
 
 	return [
-		reverseMobile ? 'md:grid' : 'grid',
-		'grid-cols-1',
-		equalRows && 'md:auto-rows-fr',
-		'auto-rows-auto',
+		reverse ? at( bp, 'grid' ) : 'grid',
+		! ( always && hasColumns ) && 'grid-cols-1',
+		equalRows && at( bp, 'auto-rows-fr' ),
+		! ( always && equalRows ) && 'auto-rows-auto',
 		gap !== undefined && `gap-${ gap }`,
-		columnsCount !== undefined && `md:grid-cols-${ columnsCount }`,
+		hasColumns && at( bp, `grid-cols-${ columnsCount }` ),
 		rowsCount && `grid-rows-${ rowsCount }`,
 		ALIGNMENT_CLASSES[ verticalAlignment ],
-		reverseMobile && 'flex flex-col-reverse',
+		reverse && 'flex flex-col-reverse',
 		minHeight === 'screen'
 			? 'h-full'
 			: ( HEIGHT_CLASSES[ minHeight ] ??

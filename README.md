@@ -102,9 +102,12 @@ Add the following directives to your theme's CSS entry point so Tailwind scans t
 @source "../../../plugins/ufo-tools-blocks/src/**/*.js";
 @source "../../../plugins/ufo-tools-blocks/src/**/*.php";
 
-@source inline("md:col-span-{1,2,3,4,5,6}");
-@source inline("md:col-start-{1,2,3,4,5,6,7}");
-@source inline("md:col-end-{1,2,3,4,5,6,7,8}");
+@source inline("{sm,md,lg,xl}:col-span-{1,2,3,4,5,6}");
+@source inline("col-span-{1,2,3,4,5,6}");
+@source inline("{sm,md,lg,xl}:col-start-{1,2,3,4,5,6,7}");
+@source inline("col-start-{1,2,3,4,5,6,7}");
+@source inline("{sm,md,lg,xl}:col-end-{1,2,3,4,5,6,7,8}");
+@source inline("col-end-{1,2,3,4,5,6,7,8}");
 @source inline("row-span-{1,2,3,4,5,6}");
 @source inline("row-start-{1,2,3,4,5,6,7}");
 @source inline("row-end-{1,2,3,4,5,6,7}");
@@ -113,7 +116,10 @@ Add the following directives to your theme's CSS entry point so Tailwind scans t
 @source inline("h-{24,32,40,48,56,64,72,80,96,120,150}");
 
 @source inline("gap-{0,1,2,3,4,5,6,7,8}");
-@source inline("md:grid-cols-{1,2,3,4,5,6}");
+@source inline("grid-cols-{1,2,3,4,5,6}");
+@source inline("{sm,md,lg,xl}:grid-cols-{1,2,3,4,5,6}");
+@source inline("{sm,md,lg,xl}:{grid,auto-rows-fr,h-screen}");
+@source inline("auto-rows-fr");
 @source inline("grid-rows-{1,2,3,4,5,6}");
 @source inline("px-{0,2,4,6,8,10,12,14,16}");
 @source inline("py-{0,2,4,6,8,10,12,14,16}");
@@ -153,7 +159,8 @@ CSS Grid container. Only accepts `ufo Row` blocks as direct children.
 
 | Attribute | Type | Default | Description |
 |---|---|---|---|
-| columnsCount | number | 2 | Number of columns (desktop) |
+| columnsCount | number | 2 | Number of columns (from `breakpoint` up) |
+| breakpoint | string | 'md' | Width from which cells form columns (`sm`, `md`, `lg`, `xl`; `none` = at every width, unprefixed classes); below it they stack. Also the prefix of the cells' `col-span` / `col-start` / `col-end` |
 | rowsCount | number | 0 | Number of rows (0 = auto) |
 | gap | string | '4' | Gap between cells (0–8) |
 | verticalAlignment | string | '' | Vertical alignment of cells |

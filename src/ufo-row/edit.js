@@ -48,7 +48,10 @@ export default function Edit( {
 	const [ dropZoneElement, setDropZoneElement ] = useState( null );
 	const blockProps = useBlockProps( {
 		ref: setDropZoneElement,
-		className: getTailwindClasses( attributes ),
+		className: getTailwindClasses(
+			attributes,
+			context[ 'ufo-blocks/breakpoint' ]
+		),
 		style: getBlockStyle( attributes ),
 		'data-col-span': colSpan || 'auto',
 		'data-row-span': rowSpan || 'auto',

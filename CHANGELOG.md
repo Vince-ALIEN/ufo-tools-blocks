@@ -5,6 +5,14 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `ufo-grid`: `breakpoint` setting ("Colonnes à partir de": `Toujours` (`none`), `sm`, `md`, `lg`, `xl`; default `md`). Below it, cells stack; from it, the grid shows its columns. `none` keeps the columns at every width, mobile included (unprefixed classes; "reverse on mobile" then has no effect). It sets the prefix of `grid-cols-N`, `auto-rows-fr` (equal rows), `grid` (reverse on mobile) and `h-screen` (screen height), and is passed to the `ufo-row` cells (context `ufo-blocks/breakpoint`) for their `col-span` / `col-start` / `col-end`. The editor's column guides follow it.
+- README safelist: `{sm,md,lg,xl}:` and unprefixed variants of these classes. **Themes must update their `@source inline(...)` lines**, otherwise the new variants are missing from the site's CSS.
+
+Content saved without the attribute keeps `md`: its front-end output is unchanged.
+
 ## [1.2.0] - 2026-11-26
 
 ### Added

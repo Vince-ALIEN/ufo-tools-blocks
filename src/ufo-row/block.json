@@ -8,7 +8,7 @@
   "icon": "PanelLeftDashed",
   "description": "Cellule d'un ufo Grid : contient n'importe quels blocs. Peut s'étendre sur plusieurs colonnes ou lignes, avec alignement vertical, hauteur, arrondi, marges internes et image de fond. Uniquement dans un ufo Grid.",
   "parent": ["ufo-blocks/ufo-grid"],
-  "usesContext": ["ufo-blocks/columnsCount"],
+  "usesContext": ["ufo-blocks/columnsCount", "ufo-blocks/breakpoint"],
   "keywords": ["row", "column", "layout", "ufo"],
   "textdomain": "ufo-tools-blocks",
   "attributes": {

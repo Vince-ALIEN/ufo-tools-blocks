@@ -16,6 +16,7 @@ import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
 import { plus } from '@wordpress/icons';
 import Inspector from './inspector';
 import { getWrapperClasses, getInnerClasses, getWrapperStyle } from './shared';
+import { breakpointOf } from '../shared/breakpoint';
 import './editor.css';
 
 const ROW = 'ufo-blocks/ufo-row';
@@ -23,6 +24,7 @@ const DEFAULT_BLOCK = { name: ROW };
 
 function GridEditContainer( { attributes, setAttributes, clientId } ) {
 	const { columnsCount, gap, backgroundVideo } = attributes;
+	const breakpoint = breakpointOf( attributes.breakpoint );
 	const registry = useRegistry();
 	const { getBlocks } = useSelect( blockEditorStore );
 	const { insertBlocks, updateBlockAttributes, selectBlock } =
@@ -37,6 +39,7 @@ function GridEditContainer( { attributes, setAttributes, clientId } ) {
 			'--ufo-gap': gap,
 		},
 		'data-cols': columnsCount,
+		'data-breakpoint': breakpoint,
 		'data-gap': gap,
 	} );
 
@@ -128,7 +131,7 @@ function GridEditContainer( { attributes, setAttributes, clientId } ) {
 						'ufo-tools-blocks'
 					) }
 				>
-					{ `${ __( 'Grille', 'ufo-tools-blocks' ) } ${ columnsCount } col · gap ${ gap }` }
+					{ `${ __( 'Grille', 'ufo-tools-blocks' ) } ${ columnsCount } col (${ breakpoint === 'none' ? __( 'toujours', 'ufo-tools-blocks' ) : breakpoint }) · gap ${ gap }` }
 				</button>
 				{ backgroundVideo?.url && (
 					<video
