@@ -3,7 +3,7 @@
  * panneaux des blocs core (ToolsPanel avec réinitialisation, médias avec
  * aperçu, matrice de position).
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import {
 	Button,
@@ -175,6 +175,48 @@ export function SpacingRangeControl( {
 			step={ step }
 			withInputField
 			help={ help ?? spacingHelp( value ) }
+		/>
+	);
+}
+
+/**
+ * Curseur « Marge haute » (-16 à 16 par pas de 2), pour ufo-row et core/image.
+ * Enregistre "" pour 0, sinon la valeur en texte ("-8", "4"…).
+ *
+ * @param {Object}                  props          Propriétés du composant.
+ * @param {string}                  props.value    Valeur actuelle.
+ * @param {(value: string) => void} props.onChange Reçoit la nouvelle valeur.
+ * @return {Element} Le RangeControl.
+ */
+export function MarginTopControl( { value, onChange } ) {
+	const amount = parseInt( value, 10 ) || 0;
+	const help =
+		amount < 0
+			? sprintf(
+					/* translators: %d: décalage en pixels. */
+					__( 'Décalage de %dpx vers le haut.', 'ufo-tools-blocks' ),
+					-amount * 4
+				)
+			: sprintf(
+					/* translators: %d: marge en pixels. */
+					__(
+						'%dpx au-dessus. Une valeur négative décale vers le haut.',
+						'ufo-tools-blocks'
+					),
+					amount * 4
+				);
+
+	return (
+		<RangeControl
+			{ ...COMMON_CONTROL_PROPS }
+			label={ __( 'Marge haute', 'ufo-tools-blocks' ) }
+			value={ amount }
+			onChange={ ( next ) => onChange( next ? String( next ) : '' ) }
+			min={ -16 }
+			max={ 16 }
+			step={ 2 }
+			withInputField
+			help={ help }
 		/>
 	);
 }

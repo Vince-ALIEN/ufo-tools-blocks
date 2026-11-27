@@ -5,6 +5,16 @@ Tous les changements notables de ce projet seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `ufo-grid`: `breakpoint` setting ("Colonnes à partir de": `Toujours` (`none`), `sm`, `md`, `lg`, `xl`; default `md`). Below it, cells stack; from it, the grid shows its columns. `none` keeps the columns at every width, mobile included (unprefixed classes; "reverse on mobile" then has no effect). It sets the prefix of `grid-cols-N`, `auto-rows-fr` (equal rows), `grid` (reverse on mobile) and `h-screen` (screen height), and is passed to the `ufo-row` cells (context `ufo-blocks/breakpoint`) for their `col-span` / `col-start` / `col-end`. The editor's column guides follow it.
+- `ufo-row`: "Marge haute" setting (`marginTop`, -16 to 16 by 2, in "Dimensions (Tailwind)"), replacing `mt-*` / `-mt-*` typed in "Additional CSS class". At every width: `mt-N`, or `-mt-N` (upward offset) for a negative value.
+- `core/image`: the same "Marge haute" setting (`ufoMarginTop` attribute, "Dimensions (Tailwind)" panel). The class is added when the block is rendered (`render_block_core/image` filter): the image's saved HTML does not change, so it stays valid without the plugin and simply loses its margin.
+- **`build/tailwind.css`** (source `tailwind/ufo-tools-blocks.css`): the plugin now ships its Tailwind sources (`@source` scanning `build/`, and the `@source inline(...)` safelist, with the `{sm,md,lg,xl}:` and unprefixed variants needed by `breakpoint`). It also safelists `mt-*` and `-mt-*` (0 to 16 by 2, unprefixed only), also used typed in "Additional CSS class" (e.g. `-mt-8` on a `ufo-grid` overlapping the previous section): they were in each theme's own safelist. **Prefixed variants (`lg:-mt-8`) are no longer safelisted**: replace them with the unprefixed class or the setting. Themes replace the lines copied from the README with one `@import "../../../plugins/ufo-tools-blocks/build/tailwind.css";` and only need to recompile their CSS after a plugin update. **Themes that keep the old lines miss the new variants**: grids set to another breakpoint than `md` stay on one column.
+
+Content saved without the attribute keeps `md`: its front-end output is unchanged.
+
 ## [1.2.0] - 2026-11-26
 
 ### Added

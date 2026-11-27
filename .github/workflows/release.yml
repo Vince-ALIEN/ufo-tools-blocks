@@ -55,6 +55,7 @@ jobs:
           grep -q ' ufo-tools-blocks/build/ufo-grid/block.json$' files.txt
           grep -q ' ufo-tools-blocks/build/ufo-grid/render.php$' files.txt
           grep -q ' ufo-tools-blocks/build/blocs-pour-ia.md$' files.txt
+          grep -q ' ufo-tools-blocks/build/tailwind.css$' files.txt
           grep -q ' ufo-tools-blocks/includes/ufo-tools-blocks-render.php$' files.txt
           grep -q ' ufo-tools-blocks/includes/ufo-tools-blocks-rest.php$' files.txt
 

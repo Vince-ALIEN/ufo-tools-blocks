@@ -14,6 +14,7 @@ import {
 	UfoToolsPanel,
 	PanelItem,
 	SpacingRangeControl,
+	MarginTopControl,
 	HeightSelectControl,
 	BorderRadiusControl,
 	BackgroundPanel,
@@ -32,7 +33,13 @@ const LAYOUT_KEYS = [
 	'rowStart',
 	'rowEnd',
 ];
-const DIMENSION_KEYS = [ 'minHeight', 'height', 'paddingX', 'paddingY' ];
+const DIMENSION_KEYS = [
+	'minHeight',
+	'height',
+	'paddingX',
+	'paddingY',
+	'marginTop',
+];
 
 const ROW_MIN_HEIGHT_OPTIONS = [
 	...MIN_HEIGHT_OPTIONS,
@@ -113,6 +120,7 @@ export default function Inspector( {
 		borderRadius,
 		paddingY,
 		paddingX,
+		marginTop,
 	} = attributes;
 
 	const itemProps = { attributes, defaults: DEFAULTS, setAttributes };
@@ -277,6 +285,20 @@ export default function Inspector( {
 							value={ paddingY }
 							onChange={ ( value ) =>
 								setAttributes( { paddingY: value } )
+							}
+						/>
+					</PanelItem>
+
+					<PanelItem
+						{ ...itemProps }
+						label={ __( 'Marge haute', 'ufo-tools-blocks' ) }
+						keys={ [ 'marginTop' ] }
+						isShownByDefault
+					>
+						<MarginTopControl
+							value={ marginTop }
+							onChange={ ( value ) =>
+								setAttributes( { marginTop: value } )
 							}
 						/>
 					</PanelItem>

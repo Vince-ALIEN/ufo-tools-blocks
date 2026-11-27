@@ -123,9 +123,11 @@ plutôt que de retoucher l'ancien HTML.
 | Attribut | Blocs | Valeurs |
 |---|---|---|
 | `columnsCount` | grid | nombre 1 à 6 |
+| `breakpoint` | grid | `"none"` (colonnes à toutes les largeurs, mobile compris), `"sm"`, `"md"` (défaut), `"lg"`, `"xl"` : largeur à partir de laquelle les cellules forment des colonnes (empilées en dessous) |
 | `rowsCount` | grid | nombre 0 (auto) à 6 |
 | `gap` | grid | `"0"` à `"8"` |
 | `paddingX`, `paddingY` | grid, row | `"0"`, `"2"`, `"4"` … `"16"` (pairs) |
+| `marginTop` (row), `ufoMarginTop` (`core/image`) | row, image | `""` (aucune), `"2"` … `"16"` (pairs) : marge au-dessus ; `"-2"` … `"-16"` : décalage vers le haut. À toutes les largeurs |
 | `verticalAlignment` | grid, row | `"top"`, `"center"`, `"bottom"` (ou absent) |
 | `minHeight` | grid | `""`, `"24"` … `"150"`, `"h-full"`, `"screen"` |
 | `minHeight` | row | `""`, `"24"` … `"150"`, `"full"`, `"screen"` |

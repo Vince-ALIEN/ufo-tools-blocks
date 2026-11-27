@@ -8,6 +8,9 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		...defaultEntryPoints,
+		// Réglages ajoutés aux blocs core (chargé dans l'éditeur par
+		// includes/ufo-tools-blocks-extensions.php).
+		'extensions/image-margin-top': './src/extensions/image-margin-top.js',
 	},
 	plugins: [
 		...defaultConfig.plugins,
@@ -16,6 +19,9 @@ module.exports = {
 		new CopyPlugin( {
 			patterns: [
 				{ from: 'docs/blocs-pour-ia.md', to: 'blocs-pour-ia.md' },
+				// Sources Tailwind importées par le thème : ses chemins
+				// (../build/…) valent depuis tailwind/ comme depuis build/.
+				{ from: 'tailwind/ufo-tools-blocks.css', to: 'tailwind.css' },
 			],
 		} ),
 	],

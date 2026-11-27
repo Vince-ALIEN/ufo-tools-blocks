@@ -63,6 +63,7 @@ const gridCases = variants(
 	defaultsOf( gridMeta ),
 	{
 		columnsCount: [ 1, 2, 3, 4, 5, 6 ],
+		breakpoint: [ undefined, '', 'none', 'sm', 'md', 'lg', 'xl', 'autre' ],
 		rowsCount: [ 0, 1, 2, 6 ],
 		gap: range( 0, 8 ),
 		verticalAlignment: [ undefined, '', 'top', 'center', 'bottom' ],
@@ -90,6 +91,20 @@ const gridCases = variants(
 			paddingY: '4',
 		},
 		{ minHeight: '64', reverseMobile: true, equalRows: false },
+		{
+			breakpoint: 'none',
+			columnsCount: 2,
+			reverseMobile: true,
+			equalRows: true,
+			minHeight: 'screen',
+		},
+		{
+			breakpoint: 'lg',
+			columnsCount: 4,
+			reverseMobile: true,
+			equalRows: true,
+			minHeight: 'screen',
+		},
 	]
 );
 
@@ -108,6 +123,7 @@ const rowCases = variants(
 		borderRadius: radii,
 		paddingX: paddings,
 		paddingY: paddings,
+		marginTop: [ '', '-16', '-8', '-2', '2', '8', '16', 'abc' ],
 		backgroundImage: [ image, { url: '' } ],
 	},
 	[
@@ -124,6 +140,7 @@ const rowCases = variants(
 			borderRadius: 'lg',
 			paddingX: '4',
 			paddingY: '6',
+			marginTop: '-8',
 			backgroundImage: image,
 		},
 	]
@@ -152,16 +169,24 @@ describe( 'classes JS = classes PHP', () => {
 		).toEqual( gridCases.map( getInnerClasses ) );
 	} );
 
-	test( 'ufo-row', () => {
-		expect(
-			php(
-				rowCases.map( ( attributes ) => ( {
-					fn: 'ufo_tools_blocks_row_classes',
-					attributes,
-				} ) )
-			)
-		).toEqual( rowCases.map( getTailwindClasses ) );
-	} );
+	test.each( [ undefined, '', 'none', 'sm', 'md', 'lg', 'xl', 'autre' ] )(
+		'ufo-row (point de rupture %p)',
+		( breakpoint ) => {
+			expect(
+				php(
+					rowCases.map( ( attributes ) => ( {
+						fn: 'ufo_tools_blocks_row_classes',
+						attributes,
+						args: breakpoint === undefined ? [] : [ breakpoint ],
+					} ) )
+				)
+			).toEqual(
+				rowCases.map( ( attributes ) =>
+					getTailwindClasses( attributes, breakpoint )
+				)
+			);
+		}
+	);
 
 	describe( 'ufo-buttons-group (balisage de la 1.0.8)', () => {
 		beforeAll( registerBlocks );

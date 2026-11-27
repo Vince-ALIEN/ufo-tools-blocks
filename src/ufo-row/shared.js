@@ -1,3 +1,6 @@
+import { breakpointOf, at } from '../shared/breakpoint';
+import { marginTopClass } from '../shared/margin-top';
+
 export const ALIGNMENT_CLASSES = {
 	top: 'flex flex-col justify-start',
 	center: 'flex flex-col justify-center',
@@ -9,7 +12,15 @@ const HEIGHT_CLASSES = {
 	full: 'h-full',
 };
 
-export function getTailwindClasses( attributes ) {
+/**
+ * Classes Tailwind de la cellule.
+ *
+ * @param {Object} attributes Attributs du bloc.
+ * @param {string} breakpoint Point de rupture de la grille parente (contexte
+ *                            `ufo-blocks/breakpoint`), `md` par défaut.
+ * @return {string} Classes séparées par une espace.
+ */
+export function getTailwindClasses( attributes, breakpoint ) {
 	const {
 		colSpan,
 		colStart,
@@ -23,14 +34,16 @@ export function getTailwindClasses( attributes ) {
 		borderRadius,
 		paddingX,
 		paddingY,
+		marginTop,
 		backgroundImage,
 	} = attributes;
+	const bp = breakpointOf( breakpoint );
 
 	return [
 		'ufo-row',
-		colSpan && `md:col-span-${ colSpan }`,
-		colStart && `md:col-start-${ colStart }`,
-		colEnd && `md:col-end-${ colEnd }`,
+		colSpan && at( bp, `col-span-${ colSpan }` ),
+		colStart && at( bp, `col-start-${ colStart }` ),
+		colEnd && at( bp, `col-end-${ colEnd }` ),
 		rowSpan && `row-span-${ rowSpan }`,
 		rowStart && `row-start-${ rowStart }`,
 		rowEnd && `row-end-${ rowEnd }`,
@@ -39,6 +52,7 @@ export function getTailwindClasses( attributes ) {
 		borderRadius && `rounded-${ borderRadius }`,
 		paddingX && `px-${ paddingX }`,
 		paddingY && `py-${ paddingY }`,
+		marginTopClass( marginTop ),
 		ALIGNMENT_CLASSES[ verticalAlignment ],
 		backgroundImage?.url && 'bg-no-repeat',
 	]

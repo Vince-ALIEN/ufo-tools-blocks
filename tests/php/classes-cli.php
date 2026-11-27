@@ -1,7 +1,8 @@
 <?php
 /**
  * Pont pour tests/js/classes-php.test.js : lit sur l'entrée standard une liste
- * [ { "fn": "...", "attributes": { ... } } ] et écrit les classes produites
+ * [ { "fn": "...", "attributes": { ... }, "args": [ ... ] } ] (args facultatif :
+ * paramètres suivants) et écrit les classes produites
  * par includes/ufo-tools-blocks-classes.php, dans le même ordre.
  *
  * @package ufo-tools-blocks
@@ -24,6 +25,6 @@ foreach ( (array) $ufo_cases as $ufo_case ) {
 		fwrite( STDERR, 'Fonction inconnue : ' . $ufo_case['fn'] . "\n" );
 		exit( 1 );
 	}
-	$ufo_out[] = call_user_func( $ufo_case['fn'], (array) $ufo_case['attributes'] );
+	$ufo_out[] = call_user_func_array( $ufo_case['fn'], array_merge( array( (array) $ufo_case['attributes'] ), (array) ( $ufo_case['args'] ?? array() ) ) );
 }
 echo json_encode( $ufo_out );

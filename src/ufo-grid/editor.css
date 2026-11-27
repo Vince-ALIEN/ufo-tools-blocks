@@ -83,31 +83,60 @@
 
 /* Guides de colonnes : bandes de la largeur réelle des colonnes, gap compris
    (gap-N de Tailwind = N × --spacing). La grille n'a plusieurs colonnes
-   qu'à partir de md. */
+   qu'à partir de son point de rupture (data-breakpoint, md par défaut). */
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout {
+	position: relative;
+}
+
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout::before {
+	--ufo-gap-size: calc(var(--spacing, 0.25rem) * var(--ufo-gap, 4));
+	--ufo-col-size: calc((100% - (var(--ufo-cols, 2) - 1) * var(--ufo-gap-size)) / var(--ufo-cols, 2));
+	content: "";
+	position: absolute;
+	inset: var(--ufo-grid-space-top) var(--ufo-grid-space-x) var(--ufo-grid-space-bottom);
+
+	/* Sous les cellules (position: relative, plus loin dans le
+	   document) : les guides restent visibles dans les colonnes vides. */
+	z-index: 0;
+	background-image: repeating-linear-gradient(to right, var(--ufo-color-guide) 0, var(--ufo-color-guide) var(--ufo-col-size), transparent var(--ufo-col-size), transparent calc(var(--ufo-col-size) + var(--ufo-gap-size)));
+	opacity: 0;
+	transition: opacity var(--ufo-transition);
+	pointer-events: none;
+}
+
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="none"].is-selected > .block-editor-block-list__layout::before,
+.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="none"].has-child-selected > .block-editor-block-list__layout::before {
+	opacity: 1;
+}
+
+@media (min-width: 640px) {
+
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="sm"].is-selected > .block-editor-block-list__layout::before,
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="sm"].has-child-selected > .block-editor-block-list__layout::before {
+		opacity: 1;
+	}
+}
+
 @media (min-width: 768px) {
 
-	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout {
-		position: relative;
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="md"].is-selected > .block-editor-block-list__layout::before,
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="md"].has-child-selected > .block-editor-block-list__layout::before {
+		opacity: 1;
 	}
+}
 
-	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid > .block-editor-block-list__layout::before {
-		--ufo-gap-size: calc(var(--spacing, 0.25rem) * var(--ufo-gap, 4));
-		--ufo-col-size: calc((100% - (var(--ufo-cols, 2) - 1) * var(--ufo-gap-size)) / var(--ufo-cols, 2));
-		content: "";
-		position: absolute;
-		inset: var(--ufo-grid-space-top) var(--ufo-grid-space-x) var(--ufo-grid-space-bottom);
+@media (min-width: 1024px) {
 
-		/* Sous les cellules (position: relative, plus loin dans le
-		   document) : les guides restent visibles dans les colonnes vides. */
-		z-index: 0;
-		background-image: repeating-linear-gradient(to right, var(--ufo-color-guide) 0, var(--ufo-color-guide) var(--ufo-col-size), transparent var(--ufo-col-size), transparent calc(var(--ufo-col-size) + var(--ufo-gap-size)));
-		opacity: 0;
-		transition: opacity var(--ufo-transition);
-		pointer-events: none;
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="lg"].is-selected > .block-editor-block-list__layout::before,
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="lg"].has-child-selected > .block-editor-block-list__layout::before {
+		opacity: 1;
 	}
+}
 
-	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.is-selected > .block-editor-block-list__layout::before,
-	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid.has-child-selected > .block-editor-block-list__layout::before {
+@media (min-width: 1280px) {
+
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="xl"].is-selected > .block-editor-block-list__layout::before,
+	.editor-styles-wrapper .wp-block-ufo-blocks-ufo-grid[data-breakpoint="xl"].has-child-selected > .block-editor-block-list__layout::before {
 		opacity: 1;
 	}
 }

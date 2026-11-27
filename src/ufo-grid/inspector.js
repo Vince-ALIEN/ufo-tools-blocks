@@ -1,10 +1,15 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	InspectorControls,
 	BlockControls,
 	BlockVerticalAlignmentToolbar,
 } from '@wordpress/block-editor';
 import { RangeControl, ToggleControl } from '@wordpress/components';
+import {
+	ToggleGroupControl,
+	ToggleGroupControlOption,
+} from '../shared/wp-components';
+import { BREAKPOINTS, breakpointOf } from '../shared/breakpoint';
 import {
 	UfoToolsPanel,
 	PanelItem,
@@ -24,12 +29,21 @@ const DEFAULTS = { ...getAttributeDefaults( metadata ), equalRows: false };
 
 const GRID_KEYS = [
 	'columnsCount',
+	'breakpoint',
 	'rowsCount',
 	'gap',
 	'equalRows',
 	'reverseMobile',
 ];
 const DIMENSION_KEYS = [ 'minHeight', 'isBoxed', 'paddingX', 'paddingY' ];
+
+// Largeurs des points de rupture par défaut de Tailwind.
+const BREAKPOINT_WIDTHS = {
+	sm: '640 px',
+	md: '768 px',
+	lg: '1024 px',
+	xl: '1280 px',
+};
 
 const GRID_MIN_HEIGHT_OPTIONS = [
 	...MIN_HEIGHT_OPTIONS,
@@ -45,6 +59,7 @@ export default function Inspector( {
 } ) {
 	const {
 		columnsCount,
+		breakpoint,
 		rowsCount,
 		gap,
 		verticalAlignment,
@@ -94,11 +109,63 @@ export default function Inspector( {
 							}
 							min={ 1 }
 							max={ 6 }
-							help={ __(
-								"À partir de la largeur md. En dessous, les cellules s'empilent.",
+						/>
+					</PanelItem>
+
+					<PanelItem
+						{ ...itemProps }
+						label={ __(
+							'Colonnes à partir de',
+							'ufo-tools-blocks'
+						) }
+						keys={ [ 'breakpoint' ] }
+						isShownByDefault
+					>
+						<ToggleGroupControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __(
+								'Colonnes à partir de',
 								'ufo-tools-blocks'
 							) }
-						/>
+							value={ breakpointOf( breakpoint ) }
+							onChange={ ( value ) =>
+								setAttributes( { breakpoint: value } )
+							}
+							help={
+								breakpointOf( breakpoint ) === 'none'
+									? __(
+											"Les colonnes s'affichent à toutes les largeurs, mobile compris.",
+											'ufo-tools-blocks'
+										)
+									: sprintf(
+											/* translators: %s: largeur d'écran, par exemple « 768 px ». */
+											__(
+												"Les colonnes s'affichent à partir de %s de large. En dessous, les cellules s'empilent.",
+												'ufo-tools-blocks'
+											),
+											BREAKPOINT_WIDTHS[
+												breakpointOf( breakpoint )
+											]
+										)
+							}
+							isBlock
+						>
+							{ BREAKPOINTS.map( ( value ) => (
+								<ToggleGroupControlOption
+									key={ value }
+									value={ value }
+									label={
+										value === 'none'
+											? __(
+													'Toujours',
+													'ufo-tools-blocks'
+												)
+											: value
+									}
+								/>
+							) ) }
+						</ToggleGroupControl>
 					</PanelItem>
 
 					<PanelItem

@@ -1,6 +1,7 @@
 /**
- * Le plugin ne livre pas de CSS : le thème compile Tailwind en scannant src/
- * (@source) et en ajoutant la safelist du README (@source inline). Une classe
+ * Le plugin ne livre pas de CSS : le thème compile Tailwind en important
+ * tailwind/ufo-tools-blocks.css, qui scanne build/ (@source) et ajoute la
+ * safelist (@source inline). Une classe
  * construite par template literal (`md:grid-cols-${n}`) n'apparaît dans aucun
  * fichier : elle doit être dans la safelist, sinon elle est absente du CSS du
  * site. Ce test génère toutes les classes que les réglages de l'inspecteur
@@ -12,6 +13,7 @@ const path = require( 'path' );
 import { getWrapperClasses, getInnerClasses } from '../../src/ufo-grid/shared';
 import { getTailwindClasses } from '../../src/ufo-row/shared';
 import { MIN_HEIGHT_OPTIONS } from '../../src/shared/controls';
+import { BREAKPOINTS } from '../../src/shared/breakpoint';
 
 const ROOT = path.resolve( __dirname, '../..' );
 
@@ -36,14 +38,19 @@ const expand = ( pattern ) => {
 		);
 };
 
-const readme = fs.readFileSync( path.join( ROOT, 'README.md' ), 'utf8' );
+const sources = fs.readFileSync(
+	path.join( ROOT, 'tailwind/ufo-tools-blocks.css' ),
+	'utf8'
+);
 const safelist = new Set(
-	[ ...readme.matchAll( /@source inline\("([^"]+)"\)/g ) ].flatMap( ( m ) =>
+	[ ...sources.matchAll( /@source inline\("([^"]+)"\)/g ) ].flatMap( ( m ) =>
 		expand( m[ 1 ] )
 	)
 );
 
-// Ce que le scanner Tailwind trouve tel quel dans les sources.
+// Ce que le scanner Tailwind trouve tel quel dans les sources. Le thème scanne
+// build/, compilé depuis src/ : les chaînes de classes y restent écrites en
+// clair (seuls les template literals disparaissent, d'où la safelist).
 const listFiles = ( dir ) =>
 	fs.readdirSync( dir, { withFileTypes: true } ).flatMap( ( entry ) => {
 		const full = path.join( dir, entry.name );
@@ -71,16 +78,41 @@ const heights = MIN_HEIGHT_OPTIONS.map( ( { value } ) => value ).filter(
 const radii = [ 'sm', 'md', 'lg', 'xl', '2xl', '3xl' ];
 const paddings = range( 0, 16, 2 );
 
-describe( 'safelist Tailwind du README', () => {
+describe( 'safelist Tailwind (tailwind/ufo-tools-blocks.css)', () => {
+	test( 'scanne build/, présent dans la copie git comme dans le zip', () => {
+		const scannedPaths = [
+			...sources.matchAll( /^@source "([^"]+)";/gm ),
+		].map( ( m ) => m[ 1 ] );
+		expect( scannedPaths ).toEqual( [
+			'../build/**/*.js',
+			'../build/**/*.php',
+		] );
+	} );
+
 	test( "ufo-grid : toutes les valeurs de l'inspecteur", () => {
 		const generated = [];
-		range( 1, 6 ).forEach( ( columnsCount ) =>
+		BREAKPOINTS.forEach( ( breakpoint ) => {
+			range( 1, 6 ).forEach( ( columnsCount ) =>
+				generated.push(
+					...classesOf(
+						getInnerClasses( {
+							breakpoint,
+							columnsCount: Number( columnsCount ),
+						} )
+					)
+				)
+			);
 			generated.push(
 				...classesOf(
-					getInnerClasses( { columnsCount: Number( columnsCount ) } )
+					getWrapperClasses( { breakpoint, minHeight: 'screen' } ),
+					getInnerClasses( {
+						breakpoint,
+						reverseMobile: true,
+						equalRows: true,
+					} )
 				)
-			)
-		);
+			);
+		} );
 		range( 0, 8 ).forEach( ( gap ) =>
 			generated.push( ...classesOf( getInnerClasses( { gap } ) ) )
 		);
@@ -134,12 +166,17 @@ describe( 'safelist Tailwind du README', () => {
 			borderRadius: radii,
 			paddingX: paddings.filter( ( value ) => value !== '0' ),
 			paddingY: paddings.filter( ( value ) => value !== '0' ),
+			marginTop: [ ...range( -16, -2, 2 ), ...range( 2, 16, 2 ) ],
 			verticalAlignment: [ 'top', 'center', 'bottom' ],
 		};
-		Object.entries( placements ).forEach( ( [ key, values ] ) =>
-			values.forEach( ( value ) =>
-				generated.push(
-					...classesOf( getTailwindClasses( { [ key ]: value } ) )
+		BREAKPOINTS.forEach( ( breakpoint ) =>
+			Object.entries( placements ).forEach( ( [ key, values ] ) =>
+				values.forEach( ( value ) =>
+					generated.push(
+						...classesOf(
+							getTailwindClasses( { [ key ]: value }, breakpoint )
+						)
+					)
 				)
 			)
 		);
