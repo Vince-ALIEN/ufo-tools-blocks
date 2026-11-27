@@ -123,6 +123,7 @@ const rowCases = variants(
 		borderRadius: radii,
 		paddingX: paddings,
 		paddingY: paddings,
+		marginTop: [ '', '-16', '-8', '-2', '2', '8', '16', 'abc' ],
 		backgroundImage: [ image, { url: '' } ],
 	},
 	[
@@ -139,6 +140,7 @@ const rowCases = variants(
 			borderRadius: 'lg',
 			paddingX: '4',
 			paddingY: '6',
+			marginTop: '-8',
 			backgroundImage: image,
 		},
 	]

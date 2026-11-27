@@ -166,6 +166,7 @@ describe( 'safelist Tailwind (tailwind/ufo-tools-blocks.css)', () => {
 			borderRadius: radii,
 			paddingX: paddings.filter( ( value ) => value !== '0' ),
 			paddingY: paddings.filter( ( value ) => value !== '0' ),
+			marginTop: [ ...range( -16, -2, 2 ), ...range( 2, 16, 2 ) ],
 			verticalAlignment: [ 'top', 'center', 'bottom' ],
 		};
 		BREAKPOINTS.forEach( ( breakpoint ) =>

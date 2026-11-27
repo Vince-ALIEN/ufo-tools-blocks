@@ -174,6 +174,22 @@ function ufo_tools_blocks_grid_inner_classes( array $attributes ) {
 }
 
 /**
+ * ufo-row : marge haute (marginTopClass de src/ufo-row/shared.js). mt-N à
+ * toutes les largeurs ; négative, -mt-N à partir du point de rupture.
+ *
+ * @param mixed  $value      Attribut marginTop ("-16" … "16", pairs).
+ * @param string $breakpoint Résultat de ufo_tools_blocks_breakpoint().
+ * @return string Classe, ou chaîne vide sans marge.
+ */
+function ufo_tools_blocks_margin_top_class( $value, $breakpoint ) {
+	$amount = is_scalar( $value ) ? (int) $value : 0;
+	if ( 0 === $amount ) {
+		return '';
+	}
+	return $amount > 0 ? 'mt-' . $amount : ufo_tools_blocks_at( $breakpoint, '-mt-' . ( -$amount ) );
+}
+
+/**
  * ufo-row : classes de la cellule (getTailwindClasses).
  *
  * @param array $attributes Attributs du bloc.
@@ -220,6 +236,11 @@ function ufo_tools_blocks_row_classes( array $attributes, $breakpoint = null ) {
 		if ( ufo_tools_blocks_truthy( $value ) ) {
 			$classes[] = $prefix . ufo_tools_blocks_class_value( $value );
 		}
+	}
+
+	$margin_top = ufo_tools_blocks_margin_top_class( $attributes['marginTop'] ?? null, $bp );
+	if ( '' !== $margin_top ) {
+		$classes[] = $margin_top;
 	}
 
 	$alignment = $attributes['verticalAlignment'] ?? null;

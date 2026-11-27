@@ -6,6 +6,23 @@ export const ALIGNMENT_CLASSES = {
 	bottom: 'flex flex-col justify-end',
 };
 
+/**
+ * Marge haute : mt-N à toutes les largeurs ; négative (-mt-N, décalage vers le
+ * haut), seulement à partir du point de rupture de la grille, là où les
+ * cellules sont côte à côte (empilées, elles se recouvriraient).
+ *
+ * @param {string} value Attribut marginTop ("-16" … "16", pairs).
+ * @param {string} bp    Résultat de breakpointOf().
+ * @return {string|false} Classe, ou false sans marge.
+ */
+export function marginTopClass( value, bp ) {
+	const amount = parseInt( value, 10 );
+	if ( ! amount ) {
+		return false;
+	}
+	return amount > 0 ? `mt-${ amount }` : at( bp, `-mt-${ -amount }` );
+}
+
 const HEIGHT_CLASSES = {
 	screen: 'h-screen',
 	full: 'h-full',
@@ -33,6 +50,7 @@ export function getTailwindClasses( attributes, breakpoint ) {
 		borderRadius,
 		paddingX,
 		paddingY,
+		marginTop,
 		backgroundImage,
 	} = attributes;
 	const bp = breakpointOf( breakpoint );
@@ -50,6 +68,7 @@ export function getTailwindClasses( attributes, breakpoint ) {
 		borderRadius && `rounded-${ borderRadius }`,
 		paddingX && `px-${ paddingX }`,
 		paddingY && `py-${ paddingY }`,
+		marginTopClass( marginTop, bp ),
 		ALIGNMENT_CLASSES[ verticalAlignment ],
 		backgroundImage?.url && 'bg-no-repeat',
 	]
